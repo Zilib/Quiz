@@ -37,13 +37,17 @@ namespace QuizApp
             tempQuiz.Description = Console.ReadLine();
             Validators.ValidString(tempQuiz.Description, 20, "Please input quiz description");
 
-            #endregion 
+            #endregion
+
+            #region Create Questions
 
             Console.Clear();
             Console.WriteLine("How many questions do you want? ( More than 2 and less than 10)");
 
             string input = Console.ReadLine();
-            while(!Int32.TryParse(input, out int numberOfQuestions) 
+            // Untill input is not int or is larger than 10 or smaller than 2
+            int numberOfQuestions;
+            while(!Int32.TryParse(input, out numberOfQuestions) 
                 || (numberOfQuestions <= 2 
                 || numberOfQuestions >= 10))
             {
@@ -53,7 +57,51 @@ namespace QuizApp
                 input = Console.ReadLine();
             }
 
+            for(int i = 0; i < numberOfQuestions; i++)
+            {
+                tempQuiz.CreateQuestion();
+            }
 
+            #endregion
+
+            Quizes.Add(tempQuiz);
+        }
+
+        public void SelectQuiz()
+        {
+            Console.Clear();
+
+            if (Quizes.Count == 0)
+            {
+                Console.WriteLine("No created quiz!");
+                return;
+            }
+
+            Console.WriteLine("Select your quiz! ");
+            ShowQuizes();
+
+            string input = Console.ReadLine();
+            int intInput;
+            while (!Int32.TryParse(input,out intInput)
+                || intInput < 0
+                || intInput > Quizes.Count)
+            {
+                Console.Clear();
+                Console.WriteLine("Incorrect input! Please choose quiz again!");
+                ShowQuizes();
+                input = Console.ReadLine();
+            }
+
+
+            Console.WriteLine();
+        }
+
+        private void ShowQuizes()
+        {
+            for (int i = 0; i < Quizes.Count; i++)
+            {
+                Console.WriteLine($"[{i}]. {Quizes[i].Title}");
+            }
         }
 
         #endregion
@@ -62,10 +110,13 @@ namespace QuizApp
 
     sealed class Quiz
     {
-        private List<Question> Questions { get; set; }
+        private List<Question> Questions { get; set; } = new List<Question>();
         public string Title { get; set; }
         public string Description { get; set; }
 
+        /// <summary>
+        /// Fill basic question data, and make 4 available answers for it
+        /// </summary>
         public void CreateQuestion()
         {
             Console.Clear();
@@ -74,72 +125,8 @@ namespace QuizApp
             string tempText = Console.ReadLine();
             Validators.ValidString(tempText, 10, "Give your text:");
 
-            Questions.Add(new Question(tempText));
+            Questions.Add(new Question(tempText, Questions.Count));
         }
     }
 
-    /// <summary>
-    /// Every important things for quiz texts
-    /// </summary>
-    abstract class FieldVariables
-    {
-        public FieldVariables(string title)
-        {
-            Text = title;
-        }
-
-        public string Text { get; set; }
-    }
-
-    sealed class Question : FieldVariables
-    {
-        private List<Answer> answers;
-
-        public Question(string title)
-            : base(title)
-        {
-            CreateAnswers();
-        }
-
-        /// <summary>
-        /// Create 4 answers
-        /// </summary>
-        private void CreateAnswers()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                Console.Clear();
-            }
-        }
-    }
-
-    sealed class Answer : FieldVariables
-    {
-        public Answer(string title)
-            : base (title)
-        {
-
-        }
-        public bool IsCorrect { get; set; }
-    }
-
-    static class Validators
-    {
-        /// <summary>
-        /// Wait for user input untill he's input does not meet the requirements
-        /// </summary>
-        /// <param name="input">Property</param>
-        /// <param name="minLength"></param>
-        /// <param name="msg">Request for new input</param>
-        public static void ValidString(string input, int minLength, string msg)
-        {
-            while (input.Length <= 3)
-            {
-                Console.Clear();
-                Console.WriteLine($"Input is too short, minimum length is {minLength}");
-                Console.WriteLine(msg);
-                input = Console.ReadLine();
-            }
-        }
-    }
 }

@@ -7,16 +7,22 @@ namespace QuizApp
         static void Main(string[] args)
         {
             Game myQuizGame = new Game();
-            Greetings(out string input);
+            Console.Clear();
 
-            switch (input)
+            while (true)
             {
-                case "1":
-                    myQuizGame.CreateNewQuiz();
-                    break;
-            }
+                Greetings(out string input);
 
-            Console.ReadLine();
+                switch (input)
+                {
+                    case "1":
+                        myQuizGame.CreateNewQuiz();
+                        break;
+                    case "2":
+                        myQuizGame.SelectQuiz();
+                        break;
+                }
+            }
         }
 
         /// <summary>

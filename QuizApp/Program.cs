@@ -21,6 +21,16 @@ namespace QuizApp
                     case "2":
                         myQuizGame.SelectQuiz();
                         break;
+                    case "3":
+                        try
+                        {
+                            myQuizGame.CreateQuizTest();
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        break;
                 }
             }
         }
@@ -32,11 +42,11 @@ namespace QuizApp
         {
             Console.WriteLine("***** Quiz Application ******\n");
             Console.WriteLine("What would you like to do?");
-            Console.Write("Take [1] for create new quiz, [2] for take part of another one: ");
+            Console.Write("Take [1] for create new quiz, [2] for take part of another one, [3] for create an exaple of quiz: ");
 
             input = Console.ReadLine();
             // if input is not 1 or 2, ask for another input
-            while (input != "1" && input != "2")
+            while (input != "1" && input != "2" && input != "3")
             {
                 Console.Clear();
                 Console.WriteLine("Wrong input, please make your choose again!");

@@ -1,0 +1,4 @@
+/packages/*
+/QuizApp/.vs/*
+/QuizApp/obj/*
+*.exe

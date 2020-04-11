@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuizApp
 {
-    sealed class Question : FieldVariables
+    sealed class Question
     {
         #region Public static
 
@@ -26,6 +26,8 @@ namespace QuizApp
         #region Props
 
         public bool IsFilled { get; set; } = false;
+        public string Title { get; set; }
+
 
         #endregion
 
@@ -40,14 +42,16 @@ namespace QuizApp
 
         #endregion
 
-        #region Constructor
+        #region Constructors
 
         public Question(string title, int _order)
-            : base(title)
         {
+            Title = title;
             order = _order; // Keep it in mind, it should be ever in this same order.
             //CreateAnswers();
         }
+
+        public Question() { }
 
         #endregion
 
@@ -72,7 +76,7 @@ namespace QuizApp
 
             for (int i = 0; i < answers.Count; i++)
             {
-                Console.Write($"[{i}]. {answers[i].Text}\n");
+                Console.Write($"[{i}]. {answers[i].Title}\n");
             }
 
             SetCorrectAnswer();
@@ -99,7 +103,7 @@ namespace QuizApp
 
                 for (int i = 0; i < answers.Count; i++)
                 {
-                    Console.Write($"[{i}]. {answers[i].Text}\n");
+                    Console.Write($"[{i}]. {answers[i].Title}\n");
                 }
 
                 input = Console.ReadLine();
@@ -116,66 +120,54 @@ namespace QuizApp
         /// Available only whenever developer allow for it, it serve for instantly creating quiz
         /// </summary>
         /// <param name="_answers"></param>
-        public void SetAnswers(List<Answer> _answers)
+        public void SetAnswers(Answer[] _answers)
         {
             if (!Game.testsAvailable)
                 throw new System.ArgumentException("Sorry but this metod is unable to use");
             if (_answers == null)
                 throw new System.ArgumentException("The answer's array cannot be null");
-            if (_answers.Count != numberOfAnswers)
-                throw new System.ArgumentException($"Number of answers is incorrect! Correct number of answers is: {numberOfAnswers}");
+            if ((from a in _answers where a.Title != string.Empty select a).Count() != numberOfAnswers)
+                throw new System.ArgumentException($"Number of answers are incorrect! Correct number of answers is: {numberOfAnswers}");
             if ((from a in _answers where a.IsCorrect == true select a).Count() != 1)
                 throw new System.ArgumentException("At least one answer must be correct!");
 
-            answers = _answers;
+            foreach (Answer a in _answers)
+                answers.Add((Answer)a.Clone());
+            
         }
 
         public bool SelectAndCheckAnswer(int answerIndex)
         {
-            answers[answerIndex].IsSelected = true;
+            this.answers[answerIndex].IsSelected = true;
             return answers[answerIndex].IsSelected == answers[answerIndex].IsCorrect;
         }
 
         #endregion
     }
 
-    sealed class Answer : FieldVariables
+    sealed class Answer : ICloneable
     {
         #region Constructor
 
+        public Answer() {}
         public Answer(string title)
-            : base(title) 
         {
-            isSelected = false;
+            Title = title;
         }
 
         #endregion
-
-        private bool isSelected = false;
 
         #region Public props
 
         public bool IsCorrect { get; set; } = false;
-        public bool IsSelected
-        {
-            get => isSelected;
-            set => isSelected = value; 
-        }
+        public bool IsSelected { get; set; } = false;
+        public string Title { get; set; }
+
+        public object Clone() => this.MemberwiseClone();
+   
 
         #endregion
     }
 
-    /// <summary>
-    /// Every important things for quiz texts
-    /// </summary>
-    abstract class FieldVariables
-    {
-        public FieldVariables(string title)
-        {
-            Text = title;
-        }
-
-        public string Text { get; set; } = null;
-    }
 
 }

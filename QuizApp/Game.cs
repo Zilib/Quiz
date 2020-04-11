@@ -179,7 +179,7 @@ namespace QuizApp
             titles.Enqueue("Jedynaste pytanie");
             titles.Enqueue("Dwunaste pytanie");
 
-            List<Answer> answersText = new List<Answer>()
+            Answer[] answersText = new Answer[4]
             {
                 new Answer("Pierwsza odpowiedź"),
                 new Answer("Druga odpowiedź"),
@@ -190,7 +190,7 @@ namespace QuizApp
             answersText[2].IsCorrect = true;
 
             Random correctAnswer = new Random();
-
+        
             Question[] questions = new Question[4];
             for (int i = 0; i < questions.Length; i++)
             {

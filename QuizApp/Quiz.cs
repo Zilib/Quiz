@@ -62,12 +62,13 @@ namespace QuizApp
             foreach (Question q in _questions)
             {
                 if (!q.isAnswersFilled())
-                    throw new System.ArgumentException($"\"{q.Text}\" has not filled answers!");
+                    throw new System.ArgumentException($"\"{q.Title}\" has not filled answers!");
 
                 if (!q.existOneCorrectAnswer())
-                    throw new System.ArgumentException($"\"{q.Text}\" does not have one correct answer!");
+                    throw new System.ArgumentException($"\"{q.Title}\" does not have one correct answer!");
+
+                questions.Add(q);
             }
-            questions = _questions;
         }
 
         public void AnswerQuestions(ref int quizScore)
@@ -75,13 +76,13 @@ namespace QuizApp
             foreach (Question q in questions)
             {
                 Console.Clear();
-                Console.WriteLine($"{q.Text}\n");
+                Console.WriteLine($"{q.Title}\n");
                 Console.WriteLine("Make your choose!");
 
 
                 for (int i = 0; i < q.answers.Count; i++)
                 {
-                    Console.Write($"[{i}]. {q.answers[i].Text}\n");
+                    Console.Write($"[{i}]. {q.answers[i].Title}\n");
                 }
 
                 string input = Console.ReadLine();
@@ -94,7 +95,7 @@ namespace QuizApp
                     Console.WriteLine("Sorry invalid input, choose you answer again!");
                     for (int i = 0; i < q.answers.Count; i++)
                     {
-                        Console.Write($"[{i}]. {q.answers[i].Text}\n");
+                        Console.Write($"[{i}]. {q.answers[i].Title}\n");
                     }
                     input = Console.ReadLine();
                 }
@@ -106,13 +107,10 @@ namespace QuizApp
 
         public void ShowAllQuestionsAndAnsers()
         {
-            //Console.WriteLine((from q in questions where q.questionHasAnswer() == true select q).Count());
-            //Console.WriteLine(questions.Count());
             Console.Clear();
             
             foreach (Question q in questions)
             {
-                Console.WriteLine(q.questionHasAnswer);
                 if (q.questionHasAnswer != 1)
                 {
                     Console.WriteLine("You have to make answer for every question");
@@ -127,13 +125,13 @@ namespace QuizApp
 
             ConsoleColor prevFGColor = Console.ForegroundColor;
             ConsoleColor wrongAnswerFGColor = ConsoleColor.Black;
-            ConsoleColor correctAnswerFGColor = prevFGColor;
+            ConsoleColor correctAnswerFGColor = ConsoleColor.Black;
 
             // If any answer has no answer, or any answer has more than one answer
 
             foreach (Question q in questions)
             {
-                Console.WriteLine(q.Text);
+                Console.WriteLine(q.Title);
                 for (int i = 0; i < q.answers.Count; i++)
                 {
                     // If answer is selected and incorrect
@@ -142,7 +140,7 @@ namespace QuizApp
                     {
                         Console.BackgroundColor = wrongAnswerBGColor;
                         Console.ForegroundColor = wrongAnswerFGColor;
-                        Console.Write($"[{i}]. {q.answers[i].Text}\n");
+                        Console.Write($"[{i}]. {q.answers[i].Title}\n");
                         continue;
                     }
                     if (q.answers[i].IsSelected 
@@ -150,15 +148,16 @@ namespace QuizApp
                     {
                         Console.ForegroundColor = correctAnswerFGColor;
                         Console.BackgroundColor = correctAnswerBGColor;
-                        Console.Write($"[{i}]. {q.answers[i].Text}\n");
+                        Console.Write($"[{i}]. {q.answers[i].Title}\n");
                         continue;
                     }
                     Console.ForegroundColor = prevFGColor;
                     Console.BackgroundColor = prevBGColor;
-                    Console.Write($"[{i}]. {q.answers[i].Text}\n");
+                    Console.Write($"[{i}]. {q.answers[i].Title}\n");
                 }
                 Console.BackgroundColor = prevFGColor;
                 Console.BackgroundColor = prevBGColor;
+                Console.WriteLine();
             }
         Console.ReadLine();
         }

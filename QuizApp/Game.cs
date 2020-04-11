@@ -9,10 +9,15 @@ namespace QuizApp
     class Game
     {
         public static bool testsAvailable { get; } = true;
+
         #region Private variables
 
         // Number of all quizes
         private List<Quiz> Quizes = new List<Quiz>();
+
+        private Quiz selectedQuiz = null;
+
+        private int playerScore = 0;
 
         #endregion
 
@@ -123,6 +128,7 @@ namespace QuizApp
                 return;
             }
 
+            Console.Clear();
             Console.WriteLine("Select your quiz! ");
             ShowQuizes();
 
@@ -138,8 +144,12 @@ namespace QuizApp
                 input = Console.ReadLine();
             }
 
+            // Assign by reffer
+            selectedQuiz = Quizes[intInput];
 
-            Console.WriteLine();
+            selectedQuiz.AnswerQuestions(ref playerScore);
+
+            selectedQuiz.ShowAllQuestionsAndAnsers();
         }
 
         private void ShowQuizes()
@@ -171,17 +181,17 @@ namespace QuizApp
 
             List<Answer> answersText = new List<Answer>()
             {
-                new Answer("Pierwsze pytanie"),
-                new Answer("Drugie pytanie"),
-                new Answer("Trzecie pytanie"),
-                new Answer("Czwarte pytanie"),
+                new Answer("Pierwsza odpowiedź"),
+                new Answer("Druga odpowiedź"),
+                new Answer("Trzecia odpowiedź"),
+                new Answer("Czwarta odpowiedź"),
             };
 
-            answersText[2].isCorrect = true;
+            answersText[2].IsCorrect = true;
 
             Random correctAnswer = new Random();
 
-            Question[] questions = new Question[10];
+            Question[] questions = new Question[4];
             for (int i = 0; i < questions.Length; i++)
             {
                 questions[i] = new Question(titles.Peek(), i);
@@ -200,6 +210,5 @@ namespace QuizApp
             }
             CreateNewQuiz("Mój przykładowy quiz", "Mój pierwszy quiz!", questions);
         }
-
     }
 }

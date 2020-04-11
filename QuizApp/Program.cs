@@ -17,10 +17,10 @@ namespace QuizApp
                 {
                     case "1":
                         myQuizGame.CreateNewQuiz();
-                        break;
+                    break;
                     case "2":
                         myQuizGame.SelectQuiz();
-                        break;
+                    break;
                     case "3":
                         try
                         {
@@ -30,7 +30,7 @@ namespace QuizApp
                         {
                             Console.WriteLine(ex.Message);
                         }
-                        break;
+                    break;
                 }
             }
         }

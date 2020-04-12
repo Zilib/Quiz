@@ -10,35 +10,25 @@ namespace QuizApp
     [Serializable]
     sealed class Question
     {
-        #region Public static
-
-        public static int numberOfAnswers { get; } = 4;
-
-        #endregion
-
         #region Private variables
 
         private int order;
+        private Answer[] answers = new Answer[Game.numberOfAnswers];
 
         #endregion
 
         #region Props
 
-        public bool IsFilled { get; set; } = false;
         public string Title { get; set; }
-        public List<Answer> answers { get; set; } = new List<Answer>();
-
+        public Answer[] Answers { get => answers; }
 
         #endregion
 
         #region Public lambda methods
 
-        /// <summary>
-        /// Return false if answers are not equal to numberOfAnswers
-        /// </summary>
-        public bool isAnswersFilled() => answers.Count == numberOfAnswers;
-        public bool existOneCorrectAnswer() => (from a in answers where a.IsCorrect == true select a).Count() == 1;
-        public int questionHasAnswer => (from a in answers where a.IsSelected == true select a).Count(); 
+        public bool AnswersAreEmpty() => (from a in answers where a.Title == String.Empty select a).Count() != 0;
+        public bool ExistOneCorrectAnswer() => (from a in answers where a.IsCorrect == true select a).Count() == 1;
+        public int questionHasAnswer() => (from a in answers where a.IsSelected == true select a).Count(); 
 
         #endregion
 
@@ -48,7 +38,7 @@ namespace QuizApp
         {
             Title = title;
             order = _order; // Keep it in mind, it should be ever in this same order.
-            CreateAnswers();
+            //CreateAnswers();
         }
 
         #endregion
@@ -60,19 +50,19 @@ namespace QuizApp
         /// </summary>
         private void CreateAnswers()
         {
-            for (int i = 0; i < numberOfAnswers; i++)
+            for (int i = 0; i < Game.numberOfAnswers; i++)
             {
                 Console.Clear();
                 Console.WriteLine($"Text of answer number {i + 1}");
                 string tempAnswer = Console.ReadLine();
 
                 Validators.ValidString(tempAnswer, 6, "Input text of answer again");
-                answers.Add(new Answer(tempAnswer));
+                answers[i] = new Answer(tempAnswer);
             }
 
             Console.Clear();
 
-            for (int i = 0; i < answers.Count; i++)
+            for (int i = 0; i < answers.Length; i++)
             {
                 Console.Write($"[{i}]. {answers[i].Title}\n");
             }
@@ -94,12 +84,12 @@ namespace QuizApp
             int intInput;
             while (!Int32.TryParse(input, out intInput)
                 || intInput < 0
-                || intInput > answers.Count - 1)
+                || intInput > answers.Length - 1)
             {
                 Console.Clear();
                 Console.WriteLine("Sorry... Incorrect input, select correct answer again");
 
-                for (int i = 0; i < answers.Count; i++)
+                for (int i = 0; i < answers.Length; i++)
                 {
                     Console.Write($"[{i}]. {answers[i].Title}\n");
                 }
@@ -122,15 +112,18 @@ namespace QuizApp
         {
             if (!Game.testsAvailable)
                 throw new System.ArgumentException("Sorry but this metod is unable to use");
-            if (_answers == null)
-                throw new System.ArgumentException("The answer's array cannot be null");
-            if ((from a in _answers where a.Title != string.Empty select a).Count() != numberOfAnswers)
-                throw new System.ArgumentException($"Number of answers are incorrect! Correct number of answers is: {numberOfAnswers}");
+            if (_answers == null 
+                || (from a in _answers where a == null select a).Count() != 0)
+                throw new System.ArgumentException("The answer's array cannot be null or empty");
+            if ((from a in _answers where a.Title != string.Empty select a).Count() != Game.numberOfAnswers)
+                throw new System.ArgumentException("Title of answers are incorrect!");
             if ((from a in _answers where a.IsCorrect == true select a).Count() != 1)
                 throw new System.ArgumentException("At least one answer must be correct!");
+            if (_answers.Length != Game.numberOfAnswers)
+                throw new ArgumentException($"Number of answers is incorrect, correct number of answers is: {Game.numberOfAnswers}");
 
-            foreach (Answer a in _answers)
-                answers.Add((Answer)a.Clone());
+            for (int i = 0; i < answers.Length; i++)
+                answers[i] = (Answer)_answers[i].Clone(); // It must be cloned, because i do not want to assing a refference
             
         }
 
@@ -162,11 +155,9 @@ namespace QuizApp
         public bool IsSelected { get; set; } = false;
         public string Title { get; set; }
 
-        public object Clone() => this.MemberwiseClone();
-
-
         #endregion
 
+        public object Clone() => this.MemberwiseClone();
     }
 
 

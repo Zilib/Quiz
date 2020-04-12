@@ -6,19 +6,30 @@ using System.Threading.Tasks;
 
 namespace QuizApp
 {
-    [Serializable]
+
     class Game
     {
-        #region Public static
+        #region Public static readonly
 
         public static bool testsAvailable { get; } = true;
+        public static int numberOfAnswers { get; } = 4;
+        public static int minQuestions { get; } = 2;
+        public static int maxQuestions { get; } = 10;
+        public static int minTitleLength { get; } = 4;
+        public static int minDescriptionLength { get; } = 15;
+
+        #endregion
+
+        #region Props
+
+        public List<Quiz> Quizes { get => quizes; }
 
         #endregion
 
         #region Private variables
 
-        // Number of all quizes
-        private List<Quiz> Quizes = new List<Quiz>();
+        // All quizes
+        private List<Quiz> quizes = new List<Quiz>();
 
         private Quiz selectedQuiz = null;
 
@@ -26,56 +37,19 @@ namespace QuizApp
 
         #endregion
 
-        #region Private methods
-
-        private void CreateNewQuiz(string title, string description, Question[] questions)
-        {
-            Quiz tempQuiz = new Quiz();
-
-            #region Validate arguments, and set quiz main data
-
-            // Validate questions array
-            if (questions == null)
-                throw new System.ArgumentException("Qusetions are null");
-            if (questions.Length == 0)
-                throw new System.ArgumentException("Questions are empty");
-
-            if (title == string.Empty)
-                throw new System.ArgumentException("Title cannot be empty!");
-            if (title.Length < Quiz.minTitleLength)
-                throw new System.ArgumentException("Title is too short!");
-            tempQuiz.Title = title;
-
-            if (description == string.Empty)
-                throw new System.ArgumentException("Description cannot be empty!");
-            if (description.Length < Quiz.minDescriptionLength)
-                throw new System.ArgumentException("Description is too short!");
-            tempQuiz.Description = description;
-
-            #endregion
-
-            try
-            {
-                tempQuiz.SetQuestions(questions.ToList());
-            }
-            catch (System.ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return;
-            }
-
-            Quizes.Add(tempQuiz);
-        }
-
-        #endregion
-
         #region Public lambda methods 
 
-        public int GetNumberOfQuizes => Quizes.Count;
+        public int GetNumberOfQuizes => quizes.Count;
 
         #endregion
 
         #region Public methods
+
+        public void SetQuizes(List<Quiz> _quizes)
+        {
+            if (_quizes.Count == 0)
+                throw new System.Exception("Quizes are empty!");
+        }
 
         public void CreateNewQuiz()
         {
@@ -120,14 +94,14 @@ namespace QuizApp
 
             #endregion
 
-            Quizes.Add(tempQuiz);
+            quizes.Add(tempQuiz);
         }
 
         public void SelectQuiz()
         {
             Console.Clear();
 
-            if (Quizes.Count == 0)
+            if (quizes.Count == 0)
             {
                 Console.WriteLine("No created quiz!");
                 return;
@@ -141,7 +115,7 @@ namespace QuizApp
             int intInput;
             while (!Int32.TryParse(input, out intInput)
                 || intInput < 0
-                || intInput > Quizes.Count)
+                || intInput > quizes.Count)
             {
                 Console.Clear();
                 Console.WriteLine("Incorrect input! Please choose quiz again!");
@@ -150,7 +124,7 @@ namespace QuizApp
             }
 
             // Assign by reffer
-            selectedQuiz = Quizes[intInput];
+            selectedQuiz = quizes[intInput];
 
             selectedQuiz.AnswerQuestions(ref playerScore);
 
@@ -159,9 +133,9 @@ namespace QuizApp
 
         private void ShowQuizes()
         {
-            for (int i = 0; i < Quizes.Count; i++)
+            for (int i = 0; i < quizes.Count; i++)
             {
-                Console.WriteLine($"[{i}]. {Quizes[i].Title}");
+                Console.WriteLine($"[{i}]. {quizes[i].Title}");
             }
         }
 
@@ -225,5 +199,105 @@ namespace QuizApp
 
         #endregion
 
+        #region Private methods
+
+        private void CreateNewQuiz(string title, string description, Question[] questions)
+        {
+            Quiz tempQuiz = new Quiz();
+
+            #region Validate arguments, and set quiz main data
+
+            // Validate questions array
+            if (questions == null)
+                throw new System.ArgumentException("Qusetions are null");
+            if (questions.Length == 0)
+                throw new System.ArgumentException("Questions are empty");
+
+            if (title == string.Empty)
+                throw new System.ArgumentException("Title cannot be empty!");
+            if (title.Length < Game.minTitleLength)
+                throw new System.ArgumentException("Title is too short!");
+
+            if (description == string.Empty)
+                throw new System.ArgumentException("Description cannot be empty!");
+            if (description.Length < Game.minDescriptionLength)
+                throw new System.ArgumentException("Description is too short!");
+
+            #endregion
+
+            try
+            {
+                CheckQuiz(tempQuiz);
+                tempQuiz.Title = title;
+                tempQuiz.Description = description;
+                tempQuiz.SetQuestions(questions.ToList());
+            }
+            catch (System.ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+            }
+
+            quizes.Add(tempQuiz);
+        }
+
+        private void CheckQuiz(List<Quiz> _quizes)
+        {
+            if (_quizes == null 
+                || ((from q in _quizes where q.Title == String.Empty 
+                     || q.Description == String.Empty select q).Count() > 0))
+                throw new ArgumentException("Title or description of question cannot be empty!");
+
+            if ((from q in _quizes where q.Questions == null select q).Count() != 0)
+                throw new ArgumentException("Question cannot be null");
+
+            if ((from q in _quizes where q.AreAllAnswersEmpty() == true select q).Count() == 0)
+                throw new ArgumentException("Answers cannot be empty");
+        }
+
+        private void CheckQuiz(Quiz _quiz)
+        {
+            #region Check main data of Quiz
+
+            if (_quiz == null)
+                throw new System.ArgumentException("Quiz cannot be null");
+
+            if (_quiz.Questions == null )
+                throw new System.ArgumentException("Questions cannot be null");
+
+            if (_quiz.AreAllAnswersEmpty())
+                throw new System.ArgumentException("Answers cannot be empty");
+
+            #endregion
+
+        }
+        /*
+        private void CheckQuestions(List<Question> _questions)
+        {
+            if (_questions.Count > maxQuestions)
+                throw new System.ArgumentException("A lot of questions!");
+            if (_questions.Count < minQuestions)
+                throw new System.ArgumentException("You have to add more questions!");
+
+            foreach (Question q in _questions)
+            {
+
+                if (!q.existOneCorrectAnswer())
+                    throw new System.ArgumentException($"\"{q.Title}\" does not have one correct answer!");
+            }
+        }
+        */
+        #endregion
+
+        #region Constructs
+
+        public Game() { }
+
+        public Game(List<Quiz> quizesToLoad)
+        {
+            if (quizesToLoad.Count > 0)
+                quizes = quizesToLoad;
+        }
+        #endregion
     }
 }

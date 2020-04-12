@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
@@ -12,20 +13,33 @@ namespace QuizApp
         {
             Game myQuizGame = new Game();
             LoadGame(ref myQuizGame);
+
+
             while (true)
             {
-                Greetings(out string input);
+                Greetings(out string input, new List<string> { "1","2","q","3" });
 
                 switch (input)
                 {
-                    case "1":
-                        myQuizGame.CreateNewQuiz();
+                    case "1": 
+                            myQuizGame.CreateNewQuiz();
                     break;
                     case "2":
                         myQuizGame.SelectQuiz();
                     break;
+                    case "3":
+                        try
+                        {
+                            myQuizGame.CreateQuizTest();
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            Console.ReadLine();
+                        }
+                        break;
                     case "q":
-                        SaveGame(myQuizGame);
+                        SaveGame(myQuizGame.Quizes);
                         return;
 
                 }
@@ -36,7 +50,7 @@ namespace QuizApp
         /// <summary>
         /// Tell greetings to user! Let him make choose what he want to do
         /// </summary>
-        static void Greetings(out string input)
+        static void Greetings(out string input, List<String> validInputs)
         {
             Console.WriteLine("***** Aplikacja do Quizów ******\n");
             Console.WriteLine("Co chciałbyś zrobić?");
@@ -44,7 +58,7 @@ namespace QuizApp
 
             input = Console.ReadLine();
             // if input is not 1 or 2, ask for another input
-            while (input != "1" && input != "2" && input != "q")
+            while (!validInputs.Contains(input))
             {
                 Console.Clear();
                 Console.WriteLine("Wrong input, please make your choose again!");
@@ -53,27 +67,29 @@ namespace QuizApp
             }
         }
 
-        private static void SaveGame(Game quizToSave)
+        private static void SaveGame(List<Quiz> quizesToSave)
         {
-            BinaryFormatter binFormat = new BinaryFormatter();
-
-            using (Stream fStream = new FileStream("quizes.dat", FileMode.Create, FileAccess.Write, FileShare.None))
+            using (Stream fStream = new FileStream("quizes.xml", FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                binFormat.Serialize(fStream, quizToSave);
+                XmlSerializer xmlFormat = new XmlSerializer(typeof(List<Question>));
+                xmlFormat.Serialize(fStream, quizesToSave);
             }
         }
 
         private static void LoadGame(ref Game gameToLoad)
         {
             // If file doesn't exist don't load it
-            if (!File.Exists("quizes.dat"))
-                return;
-
-            BinaryFormatter binFormat = new BinaryFormatter();
-
-            using (Stream fStream = File.OpenRead("quizes.dat"))
+            if (!File.Exists("quizes.xml"))
             {
-                gameToLoad = (Game)binFormat.Deserialize(fStream);
+                // Create new game, because i cannot load anything
+                gameToLoad = new Game();
+                return;
+            }
+
+            XmlSerializer xmlFormat = new XmlSerializer(typeof(List<Question>));
+
+            using (Stream fStream = File.OpenRead("quizes.xml"))
+            {
             }
         }
     }

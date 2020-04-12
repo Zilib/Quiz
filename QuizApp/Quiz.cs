@@ -5,9 +5,10 @@ using System.Linq;
 
 namespace QuizApp
 {
-
+    [Serializable]
     sealed class Quiz
     {
+
         #region Static readonly
 
         public static int minQuestions { get; } = 2;
@@ -76,7 +77,7 @@ namespace QuizApp
             foreach (Question q in questions)
             {
                 Console.Clear();
-                Console.WriteLine($"{q.Title}\n");
+                Console.WriteLine($"\n\n\t\t**********\t{q.Title.ToUpper()}\t**********\n");
                 Console.WriteLine("Make your choose!");
 
 
@@ -131,7 +132,9 @@ namespace QuizApp
 
             foreach (Question q in questions)
             {
-                Console.WriteLine(q.Title);
+                Console.ForegroundColor = prevFGColor;
+                Console.BackgroundColor = prevBGColor;
+                Console.WriteLine($"\n\n\t\t**********\t{q.Title.ToUpper()}\t**********\n");
                 for (int i = 0; i < q.answers.Count; i++)
                 {
                     // If answer is selected and incorrect
@@ -140,21 +143,23 @@ namespace QuizApp
                     {
                         Console.BackgroundColor = wrongAnswerBGColor;
                         Console.ForegroundColor = wrongAnswerFGColor;
-                        Console.Write($"[{i}]. {q.answers[i].Title}\n");
+                        Console.Write($"\t[{i}]. {q.answers[i].Title}\n");
                         continue;
                     }
+                    // Correct answer
                     if (q.answers[i].IsSelected 
                         && q.answers[i].IsSelected == q.answers[i].IsCorrect)
                     {
                         Console.ForegroundColor = correctAnswerFGColor;
                         Console.BackgroundColor = correctAnswerBGColor;
-                        Console.Write($"[{i}]. {q.answers[i].Title}\n");
+                        Console.Write($"\t[{i}]. {q.answers[i].Title}\n");
                         continue;
                     }
                     Console.ForegroundColor = prevFGColor;
                     Console.BackgroundColor = prevBGColor;
-                    Console.Write($"[{i}]. {q.answers[i].Title}\n");
+                    Console.Write($"\t[{i}]. {q.answers[i].Title}\n");
                 }
+                // Not selected answer, and not correct
                 Console.BackgroundColor = prevFGColor;
                 Console.BackgroundColor = prevBGColor;
                 Console.WriteLine();

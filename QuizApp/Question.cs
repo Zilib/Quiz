@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuizApp
 {
+    [Serializable]
     sealed class Question
     {
         #region Public static
@@ -14,8 +15,6 @@ namespace QuizApp
         public static int numberOfAnswers { get; } = 4;
 
         #endregion
-
-        public List<Answer> answers { get; set; } = new List<Answer>();
 
         #region Private variables
 
@@ -27,6 +26,7 @@ namespace QuizApp
 
         public bool IsFilled { get; set; } = false;
         public string Title { get; set; }
+        public List<Answer> answers { get; set; } = new List<Answer>();
 
 
         #endregion
@@ -48,10 +48,8 @@ namespace QuizApp
         {
             Title = title;
             order = _order; // Keep it in mind, it should be ever in this same order.
-            //CreateAnswers();
+            CreateAnswers();
         }
-
-        public Question() { }
 
         #endregion
 
@@ -145,6 +143,7 @@ namespace QuizApp
         #endregion
     }
 
+    [Serializable]
     sealed class Answer : ICloneable
     {
         #region Constructor
@@ -164,9 +163,10 @@ namespace QuizApp
         public string Title { get; set; }
 
         public object Clone() => this.MemberwiseClone();
-   
+
 
         #endregion
+
     }
 
 

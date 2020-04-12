@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace QuizApp
 {
+    [Serializable]
     class Game
     {
+        #region Public static
+
         public static bool testsAvailable { get; } = true;
+
+        #endregion
 
         #region Private variables
 
@@ -160,12 +165,13 @@ namespace QuizApp
             }
         }
 
-        #endregion
-
         public void CreateQuizTest()
         {
             if (!Game.testsAvailable)
                 throw new System.ArgumentException("Sorry but this metod is unable to use");
+
+            #region Queue titles
+
             Queue<string> titles = new Queue<string>();
             titles.Enqueue("Pierwsze pytanie");
             titles.Enqueue("Drugie pytanie");
@@ -179,6 +185,10 @@ namespace QuizApp
             titles.Enqueue("Jedynaste pytanie");
             titles.Enqueue("Dwunaste pytanie");
 
+            #endregion
+
+            #region Answers
+
             Answer[] answersText = new Answer[4]
             {
                 new Answer("Pierwsza odpowiedź"),
@@ -188,6 +198,8 @@ namespace QuizApp
             };
 
             answersText[2].IsCorrect = true;
+
+            #endregion
 
             Random correctAnswer = new Random();
         
@@ -210,5 +222,8 @@ namespace QuizApp
             }
             CreateNewQuiz("Mój przykładowy quiz", "Mój pierwszy quiz!", questions);
         }
+
+        #endregion
+
     }
 }

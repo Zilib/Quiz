@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization.Formatters.Soap;
-using System.Xml.Serialization;
 
 namespace QuizApp
 {
@@ -61,7 +57,7 @@ namespace QuizApp
             {
                 Console.Clear();
                 Console.WriteLine("Zły znak, wprowadź znak ponownie!");
-                Console.Write(""Wybierz[1] aby stworzyć nowy quiz, [2] aby wziąć udział w innym quizie, albo \"q\" aby wyjść i zapisać stworzone quizy:");
+                Console.Write("Wybierz[1] aby stworzyć nowy quiz, [2] aby wziąć udział w innym quizie, albo \"q\" aby wyjść i zapisać stworzone quizy:");
                 input = Console.ReadLine();
             }
         }

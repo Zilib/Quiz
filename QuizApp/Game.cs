@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuizApp
 {
@@ -13,7 +11,6 @@ namespace QuizApp
     {
         #region Public static readonly
 
-        public static bool testsAvailable { get; } = true;
         public static int numberOfAnswers { get; } = 4;
         public static int minQuestions { get; } = 2;
         public static int maxQuestions { get; } = 10;
@@ -25,19 +22,18 @@ namespace QuizApp
         #region Private readonly (Config)
 
         private readonly string saveFileName;
+        private static bool testsAvailable { get; } = true;
 
         #endregion
 
         #region Props
 
-        public List<Quiz> Quizes { get => quizes; }
+        // All quizes
+        public List<Quiz> Quizes { get; private set; } = new List<Quiz>();
 
         #endregion
 
         #region Private variables
-
-        // All quizes
-        private List<Quiz> quizes = new List<Quiz>();
 
         private Quiz selectedQuiz = null;
 
@@ -45,19 +41,7 @@ namespace QuizApp
 
         #endregion
 
-        #region Public lambda methods 
-
-        public int GetNumberOfQuizes => quizes.Count;
-
-        #endregion
-
         #region Public methods
-
-        public void SetQuizes(List<Quiz> _quizes)
-        {
-            if (_quizes.Count == 0)
-                throw new System.Exception("Quizes are empty!");
-        }
 
         public void CreateNewQuiz()
         {
@@ -66,21 +50,21 @@ namespace QuizApp
 
             #region Set quiz main data
 
-            Console.WriteLine("Please input quiz title");
+            Console.WriteLine("Wprowadź tytuł quizu!");
             tempQuiz.Title = Console.ReadLine();
-            Validators.ValidString(tempQuiz.Title, 4, "Please input quiz title");
+            Validators.ValidString(tempQuiz.Title, 4, "Wprowadź tytuł quizu!");
 
             Console.Clear();
-            Console.WriteLine("Please input quiz description");
+            Console.WriteLine("Wprowadź opis quizu");
             tempQuiz.Description = Console.ReadLine();
-            Validators.ValidString(tempQuiz.Description, 20, "Please input quiz description");
+            Validators.ValidString(tempQuiz.Description, 20, "Wprowadź opis quizu");
 
             #endregion
 
             #region Create Questions
 
             Console.Clear();
-            Console.WriteLine("How many questions do you want? ( More than 2 and less than 10)");
+            Console.WriteLine($"Ile pytań quiz ma zawierać? ( Więcej niż {minQuestions} i mniej niż ${maxQuestions})");
 
             string input = Console.ReadLine();
             // Untill input is not int or is larger than 10 or smaller than 2
@@ -90,8 +74,8 @@ namespace QuizApp
                 || numberOfQuestions >= 10))
             {
                 Console.Clear();
-                Console.WriteLine("Wrong input!");
-                Console.WriteLine("How many questions do you want? ( More than 2 and less than 10)");
+                Console.WriteLine("Wprowadzono błędne dane!!");
+                Console.WriteLine($"Ile pytań quiz ma zawierać? ( Więcej niż {minQuestions} i mniej niż ${maxQuestions})");
                 input = Console.ReadLine();
             }
 
@@ -102,14 +86,14 @@ namespace QuizApp
 
             #endregion
 
-            quizes.Add(tempQuiz);
+            Quizes.Add(tempQuiz);
         }
 
         public void SelectQuiz()
         {
             Console.Clear();
 
-            if (quizes.Count == 0)
+            if (Quizes.Count == 0)
             {
                 Console.WriteLine("No created quiz!");
                 return;
@@ -123,7 +107,7 @@ namespace QuizApp
             int intInput;
             while (!Int32.TryParse(input, out intInput)
                 || intInput < 0
-                || intInput > quizes.Count)
+                || intInput > Quizes.Count)
             {
                 Console.Clear();
                 Console.WriteLine("Incorrect input! Please choose quiz again!");
@@ -132,7 +116,7 @@ namespace QuizApp
             }
 
             // Assign by reffer
-            selectedQuiz = quizes[intInput];
+            selectedQuiz = Quizes[intInput];
 
             selectedQuiz.AnswerQuestions(ref playerScore);
 
@@ -141,16 +125,16 @@ namespace QuizApp
 
         private void ShowQuizes()
         {
-            for (int i = 0; i < quizes.Count; i++)
+            for (int i = 0; i < Quizes.Count; i++)
             {
-                Console.WriteLine($"[{i}]. {quizes[i].Title}");
+                Console.WriteLine($"[{i}]. {Quizes[i].Title}");
             }
         }
 
         public void CreateQuizTest()
         {
-            if (!Game.testsAvailable)
-                throw new System.ArgumentException("Sorry but this metod is unable to use");
+            if (!testsAvailable)
+                throw new System.ArgumentException("Sorry but this metod is unable to use"); // Eng because this error should be only able for developers
 
             #region Queue titles
 
@@ -174,35 +158,28 @@ namespace QuizApp
             Answer[] answersText = new Answer[4]
             {
                 new Answer("Pierwsza odpowiedź"),
-                new Answer("Druga odpowiedź"),
+                new Answer("Druga odpowiedź", true),
                 new Answer("Trzecia odpowiedź"),
                 new Answer("Czwarta odpowiedź"),
             };
-
-            answersText[2].IsCorrect = true;
+            List<Question> tempQuestions = new List<Question>();
+            try
+            {
+                tempQuestions.Add(new Question("Pierwsze pytanie", 0, answersText));
+                answersText[1].IsCorrect = false;
+                answersText[2].IsCorrect = true;
+                tempQuestions.Add(new Question("Pierwsze pytanie", 0, answersText));
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+            }
 
             #endregion
 
-            Random correctAnswer = new Random();
         
-            Question[] questions = new Question[4];
-            for (int i = 0; i < questions.Length; i++)
-            {
-                questions[i] = new Question(titles.Peek(), i);
-                titles.Dequeue();
-                // Make random answer correct answer
-                try
-                {
-                    questions[i].SetAnswers(answersText);
-                }
-               catch (System.ArgumentException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return;
-                }
-                
-            }
-            CreateNewQuiz("Mój przykładowy quiz", "Mój pierwszy quiz!", questions);
+            CreateNewQuiz("Mój przykładowy quiz", "Mój pierwszy quiz!", tempQuestions.ToArray());
         }
 
         /// <summary>
@@ -235,18 +212,19 @@ namespace QuizApp
                     try
                     {
                         CheckQuiz(tempQuzies);
-                        quizes = tempQuzies;
+                        Quizes = tempQuzies;
                     }
-                    catch (ArgumentException ex)
+                    catch (ArgumentException)
                     {
-                        Console.WriteLine("Quizes.dat file is damaged!");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Plik \"Quizes.dat\" jest uszkodzony!");
                         Console.ReadLine();
                     }
                 }
-                catch (System.Runtime.Serialization.SerializationException ex)
+                catch (System.Runtime.Serialization.SerializationException)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Quizes file is damaged!");
+                    Console.WriteLine("Plik \"Quizes.dat\" jest uszkodzony!");
                     Console.ResetColor();
                 }
             }
@@ -256,6 +234,12 @@ namespace QuizApp
 
         #region Private methods
 
+        /// <summary>
+        ///  Only available for test method
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="questions"></param>
         private void CreateNewQuiz(string title, string description, Question[] questions)
         {
             Quiz tempQuiz = new Quiz();
@@ -264,25 +248,26 @@ namespace QuizApp
 
             // Validate questions array
             if (questions == null)
-                throw new System.ArgumentException("Qusetions are null");
+                throw new System.ArgumentException("Tablica z pytaniami ma wartość null!");
             if (questions.Length == 0)
-                throw new System.ArgumentException("Questions are empty");
+                throw new System.ArgumentException("Tablica z pytaniami jest pusta!");
 
             if (title == string.Empty)
-                throw new System.ArgumentException("Title cannot be empty!");
+                throw new System.ArgumentException("Quiz musi mieć tytuł!");
             if (title.Length < Game.minTitleLength)
-                throw new System.ArgumentException("Title is too short!");
+                throw new System.ArgumentException("Tytuł quziu jest za krótki!");
 
             if (description == string.Empty)
-                throw new System.ArgumentException("Description cannot be empty!");
+                throw new System.ArgumentException("Quiz musi mieć opis!");
             if (description.Length < Game.minDescriptionLength)
-                throw new System.ArgumentException("Description is too short!");
+                throw new System.ArgumentException("Opis quizu jest za krótki!");
 
             #endregion
 
             try
             {
                 CheckQuiz(tempQuiz);
+                // Set quiz data
                 tempQuiz.Title = title;
                 tempQuiz.Description = description;
                 tempQuiz.SetQuestions(questions.ToList());
@@ -292,10 +277,14 @@ namespace QuizApp
                 Console.WriteLine(ex.Message);
                 Console.ReadLine();
             }
-
-            quizes.Add(tempQuiz);
+            // Load it into application
+            Quizes.Add(tempQuiz);
         }
 
+        /// <summary>
+        /// Check does every quizes has filled data
+        /// </summary>
+        /// <param name="_quizes"></param>
         private void CheckQuiz(List<Quiz> _quizes)
         {
             if (_quizes == null 
@@ -312,6 +301,10 @@ namespace QuizApp
                 throw new ArgumentException("Answers cannot be empty");
         }
 
+        /// <summary>
+        /// Check does every data in quiz is filled
+        /// </summary>
+        /// <param name="_quiz"></param>
         private void CheckQuiz(Quiz _quiz)
         {
             #region Check main data of Quiz
@@ -337,12 +330,6 @@ namespace QuizApp
         {
             saveFileName = _saveFileName;
             LoadGame();
-        }
-
-        public Game(List<Quiz> quizesToLoad, string _saveFileName = "Quizes.dat") : this(_saveFileName)
-        {
-            if (quizesToLoad.Count > 0)
-                quizes = quizesToLoad;
         }
 
         #endregion

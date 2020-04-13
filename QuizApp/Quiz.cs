@@ -9,15 +9,10 @@ namespace QuizApp
     sealed class Quiz
     {
 
-        #region Private params
-
-        private List<Question> questions = new List<Question>();
-
-        #endregion
 
         #region Public lambda methods
 
-        public bool ExistEmptyAnswer() => (from q in questions where q.ExistEmptyAnswer() select q).Count() != 0;
+        public bool ExistEmptyAnswer() => (from q in Questions where q.ExistEmptyAnswer() select q).Count() != 0;
 
         #endregion
 
@@ -25,7 +20,7 @@ namespace QuizApp
 
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<Question> Questions { get => questions; }
+        public List<Question> Questions { get; private set; } = new List<Question>();
 
         #endregion
 
@@ -38,13 +33,13 @@ namespace QuizApp
         private void CheckQuestions(List<Question> _questions)
         {
             if (_questions == null)
-                throw new System.ArgumentException("Questions cannot be null!");
+                throw new System.ArgumentException("Lista pytań nie może mieć wartości null!");
 
             if (_questions.Count > Game.maxQuestions)
-                throw new System.ArgumentException("A lot of questions!");
+                throw new System.ArgumentException("Za dużo pytań!");
 
             if (_questions.Count < Game.minQuestions)
-                throw new System.ArgumentException("You have to add more questions!");
+                throw new System.ArgumentException("Musisz dodać więcej pytań!");
 
             foreach (Question q in _questions)
                 CheckAnswers(q.Answers.ToList());
@@ -57,18 +52,19 @@ namespace QuizApp
         private void CheckAnswers(List<Answer> _answers)
         {
             if (_answers == null)
-                throw new System.ArgumentException("Answers cannot be null!");
+                throw new System.ArgumentException("Lista odpowiedzi nie może miec wartości null!");
 
             if (_answers.Count != Game.numberOfAnswers)
-                throw new System.ArgumentException("Invalid number of answers!");
+                throw new System.ArgumentException("Nieprawidłowa wielkość tablicy z odpowiedziami!");
 
             if ((from a in _answers where a.IsCorrect == true select a).Count() != 1)
-                throw new System.ArgumentException("Answer should has one available answer to choose");
+                throw new System.ArgumentException("Lista odpowiedzi powinna zawierać jedną prawidłową odpowiedź!");
         }
 
         #endregion
 
         #region Public Methods
+
 
         /// <summary>
         /// Fill basic question data, and make 4 available answers for it
@@ -76,12 +72,12 @@ namespace QuizApp
         public void CreateQuestion()
         {
             Console.Clear();
-            Console.WriteLine("Give your question text:");
+            Console.WriteLine("Treść Twojego pytania:");
 
             string tempText = Console.ReadLine();
-            Validators.ValidString(tempText, 10, "Give your text:");
+            Validators.ValidString(tempText, 10, "Treść Twojego pytania:");
 
-            questions.Add(new Question(tempText, questions.Count));
+            Questions.Add(new Question(tempText, Questions.Count));
         }
 
         /// <summary>
@@ -91,16 +87,16 @@ namespace QuizApp
         public void SetQuestions(List<Question> _questions)
         {
             CheckQuestions(_questions);
-            questions = new List<Question>(_questions);
+            Questions = new List<Question>(_questions);
         }
         
         public void AnswerQuestions(ref int quizScore)
         {
-            foreach (Question q in questions)
+            foreach (Question q in Questions)
             {
                 Console.Clear();
                 Console.WriteLine($"\n\n\t\t**********\t{q.Title.ToUpper()}\t**********\n");
-                Console.WriteLine("Make your choose!");
+                Console.WriteLine("Wybierz odpowiedź!");
 
 
                 for (int i = 0; i < q.Answers.Length; i++)
@@ -115,7 +111,7 @@ namespace QuizApp
                     || intInput < 0)
                 {
                     Console.Clear();
-                    Console.WriteLine("Sorry invalid input, choose you answer again!");
+                    Console.WriteLine("Błednie wporwadzone dane, wybierz odpowiedź ponownie!");
                     for (int i = 0; i < q.Answers.Length; i++)
                     {
                         Console.Write($"[{i}]. {q.Answers[i].Title}\n");
@@ -132,11 +128,11 @@ namespace QuizApp
         {
             Console.Clear();
             
-            foreach (Question q in questions)
+            foreach (Question q in Questions)
             {
                 if (q.questionHasAnswer() != 1)
                 {
-                    Console.WriteLine("You have to make answer for every question");
+                    Console.WriteLine("Musisz odpowiedzieć na wszystkie pytania!");
                     return;
                 }
 
@@ -152,7 +148,7 @@ namespace QuizApp
 
             // If any answer has no answer, or any answer has more than one answer
 
-            foreach (Question q in questions)
+            foreach (Question q in Questions)
             {
                 Console.ForegroundColor = prevFGColor;
                 Console.BackgroundColor = prevBGColor;

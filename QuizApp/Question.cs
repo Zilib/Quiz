@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 namespace QuizApp
 {
     [Serializable]
-    sealed class Question
+    public sealed class Question
     {
         #region Private variables
 
         private int order;
+
         private Answer[] answers = new Answer[Game.numberOfAnswers];
 
         #endregion
@@ -26,13 +27,15 @@ namespace QuizApp
 
         #region Public lambda methods
 
-        public bool AnswersAreEmpty() => (from a in answers where a.Title == String.Empty select a).Count() != 0;
+        public bool ExistEmptyAnswer() => (from a in answers where a.Title == String.Empty select a).Count() != 0;
         public bool ExistOneCorrectAnswer() => (from a in answers where a.IsCorrect == true select a).Count() == 1;
-        public int questionHasAnswer() => (from a in answers where a.IsSelected == true select a).Count(); 
+        public int questionHasAnswer() => (from a in answers where a.IsSelected == true select a).Count();
 
         #endregion
 
         #region Constructors
+
+        public Question() { }
 
         public Question(string title, int _order)
         {
@@ -137,7 +140,7 @@ namespace QuizApp
     }
 
     [Serializable]
-    sealed class Answer : ICloneable
+    public sealed class Answer : ICloneable
     {
         #region Constructor
 
@@ -149,10 +152,13 @@ namespace QuizApp
 
         #endregion
 
+        [NonSerialized]
+        private bool isSelected = false;
+
         #region Public props
 
         public bool IsCorrect { get; set; } = false;
-        public bool IsSelected { get; set; } = false;
+        public bool IsSelected { get => isSelected; set => isSelected = value; }
         public string Title { get; set; }
 
         #endregion

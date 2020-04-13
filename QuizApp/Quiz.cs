@@ -17,7 +17,7 @@ namespace QuizApp
 
         #region Public lambda methods
 
-        public bool AreAllAnswersEmpty() => (from q in questions where q.AnswersAreEmpty() select q).Count() != 0;
+        public bool ExistEmptyAnswer() => (from q in questions where q.ExistEmptyAnswer() select q).Count() != 0;
 
         #endregion
 
@@ -186,6 +186,7 @@ namespace QuizApp
                 Console.BackgroundColor = prevBGColor;
                 Console.WriteLine();
             }
+            Console.ResetColor();
         Console.ReadLine();
         }
 

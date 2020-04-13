@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +19,12 @@ namespace QuizApp
         public static int maxQuestions { get; } = 10;
         public static int minTitleLength { get; } = 4;
         public static int minDescriptionLength { get; } = 15;
+
+        #endregion
+
+        #region Private readonly (Config)
+
+        private readonly string saveFileName;
 
         #endregion
 
@@ -197,6 +205,53 @@ namespace QuizApp
             CreateNewQuiz("Mój przykładowy quiz", "Mój pierwszy quiz!", questions);
         }
 
+        /// <summary>
+        /// Save game into Quizes.dat file
+        /// </summary>
+        public void SaveGame()
+        {
+            BinaryFormatter binFormat = new BinaryFormatter();
+
+            using (Stream fStream = new FileStream(saveFileName, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                binFormat.Serialize(fStream, Quizes);
+            }
+        }
+
+        /// <summary>
+        /// Load existing Quizes.dat file
+        /// </summary>
+        public void LoadGame()
+        {
+            if (!File.Exists(saveFileName)) // Go back if questions doesn't exist
+                return;
+
+            BinaryFormatter binFormat = new BinaryFormatter();
+            using (Stream fStream = File.OpenRead(saveFileName))
+            {
+                try
+                {
+                    List<Quiz> tempQuzies = (List<Quiz>)binFormat.Deserialize(fStream);
+                    try
+                    {
+                        CheckQuiz(tempQuzies);
+                        quizes = tempQuzies;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        Console.WriteLine("Quizes.dat file is damaged!");
+                        Console.ReadLine();
+                    }
+                }
+                catch (System.Runtime.Serialization.SerializationException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Quizes file is damaged!");
+                    Console.ResetColor();
+                }
+            }
+        }
+
         #endregion
 
         #region Private methods
@@ -248,10 +303,12 @@ namespace QuizApp
                      || q.Description == String.Empty select q).Count() > 0))
                 throw new ArgumentException("Title or description of question cannot be empty!");
 
+
             if ((from q in _quizes where q.Questions == null select q).Count() != 0)
                 throw new ArgumentException("Question cannot be null");
 
-            if ((from q in _quizes where q.AreAllAnswersEmpty() == true select q).Count() == 0)
+            // If every answers 
+            if ((from q in _quizes where q.ExistEmptyAnswer() == true select q).Count() != 0)
                 throw new ArgumentException("Answers cannot be empty");
         }
 
@@ -265,39 +322,29 @@ namespace QuizApp
             if (_quiz.Questions == null )
                 throw new System.ArgumentException("Questions cannot be null");
 
-            if (_quiz.AreAllAnswersEmpty())
+            if (_quiz.ExistEmptyAnswer())
                 throw new System.ArgumentException("Answers cannot be empty");
 
             #endregion
 
         }
-        /*
-        private void CheckQuestions(List<Question> _questions)
-        {
-            if (_questions.Count > maxQuestions)
-                throw new System.ArgumentException("A lot of questions!");
-            if (_questions.Count < minQuestions)
-                throw new System.ArgumentException("You have to add more questions!");
 
-            foreach (Question q in _questions)
-            {
-
-                if (!q.existOneCorrectAnswer())
-                    throw new System.ArgumentException($"\"{q.Title}\" does not have one correct answer!");
-            }
-        }
-        */
         #endregion
 
         #region Constructs
 
-        public Game() { }
+        public Game(string _saveFileName = "Quizes.dat") 
+        {
+            saveFileName = _saveFileName;
+            LoadGame();
+        }
 
-        public Game(List<Quiz> quizesToLoad)
+        public Game(List<Quiz> quizesToLoad, string _saveFileName = "Quizes.dat") : this(_saveFileName)
         {
             if (quizesToLoad.Count > 0)
                 quizes = quizesToLoad;
         }
+
         #endregion
     }
 }

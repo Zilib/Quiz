@@ -16,10 +16,10 @@ namespace QuizApp
         /// <param name="msg">Request for new input</param>
         public static void ValidString(string input, int minLength, string msg)
         {
-            while (input.Length <= 3)
+            while (input.Length < minLength)
             {
                 Console.Clear();
-                Console.WriteLine($"Input is too short, minimum length is {minLength}");
+                Console.WriteLine($"Wprowadzone dane znakowe są za krótkie, minimalna długość to: {minLength}");
                 Console.WriteLine(msg);
                 input = Console.ReadLine();
             }

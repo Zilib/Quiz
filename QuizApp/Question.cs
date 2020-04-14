@@ -89,7 +89,7 @@ namespace QuizApp
                 Console.WriteLine($"Treść odpowiedzi numer: [{i + 1}]");
                 string tempAnswer = Console.ReadLine();
 
-                Validators.ValidString(tempAnswer, 6, "Wprowadź treść odpowiedzi ponownie");
+                Validators.ValidString(tempAnswer, 1, "Wprowadź treść odpowiedzi ponownie");
                 Answers[i] = new Answer(tempAnswer);
             }
 

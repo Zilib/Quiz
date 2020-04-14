@@ -19,7 +19,7 @@ namespace QuizApp
                         myQuizGame.CreateNewQuiz();
                     break;
                     case "2":
-                        myQuizGame.SelectQuiz();
+                        myQuizGame.AnswerForQuestions();
                     break;
                     case "3":
                         try

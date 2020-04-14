@@ -35,13 +35,27 @@ namespace QuizApp
 
         #region Private variables
 
+        // Reffer to selected quiz
         private Quiz selectedQuiz = null;
 
+        // Not used right now
         private int playerScore = 0;
 
         #endregion
 
         #region Public methods
+
+        public void AnswerForQuestions()
+        {
+            SelectQuiz();
+
+            if (selectedQuiz == null)
+                throw new System.ArgumentException("Nie wybrałeś quizu!");
+
+            selectedQuiz.AnswerQuestions(ref playerScore);
+
+            selectedQuiz.ShowAllQuestionsAndAnsers();
+        }
 
         public void CreateNewQuiz()
         {
@@ -87,40 +101,6 @@ namespace QuizApp
             #endregion
 
             Quizes.Add(tempQuiz);
-        }
-
-        public void SelectQuiz()
-        {
-            Console.Clear();
-
-            if (Quizes.Count == 0)
-            {
-                Console.WriteLine("No created quiz!");
-                return;
-            }
-
-            Console.Clear();
-            Console.WriteLine("Wybierz quiz! ");
-            ShowQuizes();
-
-            string input = Console.ReadLine();
-            int intInput;
-            while (!Int32.TryParse(input, out intInput)
-                || --intInput < 0 // Decrement here, right now [1] is first index
-                || intInput > Quizes.Count)
-            {
-                Console.Clear();
-                Console.WriteLine("Incorrect input! Please choose quiz again!");
-                ShowQuizes();
-                input = Console.ReadLine();
-            }
-
-            // Assign by reffer
-            selectedQuiz = Quizes[intInput];
-
-            selectedQuiz.AnswerQuestions(ref playerScore);
-
-            selectedQuiz.ShowAllQuestionsAndAnsers();
         }
 
         private void ShowQuizes()
@@ -233,6 +213,39 @@ namespace QuizApp
         #endregion
 
         #region Private methods
+
+        /// <summary>
+        /// Select quiz and save it to the selectedQuiz variable by reffer
+        /// </summary>
+        private void SelectQuiz()
+        {
+            Console.Clear();
+
+            if (Quizes.Count == 0)
+            {
+                Console.WriteLine("No created quiz!");
+                return;
+            }
+
+            Console.Clear();
+            Console.WriteLine("Wybierz quiz! ");
+            ShowQuizes();
+
+            string input = Console.ReadLine();
+            int intInput;
+            while (!Int32.TryParse(input, out intInput)
+                || --intInput < 0 // Decrement here, right now [1] is first index
+                || intInput > Quizes.Count)
+            {
+                Console.Clear();
+                Console.WriteLine("Incorrect input! Please choose quiz again!");
+                ShowQuizes();
+                input = Console.ReadLine();
+            }
+
+            // Assign by reffer
+            selectedQuiz = Quizes[intInput];
+        }
 
         /// <summary>
         ///  Only available for test method

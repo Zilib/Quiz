@@ -8,8 +8,6 @@ namespace QuizApp
     [Serializable]
     sealed class Quiz
     {
-
-
         #region Public lambda methods
 
         public bool ExistEmptyAnswer() => (from q in Questions where q.ExistEmptyAnswer() select q).Count() != 0;
@@ -90,28 +88,32 @@ namespace QuizApp
             Questions = new List<Question>(_questions);
         }
         
+        /// <summary>
+        /// Give answers for question
+        /// </summary>
+        /// <param name="quizScore">Variable with score to increment when answer is correct</param>
         public void AnswerQuestions(ref int quizScore)
         {
             foreach (Question q in Questions)
             {
                 Console.Clear();
-                Console.WriteLine($"\n\n\t\t**********\t{q.Title.ToUpper()}\t**********\n");
+                Console.WriteLine($"\t\t**********\t{q.Title.ToUpper()}\t**********\n");
                 Console.WriteLine("Wybierz odpowiedź!");
 
 
                 for (int i = 0; i < q.Answers.Length; i++)
                 {
-                    Console.Write($"[{i}]. {q.Answers[i].Title}\n");
+                    Console.Write($"[{i + 1}]. {q.Answers[i].Title}\n");
                 }
 
                 string input = Console.ReadLine();
                 int intInput;
                 while (!Int32.TryParse(input, out intInput) 
-                    || intInput >= Game.numberOfAnswers 
+                    || --intInput >= Game.numberOfAnswers // Decrement count from 1 to 4
                     || intInput < 0)
                 {
                     Console.Clear();
-                    Console.WriteLine("Błednie wporwadzone dane, wybierz odpowiedź ponownie!");
+                    Console.WriteLine("Błednie wprowadzone dane, wybierz odpowiedź ponownie!");
                     for (int i = 0; i < q.Answers.Length; i++)
                     {
                         Console.Write($"[{i}]. {q.Answers[i].Title}\n");
@@ -152,30 +154,30 @@ namespace QuizApp
             {
                 Console.ForegroundColor = prevFGColor;
                 Console.BackgroundColor = prevBGColor;
-                Console.WriteLine($"\n\n\t\t**********\t{q.Title.ToUpper()}\t**********\n");
+                Console.WriteLine($"\t\t**********\t{q.Title.ToUpper()}\t**********\n");
                 for (int i = 0; i < q.Answers.Length; i++)
                 {
                     // If answer is selected and incorrect
-                    if (q.Answers[i].IsSelected
-                        && q.Answers[i].IsSelected != q.Answers[i].IsCorrect)
+                    if (q.Answers[i].IsSelected // Check only selected answers
+                        && !q.Answers[i].SelectedIsCorrect())
                     {
                         Console.BackgroundColor = wrongAnswerBGColor;
                         Console.ForegroundColor = wrongAnswerFGColor;
-                        Console.Write($"\t[{i}]. {q.Answers[i].Title}\n");
+                        Console.Write($"[{i + 1}]. {q.Answers[i].Title}\n");
                         continue;
                     }
                     // Correct answer
-                    if (q.Answers[i].IsSelected 
-                        && q.Answers[i].IsSelected == q.Answers[i].IsCorrect)
+                    if (q.Answers[i].IsSelected // Check only selected answers
+                        && q.Answers[i].SelectedIsCorrect())
                     {
                         Console.ForegroundColor = correctAnswerFGColor;
                         Console.BackgroundColor = correctAnswerBGColor;
-                        Console.Write($"\t[{i}]. {q.Answers[i].Title}\n");
+                        Console.Write($"[{i}]. {q.Answers[i].Title}\n");
                         continue;
                     }
                     Console.ForegroundColor = prevFGColor;
                     Console.BackgroundColor = prevBGColor;
-                    Console.Write($"\t[{i}]. {q.Answers[i].Title}\n");
+                    Console.Write($"[{i}]. {q.Answers[i].Title}\n");
                 }
                 // Not selected answer, and not correct
                 Console.BackgroundColor = prevFGColor;

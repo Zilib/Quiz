@@ -165,8 +165,12 @@ namespace QuizApp
 
         #endregion
 
+        #region Private variables
+
         [NonSerialized]
         private bool isSelected = false;
+
+        #endregion
 
         #region Public props
 
@@ -176,8 +180,30 @@ namespace QuizApp
 
         #endregion
 
-        public object Clone() => this.MemberwiseClone();
-    }
+        #region Lambda methods
 
+        public object Clone() => this.MemberwiseClone();
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Check does IsCorrect is equal to IsSelected
+        /// </summary>
+        public bool SelectedIsCorrect()
+        {
+            if (IsSelected == true && IsCorrect == true)
+                return true;
+            else if (IsSelected == true && IsCorrect == false)
+                return false;
+            else if (IsSelected == false && IsCorrect == false)
+                return false;
+
+            return false;
+        }
+
+        #endregion
+    }
 
 }

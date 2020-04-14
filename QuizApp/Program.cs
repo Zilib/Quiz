@@ -29,7 +29,6 @@ namespace QuizApp
                         catch (ArgumentException ex)
                         {
                             Console.WriteLine(ex.Message);
-                            Console.ReadLine();
                         }
                         break;
                     case "q":

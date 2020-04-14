@@ -64,7 +64,7 @@ namespace QuizApp
             #region Create Questions
 
             Console.Clear();
-            Console.WriteLine($"Ile pytań quiz ma zawierać? ( Więcej niż {minQuestions} i mniej niż ${maxQuestions})");
+            Console.WriteLine($"Ile pytań quiz ma zawierać? ( Więcej niż {minQuestions} i mniej niż {maxQuestions})");
 
             string input = Console.ReadLine();
             // Untill input is not int or is larger than 10 or smaller than 2
@@ -100,13 +100,13 @@ namespace QuizApp
             }
 
             Console.Clear();
-            Console.WriteLine("Select your quiz! ");
+            Console.WriteLine("Wybierz quiz! ");
             ShowQuizes();
 
             string input = Console.ReadLine();
             int intInput;
             while (!Int32.TryParse(input, out intInput)
-                || intInput < 0
+                || --intInput < 0 // Decrement here, right now [1] is first index
                 || intInput > Quizes.Count)
             {
                 Console.Clear();
@@ -127,7 +127,7 @@ namespace QuizApp
         {
             for (int i = 0; i < Quizes.Count; i++)
             {
-                Console.WriteLine($"[{i}]. {Quizes[i].Title}");
+                Console.WriteLine($"[{i + 1}]. {Quizes[i].Title}");
             }
         }
 

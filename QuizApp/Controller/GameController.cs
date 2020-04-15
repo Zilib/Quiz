@@ -12,10 +12,11 @@ namespace QuizApp
 
         public void AnswerForQuestions()
         {
-            SelectQuiz();
-
-            if (selectedQuiz == null)
-                throw new System.ArgumentException("Nie wybrałeś quizu!");
+            if(!SelectQuiz())
+            {
+                Console.WriteLine("Nie wybrano quizu");
+                return;
+            }
 
             selectedQuiz.AnswerQuestions(ref playerScore);
 
@@ -128,15 +129,12 @@ namespace QuizApp
         /// <summary>
         /// Select quiz and save it to the selectedQuiz variable by reffer
         /// </summary>
-        private void SelectQuiz()
+        private bool SelectQuiz()
         {
             Console.Clear();
 
             if (Quizes.Count == 0)
-            {
-                Console.WriteLine("No created quiz!");
-                return;
-            }
+                return false;
 
             Console.Clear();
             Console.WriteLine("Wybierz quiz! ");
@@ -156,6 +154,7 @@ namespace QuizApp
 
             // Assign by reffer
             selectedQuiz = Quizes[intInput];
+            return true;
         }
 
         /// <summary>

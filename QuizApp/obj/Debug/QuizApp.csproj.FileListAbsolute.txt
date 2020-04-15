@@ -1,7 +1,0 @@
-E:\C#\Quiz\QuizApp\bin\Debug\QuizApp.exe.config
-E:\C#\Quiz\QuizApp\bin\Debug\QuizApp.exe
-E:\C#\Quiz\QuizApp\bin\Debug\QuizApp.pdb
-E:\C#\Quiz\QuizApp\obj\Debug\QuizApp.csprojAssemblyReference.cache
-E:\C#\Quiz\QuizApp\obj\Debug\QuizApp.csproj.CoreCompileInputs.cache
-E:\C#\Quiz\QuizApp\obj\Debug\QuizApp.exe
-E:\C#\Quiz\QuizApp\obj\Debug\QuizApp.pdb

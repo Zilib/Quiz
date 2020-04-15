@@ -6,43 +6,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace QuizApp
 {
-
-    class Game
+    partial class Game
     {
-        #region Public static readonly
-
-        public static int numberOfAnswers { get; } = 4;
-        public static int minQuestions { get; } = 2;
-        public static int maxQuestions { get; } = 10;
-        public static int minTitleLength { get; } = 4;
-        public static int minDescriptionLength { get; } = 15;
-
-        #endregion
-
-        #region Private readonly (Config)
-
-        private readonly string saveFileName;
-        private static bool testsAvailable { get; } = true;
-
-        #endregion
-
-        #region Props
-
-        // All quizes
-        public List<Quiz> Quizes { get; private set; } = new List<Quiz>();
-
-        #endregion
-
-        #region Private variables
-
-        // Reffer to selected quiz
-        private Quiz selectedQuiz = null;
-
-        // Not used right now
-        private int playerScore = 0;
-
-        #endregion
-
         #region Public methods
 
         public void AnswerForQuestions()
@@ -55,60 +20,6 @@ namespace QuizApp
             selectedQuiz.AnswerQuestions(ref playerScore);
 
             selectedQuiz.ShowAllQuestionsAndAnsers();
-        }
-
-        public void CreateNewQuiz()
-        {
-            Console.Clear();
-            Quiz tempQuiz = new Quiz();
-
-            #region Set quiz main data
-
-            Console.WriteLine("Wprowadź tytuł quizu!");
-            tempQuiz.Title = Console.ReadLine();
-            Validators.ValidString(tempQuiz.Title, 4, "Wprowadź tytuł quizu!");
-
-            Console.Clear();
-            Console.WriteLine("Wprowadź opis quizu");
-            tempQuiz.Description = Console.ReadLine();
-            Validators.ValidString(tempQuiz.Description, 20, "Wprowadź opis quizu");
-
-            #endregion
-
-            #region Create Questions
-
-            Console.Clear();
-            Console.WriteLine($"Ile pytań quiz ma zawierać? ( Więcej niż {minQuestions} i mniej niż {maxQuestions})");
-
-            string input = Console.ReadLine();
-            // Untill input is not int or is larger than 10 or smaller than 2
-            int numberOfQuestions;
-            while (!Int32.TryParse(input, out numberOfQuestions)
-                || (numberOfQuestions <= 2
-                || numberOfQuestions >= 10))
-            {
-                Console.Clear();
-                Console.WriteLine("Wprowadzono błędne dane!!");
-                Console.WriteLine($"Ile pytań quiz ma zawierać? ( Więcej niż {minQuestions} i mniej niż ${maxQuestions})");
-                input = Console.ReadLine();
-            }
-
-            for (int i = 0; i < numberOfQuestions; i++)
-            {
-                tempQuiz.CreateQuestion();
-            }
-
-            #endregion
-
-            Quizes.Add(tempQuiz);
-        }
-
-        private void ShowQuizes()
-        {
-            for (int i = 0; i < Quizes.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}]. {Quizes[i].Title}");
-            }
         }
 
         public void CreateQuizTest()
@@ -158,7 +69,7 @@ namespace QuizApp
 
             #endregion
 
-        
+
             CreateNewQuiz("Mój przykładowy quiz", "Mój pierwszy quiz!", tempQuestions.ToArray());
         }
 
@@ -300,9 +211,11 @@ namespace QuizApp
         /// <param name="_quizes"></param>
         private void CheckQuiz(List<Quiz> _quizes)
         {
-            if (_quizes == null 
-                || ((from q in _quizes where q.Title == String.Empty 
-                     || q.Description == String.Empty select q).Count() > 0))
+            if (_quizes == null
+                || ((from q in _quizes
+                     where q.Title == String.Empty
+   || q.Description == String.Empty
+                     select q).Count() > 0))
                 throw new ArgumentException("Title or description of question cannot be empty!");
 
 
@@ -325,7 +238,7 @@ namespace QuizApp
             if (_quiz == null)
                 throw new System.ArgumentException("Quiz cannot be null");
 
-            if (_quiz.Questions == null )
+            if (_quiz.Questions == null)
                 throw new System.ArgumentException("Questions cannot be null");
 
             if (_quiz.ExistEmptyAnswer())
@@ -333,16 +246,6 @@ namespace QuizApp
 
             #endregion
 
-        }
-
-        #endregion
-
-        #region Constructs
-
-        public Game(string _saveFileName = "Quizes.dat") 
-        {
-            saveFileName = _saveFileName;
-            LoadGame();
         }
 
         #endregion

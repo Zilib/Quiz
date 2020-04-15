@@ -133,7 +133,6 @@ namespace QuizApp
         #endregion
 
         #region Public methods
-
         /// <summary>
         /// Select correct answer, and get information does this select is correct.
         /// </summary>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuizApp
 {
-    partial class Game
+    /*partial class Game
     {
         public void CreateNewQuiz()
         {
@@ -53,5 +53,5 @@ namespace QuizApp
                 Console.WriteLine($"[{i + 1}]. {Quizes[i].Title}");
             }
         }
-    }
+    } */
 }

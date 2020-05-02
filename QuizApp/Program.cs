@@ -7,7 +7,8 @@ namespace QuizApp
     {
         static void Main(string[] args)
         {
-            Game myQuizGame = new Game();
+           
+            /*Game myQuizGame = new Game();
 
             while (true)
             {
@@ -37,12 +38,12 @@ namespace QuizApp
                         return;
 
                 }
-                Console.WriteLine();
+                Console.WriteLine();*/
             }
         }
 
    
-        static void Greetings(out string input, List<String> validInputs)
+       /* static void Greetings(out string input, List<String> validInputs)
         {
             Console.WriteLine("***** Aplikacja do Quizów ******\n");
             Console.WriteLine("Co chciałbyś zrobić?");
@@ -58,5 +59,5 @@ namespace QuizApp
                 input = Console.ReadLine();
             }
         }
-    }
+    }*/
 }

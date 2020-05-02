@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace QuizApp
 {
+    /*
     [Serializable]
     public sealed class Question
     {
@@ -32,14 +33,13 @@ namespace QuizApp
                 throw new System.ArgumentException("Jedna odpowiedź musi być prawidłowa!");
             if ((from a in answers where a.IsSelected == true select a).Count() != 0)
                 throw new System.ArgumentException("Nie możesz dodać odpowiedzi która jest już zaznaczona");
-            if (answers.Length != Game.numberOfAnswers) // it is like answers.Length == Answers.Length
+            if (answers.Length != Game.numberOfAnswers)
                 throw new System.ArgumentException("Za dużo możliwych odpowiedzi do wybrania!");
 
             Title = title;
 
-            // Be aware of sending refference!
             for (int i = 0; i < Game.numberOfAnswers; i++)
-                Answers[i] = (Answer)answers[i].Clone(); // I do not want assing reffer, so i have to mace answer clone!
+                Answers[i] = (Answer)answers[i].Clone();
         }
 
         private void CreateAnswers()
@@ -71,7 +71,6 @@ namespace QuizApp
 
             string input = Console.ReadLine();
 
-            // Validate input
             int intInput;
             while (!Int32.TryParse(input, out intInput)
                 || intInput < 0
@@ -88,7 +87,6 @@ namespace QuizApp
                 input = Console.ReadLine();
             }
 
-            // Set correct answer
             Answers[intInput].IsCorrect = true;
         }
 
@@ -130,6 +128,6 @@ namespace QuizApp
             return false;
         }
 
-    }
+    }*/
 
 }

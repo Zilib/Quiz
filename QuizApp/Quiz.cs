@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace QuizApp
 {
+    /*
     [Serializable]
     sealed class Quiz
     {
@@ -74,7 +75,7 @@ namespace QuizApp
                 string input = Console.ReadLine();
                 int intInput;
                 while (!Int32.TryParse(input, out intInput) 
-                    || --intInput >= Game.numberOfAnswers // Decrement count from 1 to 4
+                    || --intInput >= Game.numberOfAnswers 
                     || intInput < 0)
                 {
                     Console.Clear();
@@ -113,7 +114,6 @@ namespace QuizApp
             ConsoleColor wrongAnswerFGColor = ConsoleColor.Black;
             ConsoleColor correctAnswerFGColor = ConsoleColor.Black;
 
-            // If any answer has no answer, or any answer has more than one answer
 
             foreach (Question q in Questions)
             {
@@ -122,8 +122,7 @@ namespace QuizApp
                 Console.WriteLine($"\t\t**********\t{q.Title.ToUpper()}\t**********\n");
                 for (int i = 0; i < q.Answers.Length; i++)
                 {
-                    // If answer is selected and incorrect
-                    if (q.Answers[i].IsSelected // Check only selected answers
+                    if (q.Answers[i].IsSelected 
                         && !q.Answers[i].SelectedIsCorrect())
                     {
                         Console.BackgroundColor = wrongAnswerBGColor;
@@ -131,8 +130,7 @@ namespace QuizApp
                         Console.Write($"[{i + 1}]. {q.Answers[i].Title}\n");
                         continue;
                     }
-                    // Correct answer
-                    if (q.Answers[i].IsSelected // Check only selected answers
+                    if (q.Answers[i].IsSelected 
                         && q.Answers[i].SelectedIsCorrect())
                     {
                         Console.ForegroundColor = correctAnswerFGColor;
@@ -144,7 +142,6 @@ namespace QuizApp
                     Console.BackgroundColor = prevBGColor;
                     Console.Write($"[{i}]. {q.Answers[i].Title}\n");
                 }
-                // Not selected answer, and not correct
                 Console.BackgroundColor = prevFGColor;
                 Console.BackgroundColor = prevBGColor;
                 Console.WriteLine();
@@ -153,6 +150,6 @@ namespace QuizApp
         Console.ReadLine();
         }
 
-    }
+    }*/
 
 }

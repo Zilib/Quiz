@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using QuizApp.Model;
 
-namespace QuizApp
+namespace QuizApp.Controllers
 {
-    partial class Game
+    public class GameController
+    {
+        private readonly Game _quizGame;
+
+        public GameController(Game quizGame)
+        {
+            _quizGame = quizGame;
+        }
+    }
+
+
+
+    /*partial class GameController
     {
         public void AnswerForQuestions()
         {
@@ -201,5 +209,5 @@ namespace QuizApp
                 throw new System.ArgumentException("Answers cannot be empty");
 
         }
-    }
+    }*/
 }

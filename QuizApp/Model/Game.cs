@@ -1,33 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using QuizApp.Model;
 
-namespace QuizApp
+namespace QuizApp.Model
 {
-    partial class Game
+    public class Game
     {
-        public static int numberOfAnswers { get; } = 4;
-        public static int minQuestions { get; } = 2;
-        public static int maxQuestions { get; } = 10;
-        public static int minTitleLength { get; } = 4;
-        public static int minDescriptionLength { get; } = 15;
+        public readonly int numberOfAnswers;
+        public readonly int minQuestions;
+        public readonly int maxQuestions;
+        public readonly int minTitleLength;
+        public readonly string saveFileName;
 
-        private readonly string saveFileName;
-        private static bool testsAvailable { get; } = true;
+        public List<Quiz> Quizes { get; set; }
 
-
-        private Quiz selectedQuiz = null;
-        private int playerScore = 0;
-
-        public List<Quiz> Quizes { get; private set; } = new List<Quiz>();
-
-        public Game(string _saveFileName = "Quizes.dat")
+        public Game(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
-            saveFileName = _saveFileName;
-            LoadGame();
+            this.numberOfAnswers = numberOfAnswers;
+            this.minQuestions = minQuestions;
+            this.maxQuestions = maxQuestions;
+            this.minTitleLength = minTitleLength;
+            this.saveFileName = saveFileName;
+            Quizes = new List<Quiz>();
         }
-
     }
 }

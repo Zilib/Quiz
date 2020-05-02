@@ -13,8 +13,6 @@ namespace QuizApp
             Console.Clear();
             Quiz tempQuiz = new Quiz();
 
-            #region Set quiz main data
-
             Console.WriteLine("Wprowadź tytuł quizu!");
             tempQuiz.Title = Console.ReadLine();
             Validators.ValidString(tempQuiz.Title, 4, "Wprowadź tytuł quizu!");
@@ -24,15 +22,10 @@ namespace QuizApp
             tempQuiz.Description = Console.ReadLine();
             Validators.ValidString(tempQuiz.Description, 20, "Wprowadź opis quizu");
 
-            #endregion
-
-            #region Create Questions
-
             Console.Clear();
             Console.WriteLine($"Ile pytań quiz ma zawierać? ( Więcej niż {minQuestions} i mniej niż {maxQuestions})");
 
             string input = Console.ReadLine();
-            // Untill input is not int or is larger than 10 or smaller than 2
             int numberOfQuestions;
             while (!Int32.TryParse(input, out numberOfQuestions)
                 || (numberOfQuestions <= 2
@@ -49,7 +42,6 @@ namespace QuizApp
                 tempQuiz.CreateQuestion();
             }
 
-            #endregion
 
             Quizes.Add(tempQuiz);
         }

@@ -7,26 +7,12 @@ namespace QuizApp
     [Serializable]
     sealed class Quiz
     {
-        #region Public lambda methods
-
         public bool ExistEmptyAnswer() => (from q in Questions where q.ExistEmptyAnswer() select q).Count() != 0;
-
-        #endregion
-
-        #region Public params
 
         public string Title { get; set; }
         public string Description { get; set; }
         public List<Question> Questions { get; private set; } = new List<Question>();
 
-        #endregion
-
-        #region Private methods
-
-        /// <summary>
-        /// Check does every question meet the requirements
-        /// </summary>
-        /// <param name="_questions"></param>
         private void CheckQuestions(List<Question> _questions)
         {
             if (_questions == null)
@@ -42,10 +28,6 @@ namespace QuizApp
                 CheckAnswers(q.Answers.ToList());
         }
 
-        /// <summary>
-        /// Check does answers are created correctly.
-        /// </summary>
-        /// <param name="_answers">list with answers</param>
         private void CheckAnswers(List<Answer> _answers)
         {
             if (_answers == null)
@@ -58,14 +40,6 @@ namespace QuizApp
                 throw new System.ArgumentException("Lista odpowiedzi powinna zawierać jedną prawidłową odpowiedź!");
         }
 
-        #endregion
-
-        #region Public Methods
-
-
-        /// <summary>
-        /// Fill basic question data, and make 4 available answers for it
-        /// </summary>
         public void CreateQuestion()
         {
             Console.Clear();
@@ -77,20 +51,12 @@ namespace QuizApp
             Questions.Add(new Question(tempText, Questions.Count));
         }
 
-        /// <summary>
-        /// Set immediately question list
-        /// </summary>
-        /// <param name="_questions"></param>
         public void SetQuestions(List<Question> _questions)
         {
             CheckQuestions(_questions);
             Questions = new List<Question>(_questions);
         }
         
-        /// <summary>
-        /// Give answers for question
-        /// </summary>
-        /// <param name="quizScore">Variable with score to increment when answer is correct</param>
         public void AnswerQuestions(ref int quizScore)
         {
             foreach (Question q in Questions)
@@ -187,7 +153,6 @@ namespace QuizApp
         Console.ReadLine();
         }
 
-        #endregion
     }
 
 }

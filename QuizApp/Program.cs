@@ -41,9 +41,7 @@ namespace QuizApp
             }
         }
 
-        /// <summary>
-        /// Tell greetings to user! Let him make choose what he want to do
-        /// </summary>
+   
         static void Greetings(out string input, List<String> validInputs)
         {
             Console.WriteLine("***** Aplikacja do Quizów ******\n");
@@ -51,7 +49,7 @@ namespace QuizApp
             Console.WriteLine("Wybierz [1] aby stworzyć nowy quiz, [2] aby wziąć udział w innym quizie, albo \"q\" aby wyjść i zapisać stworzone quizy: ");
 
             input = Console.ReadLine();
-            // if input is not 1 or 2, ask for another input
+
             while (!validInputs.Contains(input))
             {
                 Console.Clear();

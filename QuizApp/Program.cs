@@ -7,57 +7,7 @@ namespace QuizApp
     {
         static void Main(string[] args)
         {
-           
-            /*Game myQuizGame = new Game();
 
-            while (true)
-            {
-                Greetings(out string input, new List<string> { "1","2","q","3" });
-
-                switch (input)
-                {
-                    case "1": 
-                        myQuizGame.CreateNewQuiz();
-                    break;
-                    case "2":
-                        myQuizGame.AnswerForQuestions();
-                    break;
-                    case "3":
-                        try
-                        {
-                            myQuizGame.CreateQuizTest();
-                        }
-                        catch (ArgumentException ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
-                        break;
-                    case "q":
-                        myQuizGame.SaveGame();
-                        Console.ReadLine();
-                        return;
-
-                }
-                Console.WriteLine();*/
-            }
         }
-
-   
-       /* static void Greetings(out string input, List<String> validInputs)
-        {
-            Console.WriteLine("***** Aplikacja do Quizów ******\n");
-            Console.WriteLine("Co chciałbyś zrobić?");
-            Console.WriteLine("Wybierz [1] aby stworzyć nowy quiz, [2] aby wziąć udział w innym quizie, albo \"q\" aby wyjść i zapisać stworzone quizy: ");
-
-            input = Console.ReadLine();
-
-            while (!validInputs.Contains(input))
-            {
-                Console.Clear();
-                Console.WriteLine("Zły znak, wprowadź znak ponownie!");
-                Console.Write("Wybierz[1] aby stworzyć nowy quiz, [2] aby wziąć udział w innym quizie, albo \"q\" aby wyjść i zapisać stworzone quizy:");
-                input = Console.ReadLine();
-            }
-        }
-    }*/
+    }
 }

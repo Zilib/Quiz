@@ -8,13 +8,13 @@ namespace QuizApp.Model
 {
     public sealed class Answer
     {
-        public int QuestionId { get; private set; }
+        private readonly Question _question;
         public string Text { get; set; }
         public bool IsCorrect { get; set; }
 
-        public Answer(int questionId, string text, bool isCorrect)
+        public Answer(Question question, string text, bool isCorrect)
         {
-            QuestionId = questionId;
+            _question = question;
             Text = text;
             IsCorrect = isCorrect;
         }

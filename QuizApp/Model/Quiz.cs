@@ -4,14 +4,31 @@ namespace QuizApp.Model
 {
     public class Quiz
     {
-        public int QuizId { get; private set; }
         public string Title { get; set; }
-        public List<Question> Questions { get; set; }
 
-        public Quiz(int id, string title)
+        private List<Question> questions;
+
+        public Quiz(string title)
         {
-            QuizId = id;
             Title = title;
+            questions = new List<Question>();
+        }
+
+        public Question GetQuestion(int questionIndex)
+        {
+            return questions[questionIndex];
+        }
+
+        public Question CreateNewQuestion(string title)
+        {
+            if (title.Length == 0 || title == null)
+            {
+                throw new System.Exception("Question title cannot be empty");
+            }
+            var questionToAdd = new Question(this, title);
+            questions.Add(questionToAdd);
+
+            return questionToAdd;
         }
     }
 }

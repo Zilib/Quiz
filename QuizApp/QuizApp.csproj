@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\GameController.cs" />
+    <Compile Include="Controller\QuizController.cs" />
     <Compile Include="Model\Answer.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\Question.cs" />

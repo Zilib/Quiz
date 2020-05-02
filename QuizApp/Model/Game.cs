@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using QuizApp.Model;
 
 namespace QuizApp.Model
 {
@@ -11,7 +10,7 @@ namespace QuizApp.Model
         public readonly int minTitleLength;
         public readonly string saveFileName;
 
-        public List<Quiz> Quizes { get; set; }
+        private List<Quiz> quizes;
 
         public Game(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
@@ -20,7 +19,23 @@ namespace QuizApp.Model
             this.maxQuestions = maxQuestions;
             this.minTitleLength = minTitleLength;
             this.saveFileName = saveFileName;
-            Quizes = new List<Quiz>();
+            quizes = new List<Quiz>();
         }
+
+        public List<Quiz> GetAllQuizes() => quizes;
+        public bool AnyQuizExist() => quizes.Count != 0;
+        public void AddNewQuiz(Quiz quiz)
+        {
+            if (quiz == null)
+            {
+                throw new System.Exception("Quiz cannot be null");
+            }    
+            if (quiz.Title == string.Empty)
+            {
+                throw new System.Exception("Quiz title cannot be null");
+            }
+            quizes.Add(quiz);
+        }
+        public Quiz GetQuiz(int quizIndex) => quizes[quizIndex];
     }
 }

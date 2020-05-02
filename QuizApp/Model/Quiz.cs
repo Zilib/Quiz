@@ -4,19 +4,23 @@ namespace QuizApp.Model
 {
     public class Quiz
     {
+        private readonly Game _game;
         public string Title { get; set; }
 
-        private List<Question> questions;
+        public List<Question> Questions { get; private set; }
 
-        public Quiz(string title)
+        public bool CanBeSelected(Game game) => game == _game;
+
+        public Quiz(string title, Game game)
         {
+            _game = game;
             Title = title;
-            questions = new List<Question>();
+            Questions = new List<Question>();
         }
 
         public Question GetQuestion(int questionIndex)
         {
-            return questions[questionIndex];
+            return Questions[questionIndex];
         }
 
         public Question CreateNewQuestion(string title)
@@ -25,8 +29,13 @@ namespace QuizApp.Model
             {
                 throw new System.Exception("Question title cannot be empty");
             }
-            var questionToAdd = new Question(this, title);
-            questions.Add(questionToAdd);
+            if (Questions.Count == _game.maxQuestions)
+            {
+                throw new System.Exception("You cannot create more questions!");
+            }
+
+            var questionToAdd = new Question(this, title, _game);
+            Questions.Add(questionToAdd);
 
             return questionToAdd;
         }

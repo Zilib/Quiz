@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuizApp.Model;
+using System;
 using System.Collections.Generic;
 
 namespace QuizApp
@@ -7,58 +8,86 @@ namespace QuizApp
     {
         static void Main(string[] args)
         {
-            Game myQuizGame = new Game();
+            GameFascade game = new GameFascade(4, 1, 4, 4, "test.txt");
 
-            while (true)
+            Menu(game);
+        }
+
+
+        private static void Menu(GameFascade fascade)
+        {
+            while(true)
             {
-                Greetings(out string input, new List<string> { "1","2","q","3" });
+                Console.Clear();
 
-                switch (input)
+                if (fascade.Errors.Count != 0)
                 {
-                    case "1": 
-                        myQuizGame.CreateNewQuiz();
-                    break;
-                    case "2":
-                        myQuizGame.AnswerForQuestions();
-                    break;
-                    case "3":
-                        try
-                        {
-                            myQuizGame.CreateQuizTest();
-                        }
-                        catch (ArgumentException ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
-                        break;
-                    case "q":
-                        myQuizGame.SaveGame();
-                        Console.ReadLine();
-                        return;
+                    Console.ForegroundColor = ConsoleColor.Red;
 
+                    var errors = fascade.Errors;
+                    errors.ForEach(x =>
+                    {
+                        Console.WriteLine(x);
+                    });
+                    fascade.ClearErrors();
+
+                    Console.ResetColor();
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine("Hello tell me what would you like to do:");
+                Console.WriteLine("1. Give answer for existing quiz");
+                Console.WriteLine("2. Create your own quiz");
+                Console.WriteLine("q. Exit game");
+                if (!MenuSelect(Console.ReadLine().ToLower() ?? "0", fascade))
+                {
+                    break;
                 }
                 Console.WriteLine();
             }
         }
 
-        /// <summary>
-        /// Tell greetings to user! Let him make choose what he want to do
-        /// </summary>
-        static void Greetings(out string input, List<String> validInputs)
+        private static bool MenuSelect(string answer, GameFascade fascade)
         {
-            Console.WriteLine("***** Aplikacja do Quizów ******\n");
-            Console.WriteLine("Co chciałbyś zrobić?");
-            Console.WriteLine("Wybierz [1] aby stworzyć nowy quiz, [2] aby wziąć udział w innym quizie, albo \"q\" aby wyjść i zapisać stworzone quizy: ");
-
-            input = Console.ReadLine();
-            // if input is not 1 or 2, ask for another input
-            while (!validInputs.Contains(input))
+            QuizBuilder quizBuilder = new QuizBuilder(fascade);
+            switch (answer)
             {
-                Console.Clear();
-                Console.WriteLine("Zły znak, wprowadź znak ponownie!");
-                Console.Write("Wybierz[1] aby stworzyć nowy quiz, [2] aby wziąć udział w innym quizie, albo \"q\" aby wyjść i zapisać stworzone quizy:");
-                input = Console.ReadLine();
+                case "1":
+                    ShowQuizesList(fascade.GetQuizes());
+                    break;
+                case "2":
+                    try
+                    {
+                    quizBuilder.BuildQuiz()
+                        .BuildQuestions()
+                        .Build();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                    break;
+                case "q":
+                    return false;
+                    break;
             }
+            return true;
+        }
+
+        private static void ShowQuizesList(List<Quiz> quizes)
+        {
+            for (int i = 0; i < quizes.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}]. {quizes[i].Title}");
+            }
+            Console.ReadLine();
+        }
+
+        private static void CreateNewQuiz(GameFascade fascade)
+        {
+            string quizTitle = Console.ReadLine();
+            fascade.CreateNewQuiz(quizTitle);
+            return;
         }
     }
 }

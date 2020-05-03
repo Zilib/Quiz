@@ -1,42 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace QuizApp
+namespace QuizApp.Model
 {
-    partial class Game
+    public class Game
     {
-        #region Config variables
+        public readonly GameConfiguration gameConfiguration;
 
-        public static int numberOfAnswers { get; } = 4;
-        public static int minQuestions { get; } = 2;
-        public static int maxQuestions { get; } = 10;
-        public static int minTitleLength { get; } = 4;
-        public static int minDescriptionLength { get; } = 15;
+        private List<Quiz> quizes;
 
-        #endregion
-
-        private readonly string saveFileName;
-        private static bool testsAvailable { get; } = true;
-
-        // Reffer to selected quiz
-        private Quiz selectedQuiz = null;
-        // Not used right now
-        private int playerScore = 0;
-
-        // All quizes
-        public List<Quiz> Quizes { get; private set; } = new List<Quiz>();
-
-        #region Constructs
-
-        public Game(string _saveFileName = "Quizes.dat")
+        public Game(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
-            saveFileName = _saveFileName;
-            LoadGame();
+            gameConfiguration = new GameConfiguration(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
+            quizes = new List<Quiz>();
         }
 
-        #endregion
+        public Game(GameConfiguration gameConfiguration)
+        {
+            this.gameConfiguration = gameConfiguration;
+            quizes = new List<Quiz>();
+        }
+
+        public List<Quiz> GetAllQuizes() => quizes;
+        public bool AnyQuizExist() => quizes.Count != 0;
+        public void AddNewQuiz(Quiz quiz)
+        {
+            if (quiz == null)
+            {
+                throw new System.Exception("Quiz cannot be null");
+            }    
+            if (quiz.Title == string.Empty)
+            {
+                throw new System.Exception("Quiz title cannot be null");
+            }
+            // todo more validation
+            quizes.Add(quiz);
+        }
+        public Quiz GetQuiz(int quizIndex) => quizes[quizIndex];
     }
 }

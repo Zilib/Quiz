@@ -14,6 +14,12 @@ namespace QuizApp.Model
             quizes = new List<Quiz>();
         }
 
+        public Game(GameConfiguration gameConfiguration)
+        {
+            this.gameConfiguration = gameConfiguration;
+            quizes = new List<Quiz>();
+        }
+
         public List<Quiz> GetAllQuizes() => quizes;
         public bool AnyQuizExist() => quizes.Count != 0;
         public void AddNewQuiz(Quiz quiz)

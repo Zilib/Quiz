@@ -9,6 +9,7 @@ namespace QuizApp
         static void Main(string[] args)
         {
             GameFascade game = new GameFascade(4, 1, 4, 4, "test.txt");
+
             Menu(game);
         }
 

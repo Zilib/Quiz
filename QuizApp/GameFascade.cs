@@ -11,34 +11,40 @@ namespace QuizApp
     {
         public List<string> Errors { get; private set; }
 
-        private readonly Game _quizGame;
+        public readonly Game quizGame;
 
-        private Quiz selectedQuiz = null;
+        public Quiz SelectedQuiz { get; private set; }
 
         private Question selectedQuestion = null;
 
         public GameFascade(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
             Errors = new List<string>();
-            _quizGame = new Game(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
+            quizGame = new Game(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
         }
 
-        public GameConfiguration GetGameConfiguration() => _quizGame.gameConfiguration;
+        public GameFascade(GameConfiguration gameConfiguration)
+        {
+            Errors = new List<string>();
+            quizGame = new Game(gameConfiguration);
+        }
+
+        public GameConfiguration GetGameConfiguration() => quizGame.gameConfiguration;
 
         public List<Quiz> GetQuizes()
         {
-            if (!_quizGame.AnyQuizExist())
+            if (!quizGame.AnyQuizExist())
             {
                 Errors.Add("No quiz exist!");
             }
-            return _quizGame.GetAllQuizes();
+            return quizGame.GetAllQuizes();
         }
 
-        public bool IsQuizSelected() => selectedQuiz != null;
+        public bool IsQuizSelected() => SelectedQuiz != null;
 
         public bool IsQuestionSelected() => selectedQuestion != null;
 
-        public bool AnyQuizExist() => _quizGame.AnyQuizExist();
+        public bool AnyQuizExist() => quizGame.AnyQuizExist();
 
         public bool ExistCorrectAnswer()
         {
@@ -51,7 +57,7 @@ namespace QuizApp
 
         public bool ExistCorrectAnswer(int questionIndex)
         {
-            var questionToCheck = selectedQuiz.GetQuestion(questionIndex).ExistCorrectAnswer();
+            var questionToCheck = SelectedQuiz.GetQuestion(questionIndex).ExistCorrectAnswer();
             return questionToCheck;
         }
 
@@ -62,30 +68,37 @@ namespace QuizApp
 
         public Quiz CreateNewQuiz(string title)
         {
-            if (title.Length < _quizGame.gameConfiguration.minTitleLength)
+            if (title.Length < quizGame.gameConfiguration.minTitleLength)
             {
                throw new System.Exception("Quiz title is not long enought.");
             }
 
-            var newQuiz = new Quiz(title, _quizGame);
+            var newQuiz = new Quiz(title, quizGame);
+            SelectedQuiz = newQuiz;
+
             return newQuiz;
         }
 
         public void AddNewQuiz(Quiz quizToAdd)
         {
-            _quizGame.AddNewQuiz(quizToAdd);
+            quizGame.AddNewQuiz(quizToAdd);
         }
 
         public void SelectQuiz(int quizIndex)
         {
-            selectedQuiz = _quizGame.GetQuiz(quizIndex);
+            if (quizIndex >= GetQuizes().Count)
+            {
+                throw new ArgumentOutOfRangeException("Incorrect quiz index!");
+            }
+            SelectedQuiz = quizGame.GetQuiz(quizIndex);
         }
 
         public void SelectQuiz(Quiz quiz)
         {
-            if (quiz.CanBeSelected(_quizGame))
+            if (quiz.CanBeSelected(quizGame) 
+                && GetQuizes().Contains(quiz))
             {
-                selectedQuiz = quiz;
+                SelectedQuiz = quiz;
             }
             else
             {
@@ -95,16 +108,28 @@ namespace QuizApp
 
         public Question CreateNewQuestion(Quiz selectedQuiz, string questionTitle)
         {
-            this.selectedQuiz = selectedQuiz;
-            var newQuestion  = this.selectedQuiz.CreateNewQuestion(questionTitle);
+            if (!GetQuizes().Contains(selectedQuiz))
+            {
+                throw new Exception("Quiz doesn't exist in pool.");
+            }
+
+            this.SelectedQuiz = selectedQuiz;
+            var newQuestion  = this.SelectedQuiz.CreateNewQuestion(questionTitle);
 
             selectedQuestion = newQuestion;
             return newQuestion;
         }
 
-        public void CreateNewQuestion(string questionTitle)
+        public Question CreateNewQuestion(string questionTitle)
         {
-            selectedQuestion = this.selectedQuiz.CreateNewQuestion(questionTitle);
+            if (SelectedQuiz == null)
+            {
+                throw new Exception("No quiz selected!");
+            }
+
+            var newQuestion = this.SelectedQuiz.CreateNewQuestion(questionTitle); ;
+            selectedQuestion = newQuestion;
+            return newQuestion;
         }
 
         public void CreateNewAnswer(Question selectedQuestion, string text)

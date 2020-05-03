@@ -4,3 +4,6 @@
 /QuizApp/bin/*
 *.exe
 *.dat
+
+/QuizTest/bin/*
+/QuizTest/obj

@@ -4,21 +4,13 @@ namespace QuizApp.Model
 {
     public class Game
     {
-        public readonly int numberOfAnswers;
-        public readonly int minQuestions;
-        public readonly int maxQuestions;
-        public readonly int minTitleLength;
-        public readonly string saveFileName;
+        public readonly GameConfiguration gameConfiguration;
 
         private List<Quiz> quizes;
 
         public Game(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
-            this.numberOfAnswers = numberOfAnswers;
-            this.minQuestions = minQuestions;
-            this.maxQuestions = maxQuestions;
-            this.minTitleLength = minTitleLength;
-            this.saveFileName = saveFileName;
+            gameConfiguration = new GameConfiguration(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
             quizes = new List<Quiz>();
         }
 
@@ -34,6 +26,7 @@ namespace QuizApp.Model
             {
                 throw new System.Exception("Quiz title cannot be null");
             }
+            // todo more validation
             quizes.Add(quiz);
         }
         public Quiz GetQuiz(int quizIndex) => quizes[quizIndex];

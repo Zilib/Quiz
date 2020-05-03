@@ -48,13 +48,23 @@ namespace QuizApp
 
         private static bool MenuSelect(string answer, GameFascade fascade)
         {
+            QuizBuilder quizBuilder = new QuizBuilder(fascade);
             switch (answer)
             {
                 case "1":
                     ShowQuizesList(fascade.GetQuizes());
                     break;
                 case "2":
-                    fascade.CreateNewQuiz("test");
+                    try
+                    {
+                    quizBuilder.BuildQuiz()
+                        .BuildQuestions()
+                        .Build();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                     break;
                 case "q":
                     return false;
@@ -65,11 +75,18 @@ namespace QuizApp
 
         private static void ShowQuizesList(List<Quiz> quizes)
         {
-            for (int i = 1; i < quizes.Count; i++)
+            for (int i = 0; i < quizes.Count; i++)
             {
-                Console.WriteLine($"[{i}]. {quizes[i].Title}");
+                Console.WriteLine($"[{i + 1}]. {quizes[i].Title}");
             }
             Console.ReadLine();
+        }
+
+        private static void CreateNewQuiz(GameFascade fascade)
+        {
+            string quizTitle = Console.ReadLine();
+            fascade.CreateNewQuiz(quizTitle);
+            return;
         }
     }
 }

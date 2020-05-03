@@ -23,10 +23,7 @@ namespace QuizApp
             _quizGame = new Game(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
         }
 
-        /*public GameFascade(Game quizGame)
-        {
-            _quizGame = quizGame;
-        }*/
+        public GameConfiguration GetGameConfiguration() => _quizGame.gameConfiguration;
 
         public List<Quiz> GetQuizes()
         {
@@ -63,17 +60,20 @@ namespace QuizApp
             Errors.Clear();
         }
 
-        public void CreateNewQuiz(string title)
+        public Quiz CreateNewQuiz(string title)
         {
-            try
+            if (title.Length < _quizGame.gameConfiguration.minTitleLength)
             {
-                selectedQuiz = new Quiz(title, _quizGame);
-                _quizGame.AddNewQuiz(selectedQuiz);
+               throw new System.Exception("Quiz title is not long enought.");
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+
+            var newQuiz = new Quiz(title, _quizGame);
+            return newQuiz;
+        }
+
+        public void AddNewQuiz(Quiz quizToAdd)
+        {
+            _quizGame.AddNewQuiz(quizToAdd);
         }
 
         public void SelectQuiz(int quizIndex)
@@ -93,10 +93,13 @@ namespace QuizApp
             }
         }
 
-        public void CreateNewQuestion(Quiz selectedQuiz, string questionTitle)
+        public Question CreateNewQuestion(Quiz selectedQuiz, string questionTitle)
         {
             this.selectedQuiz = selectedQuiz;
-            selectedQuestion = this.selectedQuiz.CreateNewQuestion(questionTitle);
+            var newQuestion  = this.selectedQuiz.CreateNewQuestion(questionTitle);
+
+            selectedQuestion = newQuestion;
+            return newQuestion;
         }
 
         public void CreateNewQuestion(string questionTitle)
@@ -104,11 +107,16 @@ namespace QuizApp
             selectedQuestion = this.selectedQuiz.CreateNewQuestion(questionTitle);
         }
 
-        public void CreateNewAnswer(string text, bool isCorrect)
+        public void CreateNewAnswer(Question selectedQuestion, string text)
         {
-            selectedQuestion.CreateNewAnswer(text, isCorrect);
+            this.selectedQuestion = selectedQuestion;
+            this.selectedQuestion.CreateNewAnswer(text);
         }
 
+        public void CreateNewAnswer(string text)
+        {
+            selectedQuestion.CreateNewAnswer(text);
+        }
 
     }
 }

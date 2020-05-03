@@ -29,7 +29,7 @@ namespace QuizApp.Model
             {
                 throw new System.Exception("Question title cannot be empty");
             }
-            if (Questions.Count == _game.maxQuestions)
+            if (Questions.Count == _game.gameConfiguration.maxQuestions)
             {
                 throw new System.Exception("You cannot create more questions!");
             }

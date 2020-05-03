@@ -13,13 +13,16 @@ namespace QuizApp.Model
         public bool IsCorrect { get; set; }
         public bool IsSelected { get; private set; } = false;
 
-        public Answer(Question question, string text, bool isCorrect)
+        public Answer(Question question, string text)
         {
             _question = question;
             Text = text;
-            IsCorrect = isCorrect;
         }
 
+        public override string ToString()
+        {
+            return Text;
+        }
         public void SelectThisAnswer()
         {
             if (!_question.ExistSelectedAnswer())

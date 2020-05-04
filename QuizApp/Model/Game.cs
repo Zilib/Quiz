@@ -26,11 +26,11 @@ namespace QuizApp.Model
         {
             if (quiz == null)
             {
-                throw new System.Exception("Quiz cannot be null");
+                throw new NullReferenceException();
             }    
             if (quiz.Title == string.Empty)
             {
-                throw new System.Exception("Quiz title cannot be null");
+                throw new IncorrectInputException("Quiz title cannot be null");
             }
             // todo more validation
             quizes.Add(quiz);

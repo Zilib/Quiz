@@ -27,7 +27,7 @@ namespace QuizApp.Model
         {
             if (answers.Count != _quizGame.gameConfiguration.numberOfAnswers)
             {
-                throw new System.Exception("Amount of answers is incorrect, amount of answers is: " + _quizGame.gameConfiguration.numberOfAnswers);
+                throw new ArgumentOutOfRangeException("Amount of answers is incorrect, amount of answers is: " + _quizGame.gameConfiguration.numberOfAnswers);
             }
 
             return answers;
@@ -41,11 +41,11 @@ namespace QuizApp.Model
         {
             if (text == string.Empty || text == null)
             {
-                throw new System.Exception("Answer text cannot be null");
+                throw new IncorrectInputException("Answer text cannot be null");
             }
             if (answers.Count == _quizGame.gameConfiguration.numberOfAnswers)
             {
-                throw new System.Exception("You cannot add anymore answers!");
+                throw new IncorrectInputException("You cannot add anymore answers!");
             }
             Answer answerToAdd = new Answer(this, text);
             answers.Add(answerToAdd);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuizApp.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace QuizApp.Model
         {
             if (!_question.ExistSelectedAnswer())
             {
-                throw new System.Exception("You cannot select two answers");
+                throw new IncorrectInputException("Answer is already selected!");
             }
             IsSelected = true;
         }

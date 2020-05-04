@@ -50,7 +50,7 @@ namespace QuizApp
         {
             if (selectedQuestion == null)
             {
-                throw new System.Exception("Question is not selected");
+                throw new QuizIsNotSelectedException();
             }
             return selectedQuestion.ExistCorrectAnswer();
         }
@@ -70,7 +70,7 @@ namespace QuizApp
         {
             if (title.Length < quizGame.gameConfiguration.minTitleLength)
             {
-               throw new System.Exception("Quiz title is not long enought.");
+                throw new IncorrectInputException("Quiz title is not long enought.");
             }
 
             var newQuiz = new Quiz(title, quizGame);
@@ -102,7 +102,7 @@ namespace QuizApp
             }
             else
             {
-                throw new System.Exception("Quiz cannot be selected");
+                throw new QuizIsNotSelectedException();
             }
         }
 
@@ -110,7 +110,7 @@ namespace QuizApp
         {
             if (!GetQuizes().Contains(selectedQuiz))
             {
-                throw new Exception("Quiz doesn't exist in pool.");
+                throw new ArgumentOutOfRangeException();
             }
 
             this.SelectedQuiz = selectedQuiz;
@@ -124,7 +124,7 @@ namespace QuizApp
         {
             if (SelectedQuiz == null)
             {
-                throw new Exception("No quiz selected!");
+                throw new QuizIsNotSelectedException();
             }
 
             var newQuestion = this.SelectedQuiz.CreateNewQuestion(questionTitle); ;

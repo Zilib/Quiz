@@ -49,11 +49,10 @@
     <Compile Include="Exceptions\QuizIsNotSelectedException.cs" />
     <Compile Include="Fascade\GameFascadeController.cs" />
     <Compile Include="Fascade\GameFascadeModel.cs" />
-    <Compile Include="GameFascade.cs" />
     <Compile Include="Model\Answer.cs" />
     <Compile Include="Model\EQuizAction.cs" />
     <Compile Include="Model\Game.cs" />
-    <Compile Include="Model\IGameConfiguration.cs" />
+    <Compile Include="Model\GameConfiguration.cs" />
     <Compile Include="Model\Question.cs" />
     <Compile Include="Model\Quiz.cs" />
     <Compile Include="Program.cs" />

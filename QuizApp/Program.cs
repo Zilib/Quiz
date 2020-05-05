@@ -2,6 +2,7 @@
 using QuizApp.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuizApp
 {
@@ -20,7 +21,7 @@ namespace QuizApp
             {
                 Console.Clear();
 
-                if (fascade.Errors.Count != 0)
+                if (fascade.Errors.Any())
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
 
@@ -53,14 +54,20 @@ namespace QuizApp
             switch (answer)
             {
                 case "1":
-                    ShowQuizesList(fascade.GetQuizes());
+                    try
+                    {
+                        ShowQuizesList(fascade.GetQuizes());
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                     break;
                 case "2":
                     try
                     {
-                    quizBuilder.BuildQuiz()
-                        .BuildQuestions()
-                        .Build();
+                        quizBuilder.BuildQuiz()
+                            .BuildQuestions();
                     }
                     catch (Exception ex)
                     {

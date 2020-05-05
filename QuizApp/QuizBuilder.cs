@@ -10,8 +10,6 @@ namespace QuizApp
         private readonly GameFascade _gameFascade;
         private readonly GameConfiguration _gameConfiguration;
 
-        private Quiz QuizToBuild { get; set; } = null;
-
         public QuizBuilder(GameFascade gameFascade)
         {
             _gameFascade = gameFascade;
@@ -25,11 +23,12 @@ namespace QuizApp
 
             try
             {
-                QuizToBuild = _gameFascade.CreateNewQuiz(quizTitle);
+                _gameFascade.CreateNewQuiz(quizTitle);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                Console.ReadLine();
             }
 
             return this;
@@ -37,8 +36,9 @@ namespace QuizApp
 
         public QuizBuilder BuildQuestions()
         {
-            if (QuizToBuild == null)
-            { 
+            if (!_gameFascade.IsQuizSelected())
+            {
+                Console.ReadLine();
                 return this;
             }
 
@@ -69,7 +69,7 @@ namespace QuizApp
 
                 try
                 {
-                    var newQuestion  = _gameFascade.CreateNewQuestion(QuizToBuild, questionTitle);
+                    var newQuestion  = _gameFascade.CreateNewQuestion(questionTitle);
 
                     for (int j = 0; j < _gameConfiguration.numberOfAnswers; j++)
                     {
@@ -83,16 +83,12 @@ namespace QuizApp
                 }
                 catch (Exception ex)
                 {
+                    _gameFascade.RemoveSelectedQuiz();
                     Console.WriteLine(ex);
+                    Console.ReadLine();
                 }
             }
 
-            return this;
-        }
-
-        public QuizBuilder Build()
-        {
-            _gameFascade.AddNewQuiz(QuizToBuild);
             return this;
         }
     }

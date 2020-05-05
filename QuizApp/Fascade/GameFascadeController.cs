@@ -10,13 +10,15 @@ namespace QuizApp.Fascade
         public GameFascade(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
             Errors = new List<string>();
-            quizGame = new Game(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
+            _quizGame = new Game(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
+            _quizGame.GetCurrentQuizRef(ref _selectedQuiz);
         }
 
         public GameFascade(GameConfiguration gameConfiguration)
         {
             Errors = new List<string>();
-            quizGame = new Game(gameConfiguration);
+            _quizGame = new Game(gameConfiguration);
+            _quizGame.GetCurrentQuizRef(ref _selectedQuiz);
         }
 
         public void ClearErrors()
@@ -24,44 +26,25 @@ namespace QuizApp.Fascade
             Errors.Clear();
         }
 
-        public Quiz CreateNewQuiz(string title)
+        public void CreateNewQuiz(string title)
         {
-            if (title.Length < quizGame.gameConfiguration.minTitleLength)
-            {
-                throw new IncorrectInputException("Quiz title is not long enought.");
-            }
-
-            var newQuiz = new Quiz(title, quizGame);
-            SelectedQuiz = newQuiz;
-
-            return newQuiz;
+            _selectedQuiz = _quizGame.CreateNewQuiz(title);
         }
 
         public void AddNewQuiz(Quiz quizToAdd)
         {
-            quizGame.AddNewQuiz(quizToAdd);
+            _quizGame.AddNewQuiz(quizToAdd);
         }
 
         public void SelectQuiz(int quizIndex)
         {
-            if (quizIndex >= GetQuizes().Count)
-            {
-                throw new ArgumentOutOfRangeException("Incorrect quiz index!");
-            }
-            SelectedQuiz = quizGame.GetQuiz(quizIndex);
+            var quizToSelect = _quizGame.GetQuiz(quizIndex);
+            _quizGame.SelectQuiz(quizToSelect);
         }
 
         public void SelectQuiz(Quiz quiz)
         {
-            if (quiz.CanBeSelected(quizGame)
-                && GetQuizes().Contains(quiz))
-            {
-                SelectedQuiz = quiz;
-            }
-            else
-            {
-                throw new QuizIsNotSelectedException();
-            }
+            _quizGame.SelectQuiz(quiz);
         }
 
         public Question CreateNewQuestion(Quiz selectedQuiz, string questionTitle)
@@ -71,34 +54,34 @@ namespace QuizApp.Fascade
                 throw new ArgumentOutOfRangeException();
             }
 
-            this.SelectedQuiz = selectedQuiz;
-            var newQuestion = this.SelectedQuiz.CreateNewQuestion(questionTitle);
+            _selectedQuiz.CreateNewQuestion(questionTitle);
+            _selectedQuestion = _selectedQuiz.GetSelectedQuestion();
 
-            selectedQuestion = newQuestion;
-            return newQuestion;
+            return _selectedQuestion;
         }
 
         public Question CreateNewQuestion(string questionTitle)
         {
-            if (SelectedQuiz == null)
+            if (_selectedQuiz == null)
             {
                 throw new QuizIsNotSelectedException();
             }
 
-            var newQuestion = this.SelectedQuiz.CreateNewQuestion(questionTitle); ;
-            selectedQuestion = newQuestion;
-            return newQuestion;
+            _selectedQuiz.CreateNewQuestion(questionTitle); ;
+            _selectedQuestion = _selectedQuiz.GetSelectedQuestion();
+            return _selectedQuestion;
         }
 
         public void CreateNewAnswer(Question selectedQuestion, string text)
         {
-            this.selectedQuestion = selectedQuestion;
-            this.selectedQuestion.CreateNewAnswer(text);
+            selectedQuestion.CreateNewAnswer(text);
         }
 
         public void CreateNewAnswer(string text)
         {
-            selectedQuestion.CreateNewAnswer(text);
+            _selectedQuestion.CreateNewAnswer(text);
         }
+
+        public bool RemoveSelectedQuiz() => _quizGame.RemoveQuiz(_selectedQuiz);
     }
 }

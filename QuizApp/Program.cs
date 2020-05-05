@@ -1,4 +1,5 @@
-﻿using QuizApp.Model;
+﻿using QuizApp.Fascade;
+using QuizApp.Model;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,6 @@ namespace QuizApp
 
             Menu(game);
         }
-
 
         private static void Menu(GameFascade fascade)
         {

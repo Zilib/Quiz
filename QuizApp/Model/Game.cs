@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using QuizApp.Exceptions;
+using System;
+using System.Collections.Generic;
 
 namespace QuizApp.Model
 {

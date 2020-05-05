@@ -45,8 +45,13 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\IncorrectInputException.cs" />
+    <Compile Include="Exceptions\QuizIsNotSelectedException.cs" />
+    <Compile Include="Fascade\GameFascadeController.cs" />
+    <Compile Include="Fascade\GameFascadeModel.cs" />
     <Compile Include="GameFascade.cs" />
     <Compile Include="Model\Answer.cs" />
+    <Compile Include="Model\EQuizAction.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\IGameConfiguration.cs" />
     <Compile Include="Model\Question.cs" />
@@ -59,8 +64,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

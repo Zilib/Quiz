@@ -1,22 +1,12 @@
-﻿using QuizApp.Model;
+﻿using QuizApp.Exceptions;
+using QuizApp.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace QuizApp
+namespace QuizApp.Fascade
 {
-    public class GameFascade
+    public partial class GameFascade
     {
-        public List<string> Errors { get; private set; }
-
-        public readonly Game quizGame;
-
-        public Quiz SelectedQuiz { get; private set; }
-
-        private Question selectedQuestion = null;
-
         public GameFascade(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
             Errors = new List<string>();
@@ -27,38 +17,6 @@ namespace QuizApp
         {
             Errors = new List<string>();
             quizGame = new Game(gameConfiguration);
-        }
-
-        public GameConfiguration GetGameConfiguration() => quizGame.gameConfiguration;
-
-        public List<Quiz> GetQuizes()
-        {
-            if (!quizGame.AnyQuizExist())
-            {
-                Errors.Add("No quiz exist!");
-            }
-            return quizGame.GetAllQuizes();
-        }
-
-        public bool IsQuizSelected() => SelectedQuiz != null;
-
-        public bool IsQuestionSelected() => selectedQuestion != null;
-
-        public bool AnyQuizExist() => quizGame.AnyQuizExist();
-
-        public bool ExistCorrectAnswer()
-        {
-            if (selectedQuestion == null)
-            {
-                throw new QuizIsNotSelectedException();
-            }
-            return selectedQuestion.ExistCorrectAnswer();
-        }
-
-        public bool ExistCorrectAnswer(int questionIndex)
-        {
-            var questionToCheck = SelectedQuiz.GetQuestion(questionIndex).ExistCorrectAnswer();
-            return questionToCheck;
         }
 
         public void ClearErrors()
@@ -95,7 +53,7 @@ namespace QuizApp
 
         public void SelectQuiz(Quiz quiz)
         {
-            if (quiz.CanBeSelected(quizGame) 
+            if (quiz.CanBeSelected(quizGame)
                 && GetQuizes().Contains(quiz))
             {
                 SelectedQuiz = quiz;
@@ -114,7 +72,7 @@ namespace QuizApp
             }
 
             this.SelectedQuiz = selectedQuiz;
-            var newQuestion  = this.SelectedQuiz.CreateNewQuestion(questionTitle);
+            var newQuestion = this.SelectedQuiz.CreateNewQuestion(questionTitle);
 
             selectedQuestion = newQuestion;
             return newQuestion;
@@ -142,6 +100,5 @@ namespace QuizApp
         {
             selectedQuestion.CreateNewAnswer(text);
         }
-
     }
 }

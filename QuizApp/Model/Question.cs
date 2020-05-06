@@ -22,7 +22,10 @@ namespace QuizApp.Model
             answers = new List<Answer>();
         }
 
-        public Quiz GetMyQuiz() => _quiz;
+        public Quiz GetMyQuiz()
+        {
+            return _quiz;
+        }
 
         public List<Answer> GetAnswers()
         {
@@ -34,9 +37,15 @@ namespace QuizApp.Model
             return answers;
         }
 
-        public bool ExistCorrectAnswer() => answers.Select(x => x).Where(x => x.IsCorrect == true).Count() == 1;
+        public bool ExistCorrectAnswer()
+        {
+            return answers.Select(x => x).Where(x => x.IsCorrect == true).Count() == 1;
+        }
 
-        public bool ExistSelectedAnswer() => answers.Select(x => x).Where(x => x.IsSelected == true).Count() == 1;
+        public bool ExistSelectedAnswer()
+        {
+            return answers.Select(x => x).Where(x => x.IsSelected == true).Count() == 1;
+        }
 
         public Answer CreateNewAnswer(string text)
         {
@@ -52,6 +61,11 @@ namespace QuizApp.Model
             answers.Add(answerToAdd);
 
             return answerToAdd;
+        }
+
+        public void SetAllAnswersDefault()
+        {
+            answers.Where(x => x.IsSelected == true).ToList().ForEach(x => x.UnSelectThisAnswer());
         }
 
         public void ShowAnswers()
@@ -71,7 +85,7 @@ namespace QuizApp.Model
             string input = Console.ReadLine();
             int correctAnswerIndex = 0;
 
-            while (!int.TryParse(input, out correctAnswerIndex) 
+            while (!int.TryParse(input, out correctAnswerIndex)
                  || correctAnswerIndex - 1 > answers.Count() - 1)
             {
                 Console.Clear();
@@ -80,6 +94,16 @@ namespace QuizApp.Model
             }
 
             answers[correctAnswerIndex - 1].IsCorrect = true;
+        }
+
+        public void SelectAnswer(int answerIndex)
+        {
+            if (ExistSelectedAnswer())
+            {
+                Console.WriteLine("You cannot select twice");
+                return;
+            }
+            answers[answerIndex].SelectThisAnswer();
         }
     }
 }

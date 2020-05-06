@@ -38,8 +38,25 @@ namespace QuizApp.Fascade
 
         public void SelectQuiz(int quizIndex)
         {
-            var quizToSelect = _quizGame.GetQuiz(quizIndex);
-            _quizGame.SelectQuiz(quizToSelect);
+            try
+            {
+                var quizToSelect = _quizGame.GetQuiz(quizIndex);
+                _quizGame.SelectQuiz(quizToSelect);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to continue");
+                Console.ReadLine();
+                return;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to continue");
+                Console.ReadLine();
+                return;
+            }
         }
 
         public void SelectQuiz(Quiz quiz)

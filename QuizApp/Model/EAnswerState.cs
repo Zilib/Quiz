@@ -4,7 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizApp
+namespace QuizApp.Model
 {
-   
+    public enum EAnswerState
+    {
+        Correct,
+        Incorrect,
+        Normal
+    }
 }

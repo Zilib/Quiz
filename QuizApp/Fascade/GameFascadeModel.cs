@@ -13,7 +13,10 @@ namespace QuizApp.Fascade
 
         public List<string> Errors { get; private set; }
 
-        public GameConfiguration GetGameConfiguration() => _quizGame.gameConfiguration;
+        public GameConfiguration GetGameConfiguration()
+        {
+            return _quizGame.gameConfiguration;
+        }
 
         public List<Quiz> GetQuizes()
         {
@@ -25,10 +28,28 @@ namespace QuizApp.Fascade
             return _quizGame.GetAllQuizes();
         }
 
-        public bool IsQuizSelected() => _selectedQuiz != null;
+        public bool IsQuizSelected() 
+        {
+            return _selectedQuiz != null;
+        }
 
-        public bool IsQuestionSelected() => _selectedQuestion != null;
+        public bool IsQuestionSelected() 
+        {
+            return _selectedQuestion != null;
+        }
 
-        public bool AnyQuizExist() => _quizGame.AnyQuizExist();
+        public bool AnyQuizExist()
+        {
+           return _quizGame.AnyQuizExist();
+        }
+
+        public Quiz GetCurrentQuiz()
+        {
+            if (!IsQuizSelected())
+            {
+                throw new NullReferenceException();
+            }
+            return _selectedQuiz;
+        }
     }
 }

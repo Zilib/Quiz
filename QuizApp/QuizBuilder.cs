@@ -78,7 +78,7 @@ namespace QuizApp
                         string answerText = Console.ReadLine();
                         _gameFascade.CreateNewAnswer(newQuestion, answerText);
                     }
-
+                    // todo move it from controller
                     newQuestion.SelectCorrectAnswer();
                 }
                 catch (Exception ex)

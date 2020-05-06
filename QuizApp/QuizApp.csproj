@@ -45,6 +45,8 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\EAnswerState.cs" />
+    <Compile Include="View\GameView.cs" />
     <Compile Include="Exceptions\IncorrectInputException.cs" />
     <Compile Include="Exceptions\QuizIsNotSelectedException.cs" />
     <Compile Include="Fascade\GameFascadeController.cs" />
@@ -58,7 +60,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuizBuilder.cs" />
-    <Compile Include="View\Game.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,5 +1,6 @@
 ﻿using QuizApp.Fascade;
 using QuizApp.Model;
+using QuizApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,13 +51,15 @@ namespace QuizApp
 
         private static bool MenuSelect(string answer, GameFascade fascade)
         {
+            GameView view = new GameView(fascade);
+
             QuizBuilder quizBuilder = new QuizBuilder(fascade);
             switch (answer)
             {
                 case "1":
                     try
                     {
-                        ShowQuizesList(fascade.GetQuizes());
+                        view.PlayQuiz();
                     }
                     catch (Exception ex)
                     {

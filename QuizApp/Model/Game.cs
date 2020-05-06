@@ -51,8 +51,6 @@ namespace QuizApp.Model
             quiz = selectedQuiz;
         }
 
-        public Question GetCurrentQuestion() => selectedQuestion;
-
         public void SelectQuiz(Quiz quizToSelect)
         {
             if (!quizToSelect.CanBeSelected(this) && quizes.Contains(quizToSelect))
@@ -62,6 +60,7 @@ namespace QuizApp.Model
 
             selectedQuiz = quizToSelect;
             selectedQuestion = selectedQuiz.GetQuestion(0);
+            selectedQuestion.SetAllAnswersDefault();
         }
 
         public Quiz CreateNewQuiz(string title)

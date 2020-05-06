@@ -20,17 +20,40 @@ namespace QuizApp.Model
             Text = text;
         }
 
+        public bool IsUserAnswerCorrect()
+        {
+            return IsCorrect == IsSelected;
+        }
         public override string ToString()
         {
             return Text;
         }
         public void SelectThisAnswer()
         {
-            if (!_question.ExistSelectedAnswer())
+            if (_question.ExistSelectedAnswer())
             {
                 throw new IncorrectInputException("Answer is already selected!");
             }
             IsSelected = true;
+        }
+        public void UnSelectThisAnswer()
+        {
+            IsSelected = false;
+        }
+        public EAnswerState GetState()
+        {
+            if (IsCorrect == true && IsSelected == true)
+            {
+                return EAnswerState.Correct;
+            }
+            else if (IsCorrect == false && IsSelected == true)
+            {
+                return EAnswerState.Incorrect;
+            }
+            else
+            {
+                return EAnswerState.Normal;
+            }
         }
     }
 }

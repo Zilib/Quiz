@@ -8,7 +8,6 @@ namespace QuizApp.Model
     public class Game
     {
         private Quiz selectedQuiz = null;
-        private Question selectedQuestion = null;
 
         public readonly GameConfiguration gameConfiguration;
         private List<Quiz> quizes;
@@ -59,8 +58,17 @@ namespace QuizApp.Model
             }
 
             selectedQuiz = quizToSelect;
-            selectedQuestion = selectedQuiz.GetQuestion(0);
-            selectedQuestion.SetAllAnswersDefault();
+            SetAllDefaults();
+        }
+
+        private void SetAllDefaults()
+        {
+            if (selectedQuiz == null)
+            {
+                throw new QuizIsNotSelectedException();
+            }
+            var quizQuestions = selectedQuiz.GetQuestions();
+            quizQuestions.ForEach(x => x.SetAllAnswersDefault());
         }
 
         public Quiz CreateNewQuiz(string title)

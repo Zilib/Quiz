@@ -8,7 +8,6 @@ namespace QuizApp.Fascade
     public partial class GameFascade
     {
         private readonly Game _quizGame = null;
-        private Question _selectedQuestion = null;
         private Quiz _selectedQuiz = null;
 
         public List<string> Errors { get; private set; }
@@ -31,11 +30,6 @@ namespace QuizApp.Fascade
         public bool IsQuizSelected() 
         {
             return _selectedQuiz != null;
-        }
-
-        public bool IsQuestionSelected() 
-        {
-            return _selectedQuestion != null;
         }
 
         public bool AnyQuizExist()

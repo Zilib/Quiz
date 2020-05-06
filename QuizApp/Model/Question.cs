@@ -37,6 +37,11 @@ namespace QuizApp.Model
             return answers;
         }
 
+        public Answer GetAnswer(int answerIndex)
+        {
+            return answers[answerIndex];
+        }
+
         public bool ExistCorrectAnswer()
         {
             return answers.Select(x => x).Where(x => x.IsCorrect == true).Count() == 1;
@@ -77,23 +82,12 @@ namespace QuizApp.Model
             }
         }
 
-        public void SelectCorrectAnswer()
+        public void SelectCorrectAnswer(Answer correctAnswer)
         {
-            Console.Clear();
-            ShowAnswers();
-
-            string input = Console.ReadLine();
-            int correctAnswerIndex = 0;
-
-            while (!int.TryParse(input, out correctAnswerIndex)
-                 || correctAnswerIndex - 1 > answers.Count() - 1)
+            if (answers.Contains(correctAnswer))
             {
-                Console.Clear();
-                Console.WriteLine("Index of answer is incorrect! Please input index again!");
-                ShowAnswers();
+                correctAnswer.IsCorrect = true;
             }
-
-            answers[correctAnswerIndex - 1].IsCorrect = true;
         }
 
         public void SelectAnswer(int answerIndex)

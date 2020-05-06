@@ -71,10 +71,8 @@ namespace QuizApp.Fascade
                 throw new ArgumentOutOfRangeException();
             }
 
-            _selectedQuiz.CreateNewQuestion(questionTitle);
-            _selectedQuestion = _selectedQuiz.GetSelectedQuestion();
-
-            return _selectedQuestion;
+            var newQuestion = _selectedQuiz.CreateNewQuestion(questionTitle);
+            return newQuestion;
         }
 
         public Question CreateNewQuestion(string questionTitle)
@@ -84,9 +82,8 @@ namespace QuizApp.Fascade
                 throw new QuizIsNotSelectedException();
             }
 
-            _selectedQuiz.CreateNewQuestion(questionTitle); ;
-            _selectedQuestion = _selectedQuiz.GetSelectedQuestion();
-            return _selectedQuestion;
+            var newQuestion = _selectedQuiz.CreateNewQuestion(questionTitle);
+            return newQuestion;
         }
 
         public void CreateNewAnswer(Question selectedQuestion, string text)
@@ -94,11 +91,9 @@ namespace QuizApp.Fascade
             selectedQuestion.CreateNewAnswer(text);
         }
 
-        public void CreateNewAnswer(string text)
+        public bool RemoveSelectedQuiz()
         {
-            _selectedQuestion.CreateNewAnswer(text);
+            return _quizGame.RemoveQuiz(_selectedQuiz);
         }
-
-        public bool RemoveSelectedQuiz() => _quizGame.RemoveQuiz(_selectedQuiz);
     }
 }

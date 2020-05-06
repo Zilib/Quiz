@@ -83,21 +83,5 @@ namespace QuizApp
             }
             return true;
         }
-
-        private static void ShowQuizesList(List<Quiz> quizes)
-        {
-            for (int i = 0; i < quizes.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}]. {quizes[i].Title}");
-            }
-            Console.ReadLine();
-        }
-
-        private static void CreateNewQuiz(GameFascade fascade)
-        {
-            string quizTitle = Console.ReadLine();
-            fascade.CreateNewQuiz(quizTitle);
-            return;
-        }
     }
 }

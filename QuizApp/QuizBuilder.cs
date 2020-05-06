@@ -79,7 +79,7 @@ namespace QuizApp
                         _gameFascade.CreateNewAnswer(newQuestion, answerText);
                     }
                     // todo move it from controller
-                    newQuestion.SelectCorrectAnswer();
+                    SelectCorrectAnswer(newQuestion);
                 }
                 catch (Exception ex)
                 {
@@ -90,6 +90,28 @@ namespace QuizApp
             }
 
             return this;
+        }
+
+        private static void SelectCorrectAnswer(Question question)
+        {
+            var answers = question.GetAnswers();
+            for (int i = 0; i < answers.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}]. {answers[i].Text}");
+            }
+
+            int intInput;
+            while (!int.TryParse(Console.ReadLine(), out intInput))
+            {
+                Console.Clear();
+                Console.WriteLine("Incorrect answer's index!");
+                for (int i = 0; i < answers.Count; i++)
+                {
+                    Console.WriteLine($"[{i + 1}]. {answers[i].Text}");
+                }
+            }
+            var answerToSetCorrect = question.GetAnswer(intInput - 1);
+            question.SelectCorrectAnswer(answerToSetCorrect);
         }
     }
 }

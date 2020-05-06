@@ -8,9 +8,7 @@ namespace QuizApp.Model
     {
         public string Title { get; set; }
         private List<Question> questions;
-
         private readonly Game _game;
-        private Question selectedQuestion;
 
         public Quiz(string title, Game game)
         {
@@ -18,19 +16,17 @@ namespace QuizApp.Model
             Title = title;
             questions = new List<Question>();
         }
+
         public Question GetQuestion(int questionIndex)
         {
             return questions[questionIndex];
         }
+
         public List<Question> GetQuestions()
         {
             return questions;
         }
-        public Question GetSelectedQuestion()
-        {
-            return selectedQuestion;
-        }
-        public void CreateNewQuestion(string title)
+        public Question CreateNewQuestion(string title)
         {
             if (title.Length == 0 || title == null)
             {
@@ -41,11 +37,9 @@ namespace QuizApp.Model
                 throw new IncorrectInputException("You cannot create more questions!");
             }
 
-            var questionToAdd = new Question(this, title, _game);
-            questions.Add(questionToAdd);
-            selectedQuestion = questionToAdd;
-
-
+            var newQuestion = new Question(this, title, _game);
+            questions.Add(newQuestion);
+            return newQuestion;
         }
         public bool CanBeSelected(Game game)
         {

@@ -12,14 +12,13 @@ namespace QuizApp.Model
 
         public string Title { get; set; }
 
-        private List<Answer> answers;
+        public List<Answer> answers { get; private set; } = new List<Answer>();
 
         public Question(Quiz quiz, string title, Game game)
         {
             _quizGame = game;
             Title = title;
             _quiz = quiz;
-            answers = new List<Answer>();
         }
 
         public Quiz GetMyQuiz()
@@ -86,6 +85,7 @@ namespace QuizApp.Model
             if (ExistSelectedAnswer())
             {
                 Console.WriteLine("You cannot select twice");
+                Console.ReadLine();
                 return;
             }
             answers[answerIndex].SelectThisAnswer();

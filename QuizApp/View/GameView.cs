@@ -16,13 +16,7 @@ namespace QuizApp.Views
 
         public void PlayQuiz()
         {
-            SelectQuiz();
-            if (!_gameFascade.IsQuizSelected())
-            {
-                Console.WriteLine("Quiz must be selected first!");
-                return;
-            }
-            var currentQuiz = _gameFascade.GetCurrentQuiz();
+            var currentQuiz = SelectQuiz();
             var questions = currentQuiz.GetQuestions();
            
             foreach (var question in questions)
@@ -98,21 +92,9 @@ namespace QuizApp.Views
             question.SelectAnswer(answerIndex - 1);
         }
 
-        private void SelectQuiz()
+        private Quiz SelectQuiz()
         {
-            List<Quiz> quizes; 
-
-            try
-            {
-                quizes = _gameFascade.GetQuizes();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Press any key to continue");
-                Console.ReadLine();
-                return;
-            }
+            List<Quiz> quizes = _gameFascade.GetQuizes(true); 
 
             Console.WriteLine("Select quiz!");
             for (int i = 0; i < quizes.Count; i++)
@@ -122,11 +104,13 @@ namespace QuizApp.Views
             Console.WriteLine();
             if (int.TryParse(Console.ReadLine(), out int input))
             {
-                _gameFascade.SelectQuiz(input - 1);
+                var quizToReturn = quizes[input - 1];
+                return quizes[input - 1];
             }
             else
             {
                 Console.WriteLine("Incorrect number!");
+                return null;
             }
         }
     }

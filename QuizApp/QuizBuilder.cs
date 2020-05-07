@@ -21,26 +21,15 @@ namespace QuizApp
             Console.Clear();
             Console.WriteLine("Input your quiz name: ");
             string quizTitle = Console.ReadLine() ?? "";
+            var newQuiz = _gameFascade.CreateNewQuiz(quizTitle);
 
-            try
-            {
-                _gameFascade.CreateNewQuiz(quizTitle);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                Console.ReadLine();
-            }
+            BuildQuestions(newQuiz);
 
             return this;
         }
 
-        public QuizBuilder BuildQuestions()
+        public QuizBuilder BuildQuestions(Quiz quizToBuild)
         {
-            if (!_gameFascade.IsQuizSelected())
-            {
-                throw new QuizIsNotSelectedException();
-            }
             Console.Clear();
             Console.WriteLine("How many questions would you like to have?");
             Console.WriteLine($"Minimum amount of questions: {_gameConfiguration.minQuestions}");
@@ -70,7 +59,7 @@ namespace QuizApp
 
                 try
                 {
-                    var newQuestion  = _gameFascade.CreateNewQuestion(questionTitle);
+                    var newQuestion  = _gameFascade.CreateNewQuestion(quizToBuild, questionTitle);
 
                     for (int j = 0; j < _gameConfiguration.numberOfAnswers; j++)
                     {
@@ -84,7 +73,7 @@ namespace QuizApp
                 }
                 catch (Exception ex)
                 {
-                    _gameFascade.RemoveSelectedQuiz();
+                    _gameFascade.RemoveSelectedQuiz(quizToBuild);
                     Console.WriteLine(ex);
                     Console.ReadLine();
                 }

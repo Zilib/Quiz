@@ -72,8 +72,7 @@ namespace QuizApp
                 case "2":
                     try
                     {
-                        quizBuilder.BuildQuiz()
-                            .BuildQuestions();
+                        quizBuilder.BuildQuiz();
                     }
                     catch (Exception ex)
                     {

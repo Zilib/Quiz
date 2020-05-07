@@ -43,6 +43,11 @@ namespace QuizApp.Model
             return newQuestion;
         }
 
+        public void SetAllDefault()
+        {
+            questions.ForEach(x => x.SetAllAnswersDefault());
+        }
+
         public bool CanBeSelected(Game game)
         {
          return game == _game;

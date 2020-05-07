@@ -2,13 +2,13 @@
 using QuizApp.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuizApp.Fascade
 {
     public partial class GameFascade
     {
         private readonly Game _quizGame = null;
-        private Quiz _selectedQuiz = null;
 
         public List<string> Errors { get; private set; }
 
@@ -17,33 +17,17 @@ namespace QuizApp.Fascade
             return _quizGame.gameConfiguration;
         }
 
-        public List<Quiz> GetQuizes()
+        public List<Quiz> GetQuizes(bool setAllDefault)
         {
-            if (!_quizGame.AnyQuizExist())
+            if (!_quizGame.Quizes.Any())
             {
                 throw new Exception("No quiz exist.");
             }
-
-            return _quizGame.GetAllQuizes();
-        }
-
-        public bool IsQuizSelected() 
-        {
-            return _selectedQuiz != null;
-        }
-
-        public bool AnyQuizExist()
-        {
-           return _quizGame.AnyQuizExist();
-        }
-
-        public Quiz GetCurrentQuiz()
-        {
-            if (!IsQuizSelected())
+            if (setAllDefault)
             {
-                throw new NullReferenceException();
+                _quizGame.Quizes.ForEach(x => x.SetAllDefault());
             }
-            return _selectedQuiz;
+            return _quizGame.Quizes;
         }
     }
 }

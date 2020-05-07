@@ -7,28 +7,23 @@ namespace QuizApp.Model
 {
     public class Game
     {
-        private Quiz selectedQuiz = null;
+        public Quiz selectedQuiz { get; private set; }
 
         public readonly GameConfiguration gameConfiguration;
-        private List<Quiz> quizes;
+
+        public List<Quiz> Quizes { get; private set; }
 
         public Game(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
             gameConfiguration = new GameConfiguration(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
-            quizes = new List<Quiz>();
+            Quizes = new List<Quiz>();
         }
 
         public Game(GameConfiguration gameConfiguration)
         {
             this.gameConfiguration = gameConfiguration;
-            quizes = new List<Quiz>();
+            Quizes = new List<Quiz>();
         }
-
-        public List<Quiz> GetAllQuizes() => quizes;
-
-        public bool AnyQuizExist() => quizes.Any();
-
-        public Quiz GetQuiz(int quizIndex) => quizes[quizIndex];
 
         public Quiz GetCurrentQuiz()
         {
@@ -37,25 +32,14 @@ namespace QuizApp.Model
 
         public Quiz SelectQuiz(Quiz quizToSelect)
         {
-            if (!quizToSelect.CanBeSelected(this) && quizes.Contains(quizToSelect))
+            if (!quizToSelect.CanBeSelected(this) && Quizes.Contains(quizToSelect))
             {
                 throw new Exception("Quiz cannot be selected");
             }
 
             selectedQuiz = quizToSelect;
-            SetAllDefaults();
 
             return selectedQuiz;
-        }
-
-        private void SetAllDefaults()
-        {
-            if (selectedQuiz == null)
-            {
-                throw new QuizIsNotSelectedException();
-            }
-            var quizQuestions = selectedQuiz.GetQuestions();
-            quizQuestions.ForEach(x => x.SetAllAnswersDefault());
         }
 
         public Quiz CreateNewQuiz(string title)
@@ -66,16 +50,17 @@ namespace QuizApp.Model
             }
 
             selectedQuiz = new Quiz(title, this);
-            quizes.Add(selectedQuiz);
+            Quizes.Add(selectedQuiz);
 
             return selectedQuiz;
         }
 
         public bool RemoveQuiz(Quiz quizToRemove)
+
         {
-            if (quizes.Contains(quizToRemove))
+            if (Quizes.Contains(quizToRemove))
             {
-                quizes.Remove(quizToRemove);
+                Quizes.Remove(quizToRemove);
                 return true;
             }
             return false;

@@ -11,14 +11,12 @@ namespace QuizApp.Fascade
         {
             Errors = new List<string>();
             _quizGame = new Game(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
-            _selectedQuiz = _quizGame.GetCurrentQuiz();
         }
 
         public GameFascade(GameConfiguration gameConfiguration)
         {
             Errors = new List<string>();
             _quizGame = new Game(gameConfiguration);
-            _selectedQuiz = _quizGame.GetCurrentQuiz();
         }
 
         public void ClearErrors()
@@ -26,59 +24,14 @@ namespace QuizApp.Fascade
             Errors.Clear();
         }
 
-        public void CreateNewQuiz(string title)
+        public Quiz CreateNewQuiz(string title)
         {
-            _selectedQuiz = _quizGame.CreateNewQuiz(title);
+            return _quizGame.CreateNewQuiz(title);
         }
 
-        public void SelectQuiz(int quizIndex)
+        public Question CreateNewQuestion(Quiz currentQuiz, string questionTitle)
         {
-            try
-            {
-                var quizToSelect = _quizGame.GetQuiz(quizIndex);
-                _quizGame.SelectQuiz(quizToSelect);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Press any key to continue");
-                Console.ReadLine();
-                return;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Press any key to continue");
-                Console.ReadLine();
-                return;
-            }
-        }
-
-        public void SelectQuiz(Quiz quiz)
-        {
-            _quizGame.SelectQuiz(quiz);
-        }
-
-        public Question CreateNewQuestion(Quiz selectedQuiz, string questionTitle)
-        {
-            if (!GetQuizes().Contains(selectedQuiz))
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            var newQuestion = _selectedQuiz.CreateNewQuestion(questionTitle);
-            return newQuestion;
-        }
-
-        public Question CreateNewQuestion(string questionTitle)
-        {
-            if (_selectedQuiz == null)
-            {
-                throw new QuizIsNotSelectedException();
-            }
-
-            var newQuestion = _selectedQuiz.CreateNewQuestion(questionTitle);
-            return newQuestion;
+            return currentQuiz.CreateNewQuestion(questionTitle);
         }
 
         public Answer CreateNewAnswer(Question selectedQuestion, string text)
@@ -86,9 +39,9 @@ namespace QuizApp.Fascade
             return selectedQuestion.CreateNewAnswer(text);
         }
 
-        public bool RemoveSelectedQuiz()
+        public bool RemoveSelectedQuiz(Quiz quizToRemove)
         {
-            return _quizGame.RemoveQuiz(_selectedQuiz);
+            return _quizGame.RemoveQuiz(quizToRemove);
         }
     }
 }

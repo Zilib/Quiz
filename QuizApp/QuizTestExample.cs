@@ -22,9 +22,9 @@ namespace QuizApp
 
         public void CreateTestQuiz()
         {
-            _gameFascade.CreateNewQuiz("Mój pierwszy testowy quiz");
+            var newQuiz = _gameFascade.CreateNewQuiz("Mój pierwszy testowy quiz");
 
-            var currentQuestion  = _gameFascade.CreateNewQuestion("Jak ma na imię autor aplikacji?");
+            var currentQuestion  = _gameFascade.CreateNewQuestion(newQuiz, "Jak ma na imię autor aplikacji?");
 
             _gameFascade.CreateNewAnswer(currentQuestion, "Adam");
             var correctAnswer = _gameFascade.CreateNewAnswer(currentQuestion, "Adrian");
@@ -33,7 +33,7 @@ namespace QuizApp
 
             currentQuestion.SelectCorrectAnswer(correctAnswer);
 
-            currentQuestion = _gameFascade.CreateNewQuestion("Z jakiego miasta pochodzi autor aplikacji?");
+            currentQuestion = _gameFascade.CreateNewQuestion(newQuiz, "Z jakiego miasta pochodzi autor aplikacji?");
 
             correctAnswer = _gameFascade.CreateNewAnswer(currentQuestion, "Lublin");
             _gameFascade.CreateNewAnswer(currentQuestion, "Warszawa");
@@ -42,7 +42,7 @@ namespace QuizApp
 
             currentQuestion.SelectCorrectAnswer(correctAnswer);
 
-            currentQuestion = _gameFascade.CreateNewQuestion("Ile lat ma autor aplikacji?");
+            currentQuestion = _gameFascade.CreateNewQuestion(newQuiz, "Ile lat ma autor aplikacji?");
 
             _gameFascade.CreateNewAnswer(currentQuestion, "18");
             _gameFascade.CreateNewAnswer(currentQuestion, "19");

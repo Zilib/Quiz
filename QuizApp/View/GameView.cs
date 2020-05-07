@@ -31,6 +31,13 @@ namespace QuizApp.Views
                 SelectAnswer(question);
             }
 
+            ShowUserAnswers(questions);
+            Console.ReadLine();
+        }
+
+        private void ShowUserAnswers(List<Question> questions)
+        {
+            Console.Clear();
             foreach (var question in questions)
             {
                 Console.WriteLine(question.Title);
@@ -43,7 +50,7 @@ namespace QuizApp.Views
                     return;
                 }
                 var answers = question.GetAnswers();
-                foreach(var answer in answers)
+                foreach (var answer in answers)
                 {
                     if (answer.GetState() == EAnswerState.Incorrect)
                     {
@@ -63,7 +70,6 @@ namespace QuizApp.Views
                     }
                 }
             }
-            Console.ReadLine();
         }
 
         private void SelectAnswer(Question question)
@@ -71,6 +77,7 @@ namespace QuizApp.Views
             int answerIndex;
             var answers = question.GetAnswers();
 
+            Console.Clear();
             Console.WriteLine("Select correct answer!");
             for (int i = 0; i < answers.Count; i++)
             {

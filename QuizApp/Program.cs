@@ -59,6 +59,7 @@ namespace QuizApp
                 case "1":
                     try
                     {
+                        Console.Clear();
                         view.PlayQuiz();
                     }
                     catch (Exception ex)

@@ -1,7 +1,7 @@
 ﻿using QuizApp.Model;
 using QuizApp.Fascade;
 using System;
-
+using QuizApp.Exceptions;
 
 namespace QuizApp
 {
@@ -18,6 +18,7 @@ namespace QuizApp
 
         public QuizBuilder BuildQuiz()
         {
+            Console.Clear();
             Console.WriteLine("Input your quiz name: ");
             string quizTitle = Console.ReadLine() ?? "";
 
@@ -38,10 +39,9 @@ namespace QuizApp
         {
             if (!_gameFascade.IsQuizSelected())
             {
-                Console.ReadLine();
-                return this;
+                throw new QuizIsNotSelectedException();
             }
-
+            Console.Clear();
             Console.WriteLine("How many questions would you like to have?");
             Console.WriteLine($"Minimum amount of questions: {_gameConfiguration.minQuestions}");
             Console.WriteLine($"Maximum amount of questions: {_gameConfiguration.maxQuestions}");
@@ -64,6 +64,7 @@ namespace QuizApp
 
             for (int i = 0; i < amountOfQuestion; i++)
             {
+                Console.Clear();
                 Console.WriteLine("Insert title of question!");
                 string questionTitle = Console.ReadLine();
 
@@ -94,6 +95,8 @@ namespace QuizApp
 
         private static void SelectCorrectAnswer(Question question)
         {
+            Console.Clear();
+            Console.WriteLine("Which answer is correct?");
             var answers = question.GetAnswers();
             for (int i = 0; i < answers.Count; i++)
             {

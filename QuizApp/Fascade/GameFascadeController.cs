@@ -86,9 +86,9 @@ namespace QuizApp.Fascade
             return newQuestion;
         }
 
-        public void CreateNewAnswer(Question selectedQuestion, string text)
+        public Answer CreateNewAnswer(Question selectedQuestion, string text)
         {
-            selectedQuestion.CreateNewAnswer(text);
+            return selectedQuestion.CreateNewAnswer(text);
         }
 
         public bool RemoveSelectedQuiz()

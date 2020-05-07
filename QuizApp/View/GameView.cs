@@ -27,7 +27,8 @@ namespace QuizApp.Views
            
             foreach (var question in questions)
             {
-                Console.WriteLine(question.Title);
+                Console.Clear();
+                Console.WriteLine(question.Title + "\n");
                 SelectAnswer(question);
             }
 
@@ -40,6 +41,7 @@ namespace QuizApp.Views
             Console.Clear();
             foreach (var question in questions)
             {
+                Console.WriteLine();
                 Console.WriteLine(question.Title);
                 Console.WriteLine();
 
@@ -77,7 +79,6 @@ namespace QuizApp.Views
             int answerIndex;
             var answers = question.GetAnswers();
 
-            Console.Clear();
             Console.WriteLine("Select correct answer!");
             for (int i = 0; i < answers.Count; i++)
             {

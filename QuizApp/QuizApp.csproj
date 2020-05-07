@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\EAnswerState.cs" />
+    <Compile Include="QuizTestExample.cs" />
     <Compile Include="View\GameView.cs" />
     <Compile Include="Exceptions\IncorrectInputException.cs" />
     <Compile Include="Exceptions\QuizIsNotSelectedException.cs" />

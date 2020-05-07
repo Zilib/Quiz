@@ -73,15 +73,6 @@ namespace QuizApp.Model
             answers.Where(x => x.IsSelected == true).ToList().ForEach(x => x.UnSelectThisAnswer());
         }
 
-        public void ShowAnswers()
-        {
-            Console.WriteLine("Select correct answer:");
-            for (int i = 0; i < answers.Count(); i++)
-            {
-                Console.WriteLine($"[{i + 1}]. {answers[i]}");
-            }
-        }
-
         public void SelectCorrectAnswer(Answer correctAnswer)
         {
             if (answers.Contains(correctAnswer))

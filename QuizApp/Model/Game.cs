@@ -28,21 +28,6 @@ namespace QuizApp.Model
 
         public bool AnyQuizExist() => quizes.Any();
 
-        public void AddNewQuiz(Quiz quiz)
-        {
-            if (quiz == null)
-            {
-                throw new NullReferenceException();
-            }    
-            if (quiz.Title == string.Empty)
-            {
-                throw new IncorrectInputException("Quiz title cannot be null");
-            }
-            // todo more validation
-            quizes.Add(quiz);
-            selectedQuiz = quizes.Last();
-        }
-
         public Quiz GetQuiz(int quizIndex) => quizes[quizIndex];
 
         public Quiz GetCurrentQuiz()
@@ -50,7 +35,7 @@ namespace QuizApp.Model
             return selectedQuiz;
         }
 
-        public void SelectQuiz(Quiz quizToSelect)
+        public Quiz SelectQuiz(Quiz quizToSelect)
         {
             if (!quizToSelect.CanBeSelected(this) && quizes.Contains(quizToSelect))
             {
@@ -59,6 +44,8 @@ namespace QuizApp.Model
 
             selectedQuiz = quizToSelect;
             SetAllDefaults();
+
+            return selectedQuiz;
         }
 
         private void SetAllDefaults()

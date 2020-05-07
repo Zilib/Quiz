@@ -31,11 +31,6 @@ namespace QuizApp.Fascade
             _selectedQuiz = _quizGame.CreateNewQuiz(title);
         }
 
-        public void AddNewQuiz(Quiz quizToAdd)
-        {
-            _quizGame.AddNewQuiz(quizToAdd);
-        }
-
         public void SelectQuiz(int quizIndex)
         {
             try

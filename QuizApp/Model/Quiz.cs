@@ -26,6 +26,7 @@ namespace QuizApp.Model
         {
             return questions;
         }
+
         public Question CreateNewQuestion(string title)
         {
             if (title.Length == 0 || title == null)
@@ -41,6 +42,7 @@ namespace QuizApp.Model
             questions.Add(newQuestion);
             return newQuestion;
         }
+
         public bool CanBeSelected(Game game)
         {
          return game == _game;

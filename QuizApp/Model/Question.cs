@@ -54,7 +54,7 @@ namespace QuizApp.Model
 
         public Answer CreateNewAnswer(string text)
         {
-            if (text == string.Empty || text == null)
+            if (string.IsNullOrEmpty(text))
             {
                 throw new IncorrectInputException("Answer text cannot be null");
             }

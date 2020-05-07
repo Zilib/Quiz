@@ -11,14 +11,14 @@ namespace QuizApp.Fascade
         {
             Errors = new List<string>();
             _quizGame = new Game(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
-            _quizGame.GetCurrentQuizRef(ref _selectedQuiz);
+            _selectedQuiz = _quizGame.GetCurrentQuiz();
         }
 
         public GameFascade(GameConfiguration gameConfiguration)
         {
             Errors = new List<string>();
             _quizGame = new Game(gameConfiguration);
-            _quizGame.GetCurrentQuizRef(ref _selectedQuiz);
+            _selectedQuiz = _quizGame.GetCurrentQuiz();
         }
 
         public void ClearErrors()

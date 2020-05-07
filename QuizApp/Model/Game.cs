@@ -45,9 +45,9 @@ namespace QuizApp.Model
 
         public Quiz GetQuiz(int quizIndex) => quizes[quizIndex];
 
-        public void GetCurrentQuizRef(ref Quiz quiz)
+        public Quiz GetCurrentQuiz()
         {
-            quiz = selectedQuiz;
+            return selectedQuiz;
         }
 
         public void SelectQuiz(Quiz quizToSelect)

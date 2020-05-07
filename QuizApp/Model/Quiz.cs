@@ -7,24 +7,13 @@ namespace QuizApp.Model
     public class Quiz
     {
         public string Title { get; set; }
-        private List<Question> questions;
-        private readonly Game _game;
+        public List<Question> Questions { get; private set; } = new List<Question>();
+        private readonly GameConfiguration _gameConfiguration;
 
-        public Quiz(string title, Game game)
+        public Quiz(GameConfiguration gameConfiguration, string title)
         {
-            _game = game;
+            _gameConfiguration = gameConfiguration;
             Title = title;
-            questions = new List<Question>();
-        }
-
-        public Question GetQuestion(int questionIndex)
-        {
-            return questions[questionIndex];
-        }
-
-        public List<Question> GetQuestions()
-        {
-            return questions;
         }
 
         public Question CreateNewQuestion(string title)
@@ -33,24 +22,19 @@ namespace QuizApp.Model
             {
                 throw new NullReferenceException();
             }
-            if (questions != null && questions.Count + 1 == _game.gameConfiguration.maxQuestions)
+            if (Questions != null && Questions.Count + 1 == _gameConfiguration.maxQuestions)
             {
                 throw new IncorrectInputException("You cannot create more questions!");
             }
 
-            var newQuestion = new Question(this, title, _game);
-            questions.Add(newQuestion);
+            var newQuestion = new Question(title, _gameConfiguration);
+            Questions.Add(newQuestion);
             return newQuestion;
         }
 
         public void SetAllDefault()
         {
-            questions.ForEach(x => x.SetAllAnswersDefault());
-        }
-
-        public bool CanBeSelected(Game game)
-        {
-         return game == _game;
+            Questions.ForEach(x => x.SetAllAnswersDefault());
         }
     }
 }

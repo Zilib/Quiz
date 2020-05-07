@@ -8,11 +8,11 @@ namespace QuizApp.Model
 {
     public class GameConfiguration
     {
-        public readonly int numberOfAnswers;
-        public readonly int minQuestions;
-        public readonly int maxQuestions;
-        public readonly int minTitleLength;
-        public readonly string saveFileName;
+        public int numberOfAnswers { get; }
+        public int minQuestions { get; }
+        public int maxQuestions { get; }
+        public int minTitleLength { get; }
+        public string saveFileName { get; }
 
         public GameConfiguration(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {

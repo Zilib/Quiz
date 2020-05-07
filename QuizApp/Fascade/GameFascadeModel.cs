@@ -12,11 +12,6 @@ namespace QuizApp.Fascade
 
         public List<string> Errors { get; private set; }
 
-        public GameConfiguration GetGameConfiguration()
-        {
-            return _quizGame.gameConfiguration;
-        }
-
         public List<Quiz> GetQuizes(bool setAllDefault)
         {
             if (!_quizGame.Quizes.Any())

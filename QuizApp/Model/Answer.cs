@@ -9,14 +9,12 @@ namespace QuizApp.Model
 {
     public sealed class Answer
     {
-        private readonly Question _question;
-        public string Text { get; set; }
+        public string Text { get; private set; }
         public bool IsCorrect { get; set; }
-        public bool IsSelected { get; private set; } = false;
+        public bool IsSelected { get; set; } 
 
-        public Answer(Question question, string text)
+        public Answer(string text)
         {
-            _question = question;
             Text = text;
         }
 
@@ -24,22 +22,17 @@ namespace QuizApp.Model
         {
             return IsCorrect == IsSelected;
         }
-        public override string ToString()
+
+        public void SetAnswerCorrect()
         {
-            return Text;
+
         }
-        public void SelectThisAnswer()
-        {
-            if (_question.ExistSelectedAnswer())
-            {
-                throw new IncorrectInputException("Answer is already selected!");
-            }
-            IsSelected = true;
-        }
-        public void UnSelectThisAnswer()
+
+        public void UnSelectAnswer()
         {
             IsSelected = false;
         }
+
         public EAnswerState GetState()
         {
             if (IsCorrect == true && IsSelected == true)
@@ -54,6 +47,11 @@ namespace QuizApp.Model
             {
                 return EAnswerState.Normal;
             }
+        }
+
+        public override string ToString()
+        {
+            return Text;
         }
     }
 }

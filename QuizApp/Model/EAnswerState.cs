@@ -8,8 +8,8 @@ namespace QuizApp.Model
 {
     public enum EAnswerState
     {
-        Correct,
-        Incorrect,
-        Normal
+        Correct = 1,
+        Incorrect = 2,
+        Normal = 4
     }
 }

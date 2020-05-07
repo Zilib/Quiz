@@ -12,12 +12,10 @@ namespace QuizApp
     public class QuizTestExample
     {
         private readonly GameFascade _gameFascade;
-        private readonly GameConfiguration _gameConfiguration;
 
         public QuizTestExample(GameFascade gameFascade)
         {
             _gameFascade = gameFascade;
-            _gameConfiguration = _gameFascade.GetGameConfiguration();
         }
 
         public void CreateTestQuiz()

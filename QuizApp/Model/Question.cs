@@ -7,48 +7,26 @@ namespace QuizApp.Model
 {
     public sealed class Question
     {
-        private readonly Quiz _quiz;
-        private readonly Game _quizGame;
+        private readonly GameConfiguration _gameConfiguration;
 
         public string Title { get; set; }
 
-        public List<Answer> answers { get; private set; } = new List<Answer>();
+        public List<Answer> Answers { get; private set; } = new List<Answer>();
 
-        public Question(Quiz quiz, string title, Game game)
+        public Question(string title, GameConfiguration gameConfiguration)
         {
-            _quizGame = game;
             Title = title;
-            _quiz = quiz;
-        }
-
-        public Quiz GetMyQuiz()
-        {
-            return _quiz;
-        }
-
-        public List<Answer> GetAnswers()
-        {
-            if (answers.Count != _quizGame.gameConfiguration.numberOfAnswers)
-            {
-                throw new ArgumentOutOfRangeException("Amount of answers is incorrect, amount of answers is: " + _quizGame.gameConfiguration.numberOfAnswers);
-            }
-
-            return answers;
-        }
-
-        public Answer GetAnswer(int answerIndex)
-        {
-            return answers[answerIndex];
+            _gameConfiguration = gameConfiguration;
         }
 
         public bool ExistCorrectAnswer()
         {
-            return answers.Select(x => x).Where(x => x.IsCorrect == true).Count() == 1;
+            return Answers.Select(x => x).Where(x => x.IsCorrect == true).Count() == 1;
         }
 
         public bool ExistSelectedAnswer()
         {
-            return answers.Select(x => x).Where(x => x.IsSelected == true).Count() == 1;
+            return Answers.Select(x => x).Where(x => x.IsSelected == true).Count() == 1;
         }
 
         public Answer CreateNewAnswer(string text)
@@ -57,38 +35,44 @@ namespace QuizApp.Model
             {
                 throw new IncorrectInputException("Answer text cannot be null");
             }
-            if (answers.Count == _quizGame.gameConfiguration.numberOfAnswers)
+            if (Answers.Count == _gameConfiguration.numberOfAnswers)
             {
                 throw new IncorrectInputException("You cannot add anymore answers!");
             }
-            Answer answerToAdd = new Answer(this, text);
-            answers.Add(answerToAdd);
+            Answer answerToAdd = new Answer(text);
+            Answers.Add(answerToAdd);
 
             return answerToAdd;
         }
 
         public void SetAllAnswersDefault()
         {
-            answers.Where(x => x.IsSelected == true).ToList().ForEach(x => x.UnSelectThisAnswer());
+            Answers.Where(x => x.IsSelected == true).ToList().ForEach(x => x.UnSelectAnswer());
         }
 
         public void SelectCorrectAnswer(Answer correctAnswer)
         {
-            if (answers.Contains(correctAnswer))
+            if (Answers.Contains(correctAnswer))
             {
                 correctAnswer.IsCorrect = true;
             }
         }
 
-        public void SelectAnswer(int answerIndex)
+        public void SelectAnswer(Answer answer)
         {
+            if (!Answers.Contains(answer))
+            {
+                Console.WriteLine("Incorrect answer");
+                Console.ReadLine();
+                return;
+            }
             if (ExistSelectedAnswer())
             {
                 Console.WriteLine("You cannot select twice");
                 Console.ReadLine();
                 return;
             }
-            answers[answerIndex].SelectThisAnswer();
+            answer.IsSelected = true;
         }
     }
 }

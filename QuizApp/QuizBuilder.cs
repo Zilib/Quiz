@@ -10,10 +10,10 @@ namespace QuizApp
         private readonly GameFascade _gameFascade;
         private readonly GameConfiguration _gameConfiguration;
 
-        public QuizBuilder(GameFascade gameFascade)
+        public QuizBuilder(GameFascade gameFascade, GameConfiguration gameConfiguration)
         {
             _gameFascade = gameFascade;
-            _gameConfiguration = gameFascade.GetGameConfiguration();
+            _gameConfiguration = gameConfiguration;
         }
 
         public QuizBuilder BuildQuiz()
@@ -86,7 +86,7 @@ namespace QuizApp
         {
             Console.Clear();
             Console.WriteLine("Which answer is correct?");
-            var answers = question.GetAnswers();
+            var answers = question.Answers;
             for (int i = 0; i < answers.Count; i++)
             {
                 Console.WriteLine($"[{i + 1}]. {answers[i].Text}");
@@ -102,7 +102,7 @@ namespace QuizApp
                     Console.WriteLine($"[{i + 1}]. {answers[i].Text}");
                 }
             }
-            var answerToSetCorrect = question.GetAnswer(intInput - 1);
+            var answerToSetCorrect = question.Answers[intInput - 1];
             question.SelectCorrectAnswer(answerToSetCorrect);
         }
     }

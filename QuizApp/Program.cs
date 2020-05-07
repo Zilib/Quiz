@@ -11,14 +11,15 @@ namespace QuizApp
     {
         static void Main(string[] args)
         {
-            GameFascade game = new GameFascade(4, 1, 4, 4, "test.txt");
+            GameConfiguration gameConfiguration = new GameConfiguration(4, 1, 4, 4, "test.txt");
+            GameFascade game = new GameFascade(gameConfiguration);
             QuizTestExample test = new QuizTestExample(game);
             test.CreateTestQuiz();
 
-            Menu(game);
+            Menu(game, gameConfiguration);
         }
 
-        private static void Menu(GameFascade fascade)
+        private static void Menu(GameFascade fascade, GameConfiguration gameConfiguration)
         {
             while(true)
             {
@@ -43,7 +44,7 @@ namespace QuizApp
                 Console.WriteLine("1. Give answer for existing quiz");
                 Console.WriteLine("2. Create your own quiz");
                 Console.WriteLine("q. Exit game");
-                if (!MenuSelect(Console.ReadLine().ToLower() ?? "0", fascade))
+                if (!MenuSelect(Console.ReadLine().ToLower() ?? "0", fascade, gameConfiguration))
                 {
                     break;
                 }
@@ -51,11 +52,11 @@ namespace QuizApp
             }
         }
 
-        private static bool MenuSelect(string answer, GameFascade fascade)
+        private static bool MenuSelect(string answer, GameFascade fascade, GameConfiguration gameConfiguration)
         {
             GameView view = new GameView(fascade);
 
-            QuizBuilder quizBuilder = new QuizBuilder(fascade);
+            QuizBuilder quizBuilder = new QuizBuilder(fascade, gameConfiguration);
             switch (answer)
             {
                 case "1":

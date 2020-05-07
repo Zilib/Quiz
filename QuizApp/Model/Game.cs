@@ -9,7 +9,7 @@ namespace QuizApp.Model
     {
         public Quiz selectedQuiz { get; private set; }
 
-        public readonly GameConfiguration gameConfiguration;
+        public GameConfiguration gameConfiguration { get; }
 
         public List<Quiz> Quizes { get; private set; }
 
@@ -25,14 +25,9 @@ namespace QuizApp.Model
             Quizes = new List<Quiz>();
         }
 
-        public Quiz GetCurrentQuiz()
-        {
-            return selectedQuiz;
-        }
-
         public Quiz SelectQuiz(Quiz quizToSelect)
         {
-            if (!quizToSelect.CanBeSelected(this) && Quizes.Contains(quizToSelect))
+            if (!Quizes.Contains(quizToSelect))
             {
                 throw new Exception("Quiz cannot be selected");
             }
@@ -49,7 +44,7 @@ namespace QuizApp.Model
                 throw new IncorrectInputException("Quiz title is not long enought.");
             }
 
-            selectedQuiz = new Quiz(title, this);
+            selectedQuiz = new Quiz(gameConfiguration, title);
             Quizes.Add(selectedQuiz);
 
             return selectedQuiz;

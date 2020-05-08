@@ -12,14 +12,14 @@ namespace QuizApp
         static void Main(string[] args)
         {
             GameConfiguration gameConfiguration = new GameConfiguration(4, 1, 4, 4, "test.txt");
-            GameFascade game = new GameFascade(gameConfiguration);
+            GameViewModel game = new GameViewModel(gameConfiguration);
             QuizTestExample test = new QuizTestExample(game);
             test.CreateTestQuiz();
 
             Menu(game, gameConfiguration);
         }
 
-        private static void Menu(GameFascade fascade, GameConfiguration gameConfiguration)
+        private static void Menu(GameViewModel fascade, GameConfiguration gameConfiguration)
         {
             while(true)
             {
@@ -52,7 +52,7 @@ namespace QuizApp
             }
         }
 
-        private static bool MenuSelect(string answer, GameFascade fascade, GameConfiguration gameConfiguration)
+        private static bool MenuSelect(string answer, GameViewModel fascade, GameConfiguration gameConfiguration)
         {
             GameView view = new GameView(fascade);
 

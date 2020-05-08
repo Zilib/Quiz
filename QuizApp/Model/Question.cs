@@ -19,15 +19,6 @@ namespace QuizApp.Model
             _gameConfiguration = gameConfiguration;
         }
 
-        public bool ExistCorrectAnswer()
-        {
-            return Answers.Select(x => x).Where(x => x.IsCorrect == true).Count() == 1;
-        }
-
-        public bool ExistSelectedAnswer()
-        {
-            return Answers.Select(x => x).Where(x => x.IsSelected == true).Count() == 1;
-        }
 
         public Answer CreateNewAnswer(string text)
         {
@@ -39,23 +30,10 @@ namespace QuizApp.Model
             {
                 throw new IncorrectInputException("You cannot add anymore answers!");
             }
-            Answer answerToAdd = new Answer(text);
-            Answers.Add(answerToAdd);
+            Answer newAnswer = new Answer(text);
+            Answers.Add(newAnswer);
 
-            return answerToAdd;
-        }
-
-        public void SetAllAnswersDefault()
-        {
-            Answers.Where(x => x.IsSelected == true).ToList().ForEach(x => x.UnSelectAnswer());
-        }
-
-        public void SelectCorrectAnswer(Answer correctAnswer)
-        {
-            if (Answers.Contains(correctAnswer))
-            {
-                correctAnswer.IsCorrect = true;
-            }
+            return newAnswer;
         }
 
         public void SelectAnswer(Answer answer)
@@ -73,6 +51,29 @@ namespace QuizApp.Model
                 return;
             }
             answer.IsSelected = true;
+        }
+
+        public bool ExistSelectedAnswer()
+        {
+            return Answers.Select(x => x).Where(x => x.IsSelected == true).Count() == 1;
+        }
+
+        public void SelectCorrectAnswer(Answer correctAnswer)
+        {
+            if (Answers.Contains(correctAnswer))
+            {
+                correctAnswer.IsCorrect = true;
+            }
+        }
+
+        public bool ExistCorrectAnswer()
+        {
+            return Answers.Select(x => x).Where(x => x.IsCorrect == true).Count() == 1;
+        }
+
+        public void SetAllAnswersDefault()
+        {
+            Answers.Where(x => x.IsSelected == true).ToList().ForEach(x => x.IsSelected = false);
         }
     }
 }

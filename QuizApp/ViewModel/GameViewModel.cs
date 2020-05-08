@@ -1,19 +1,22 @@
-﻿using QuizApp.Exceptions;
-using QuizApp.Model;
+﻿using QuizApp.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuizApp.Fascade
 {
-    public partial class GameFascade
+    public partial class GameViewModel
     {
-        public GameFascade(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
+        private readonly Game _quizGame = null;
+        public List<string> Errors { get; private set; }
+
+        public GameViewModel(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
             Errors = new List<string>();
             _quizGame = new Game(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
         }
 
-        public GameFascade(GameConfiguration gameConfiguration)
+        public GameViewModel(GameConfiguration gameConfiguration)
         {
             Errors = new List<string>();
             _quizGame = new Game(gameConfiguration);
@@ -37,6 +40,11 @@ namespace QuizApp.Fascade
         public Answer CreateNewAnswer(Question selectedQuestion, string text)
         {
             return selectedQuestion.CreateNewAnswer(text);
+        }
+
+        public List<Quiz> GetQuizes(bool setAllDefault)
+        {
+            return _quizGame.GetQuizes(setAllDefault);
         }
 
         public bool RemoveSelectedQuiz(Quiz quizToRemove)

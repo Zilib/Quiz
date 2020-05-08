@@ -7,34 +7,18 @@ namespace QuizApp.Model
 {
     public class Game
     {
-        public Quiz selectedQuiz { get; private set; }
-
         public GameConfiguration gameConfiguration { get; }
 
-        public List<Quiz> Quizes { get; private set; }
+        private List<Quiz> quizes = new List<Quiz>();
 
         public Game(int numberOfAnswers, int minQuestions, int maxQuestions, int minTitleLength, string saveFileName)
         {
             gameConfiguration = new GameConfiguration(numberOfAnswers, minQuestions, maxQuestions, minTitleLength, saveFileName);
-            Quizes = new List<Quiz>();
         }
 
         public Game(GameConfiguration gameConfiguration)
         {
             this.gameConfiguration = gameConfiguration;
-            Quizes = new List<Quiz>();
-        }
-
-        public Quiz SelectQuiz(Quiz quizToSelect)
-        {
-            if (!Quizes.Contains(quizToSelect))
-            {
-                throw new Exception("Quiz cannot be selected");
-            }
-
-            selectedQuiz = quizToSelect;
-
-            return selectedQuiz;
         }
 
         public Quiz CreateNewQuiz(string title)
@@ -44,18 +28,31 @@ namespace QuizApp.Model
                 throw new IncorrectInputException("Quiz title is not long enought.");
             }
 
-            selectedQuiz = new Quiz(gameConfiguration, title);
-            Quizes.Add(selectedQuiz);
+            var newQuiz = new Quiz(gameConfiguration, title);
+            quizes.Add(newQuiz);
 
-            return selectedQuiz;
+            return newQuiz;
+        }
+
+        public List<Quiz> GetQuizes(bool setAllDefault)
+        {
+            if (!quizes.Any())
+            {
+                throw new Exception("No quiz exist.");
+            }
+            if (setAllDefault)
+            {
+                quizes.ForEach(x => x.SetAllDefault());
+            }
+            return quizes;
         }
 
         public bool RemoveQuiz(Quiz quizToRemove)
 
         {
-            if (Quizes.Contains(quizToRemove))
+            if (quizes.Contains(quizToRemove))
             {
-                Quizes.Remove(quizToRemove);
+                quizes.Remove(quizToRemove);
                 return true;
             }
             return false;

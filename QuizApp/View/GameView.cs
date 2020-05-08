@@ -7,11 +7,33 @@ namespace QuizApp.Views
 {
     public sealed class GameView
     {
-        private readonly GameFascade _gameFascade;
+        private readonly GameViewModel _gameFascade;
 
-        public GameView(GameFascade gameFascade)
+        public GameView(GameViewModel gameFascade)
         {
             _gameFascade = gameFascade;
+        }
+
+        private Quiz SelectQuiz()
+        {
+            List<Quiz> quizes = _gameFascade.GetQuizes(true); 
+
+            Console.WriteLine("Select quiz!");
+            for (int i = 0; i < quizes.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}]. {quizes[i].Title}");
+            }
+            Console.WriteLine();
+            if (int.TryParse(Console.ReadLine(), out int input))
+            {
+                var quizToReturn = quizes[input - 1];
+                return quizes[input - 1];
+            }
+            else
+            {
+                Console.WriteLine("Incorrect number!");
+                return null;
+            }
         }
 
         public void PlayQuiz()
@@ -90,28 +112,6 @@ namespace QuizApp.Views
             }
             var answerToSelect = answers[answerIndex - 1];
             question.SelectAnswer(answerToSelect);
-        }
-
-        private Quiz SelectQuiz()
-        {
-            List<Quiz> quizes = _gameFascade.GetQuizes(true); 
-
-            Console.WriteLine("Select quiz!");
-            for (int i = 0; i < quizes.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}]. {quizes[i].Title}");
-            }
-            Console.WriteLine();
-            if (int.TryParse(Console.ReadLine(), out int input))
-            {
-                var quizToReturn = quizes[input - 1];
-                return quizes[input - 1];
-            }
-            else
-            {
-                Console.WriteLine("Incorrect number!");
-                return null;
-            }
         }
     }
 }

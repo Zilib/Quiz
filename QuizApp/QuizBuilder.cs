@@ -7,10 +7,10 @@ namespace QuizApp
 {
     public sealed class QuizBuilder
     {
-        private readonly GameFascade _gameFascade;
+        private readonly GameViewModel _gameFascade;
         private readonly GameConfiguration _gameConfiguration;
 
-        public QuizBuilder(GameFascade gameFascade, GameConfiguration gameConfiguration)
+        public QuizBuilder(GameViewModel gameFascade, GameConfiguration gameConfiguration)
         {
             _gameFascade = gameFascade;
             _gameConfiguration = gameConfiguration;

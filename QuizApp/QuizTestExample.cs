@@ -11,9 +11,9 @@ namespace QuizApp
 #if DEBUG
     public class QuizTestExample
     {
-        private readonly GameFascade _gameFascade;
+        private readonly GameViewModel _gameFascade;
 
-        public QuizTestExample(GameFascade gameFascade)
+        public QuizTestExample(GameViewModel gameFascade)
         {
             _gameFascade = gameFascade;
         }

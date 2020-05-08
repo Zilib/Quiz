@@ -50,8 +50,8 @@
     <Compile Include="View\GameView.cs" />
     <Compile Include="Exceptions\IncorrectInputException.cs" />
     <Compile Include="Exceptions\QuizIsNotSelectedException.cs" />
-    <Compile Include="Fascade\GameFascadeController.cs" />
-    <Compile Include="Fascade\GameFascadeModel.cs" />
+    <Compile Include="ViewModel\GameViewModel.cs" />
+    <Compile Include="ViewModel\GameFascadeModel.cs" />
     <Compile Include="Model\Answer.cs" />
     <Compile Include="Model\EQuizAction.cs" />
     <Compile Include="Model\Game.cs" />

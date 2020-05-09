@@ -103,7 +103,7 @@ namespace QuizApp
                 }
             }
             var answerToSetCorrect = question.Answers[intInput - 1];
-            question.SelectCorrectAnswer(answerToSetCorrect);
+            question.SetCorrectAnswer(answerToSetCorrect);
         }
     }
 }

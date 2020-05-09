@@ -65,25 +65,30 @@ namespace QuizApp.Model
 
         public bool ExistOneSelectedAnswer()
         {
-            return Answers.Select(x => x).Where(x => x.IsSelected == true).Count() == 1;
+            return Answers.Select(x => x).Where(x => x.IsSelected).Count() == 1;
         }
 
-        public void SelectCorrectAnswer(Answer correctAnswer)
+        public bool ExistOneCorrectAnswer()
         {
-            if (Answers.Contains(correctAnswer))
+            return Answers.Select(x => x).Where(x => x.IsCorrect).Count() == 1;
+        }
+
+        public void SetCorrectAnswer(Answer correctAnswer)
+        {
+            if (correctAnswer.IsCorrect)
             {
-                correctAnswer.IsCorrect = true;
+                throw new Exception("Answer is correct already");
             }
-        }
-
-        public bool ExistCorrectAnswer()
-        {
-            return Answers.Select(x => x).Where(x => x.IsCorrect == true).Count() == 1;
+            if (!Answers.Contains(correctAnswer) || ExistOneCorrectAnswer())
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            correctAnswer.IsCorrect = true;
         }
 
         public void SetAllAnswersDefault()
         {
-            Answers.Where(x => x.IsSelected == true).ToList().ForEach(x => x.IsSelected = false);
+            Answers.Where(x => x.IsSelected).ToList().ForEach(x => x.IsSelected = false);
         }
     }
 }

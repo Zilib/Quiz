@@ -31,110 +31,173 @@ namespace QuizApp.UnitTests
         [TestMethod]
         public void CreateNewAnswer_0LengthText_Should_Throw_ArgumentNullException()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            Assert.ThrowsException<ArgumentNullException>(() => question.CreateNewAnswer(""));
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            Assert.ThrowsException<ArgumentNullException>(() => firstQuestion.CreateNewAnswer(""));
         }
 
         [TestMethod]
         public void CreateNewAnswer_WhiteSpaceInText_Should_Throw_ArgumentNullException()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            Assert.ThrowsException<ArgumentNullException>(() => question.CreateNewAnswer(" "));
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            Assert.ThrowsException<ArgumentNullException>(() => firstQuestion.CreateNewAnswer(" "));
         }
 
         [TestMethod]
         public void CreateNewAnswer_EmptyText_Should_Throw_ArgumentNullExcepiton()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            Assert.ThrowsException<ArgumentNullException>(() => question.CreateNewAnswer(string.Empty));
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            Assert.ThrowsException<ArgumentNullException>(() => firstQuestion.CreateNewAnswer(string.Empty));
         }
 
         [TestMethod]
         public void CreateNewAnswer_CorrectText_Should_Return_True()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            var answer = question.CreateNewAnswer("Correct answer");
-            Assert.IsTrue(question.Answers.Contains(answer));
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            var answerForFirstQuestion = firstQuestion.CreateNewAnswer("Correct answer");
+            Assert.IsTrue(firstQuestion.Answers.Contains(answerForFirstQuestion));
         }
 
         [TestMethod]
         public void CreatenewAnswer_TooMuchAnswers_Should_Throw_IncorrectInputException()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            question.CreateNewAnswer("Correct answer");
-            question.CreateNewAnswer("Correct answer2");
-            question.CreateNewAnswer("Correct answer3");
-            question.CreateNewAnswer("Correct answer4");
-            Assert.ThrowsException<IncorrectInputException>(() => question.CreateNewAnswer("Correct answer5"));
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            firstQuestion.CreateNewAnswer("Correct answer");
+            firstQuestion.CreateNewAnswer("Correct answer2");
+            firstQuestion.CreateNewAnswer("Correct answer3");
+            firstQuestion.CreateNewAnswer("Correct answer4");
+            Assert.ThrowsException<IncorrectInputException>(() => firstQuestion.CreateNewAnswer("Correct answer5"));
         }
 
         [TestMethod]
         public void SelectAnswer_AnswerFromAnotherQuestion_Should_Return_ArgumentOutOfRangeException()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            var question2 = new Question("E.g question2", gameConfiguration);
+            var firsQuestion = new Question("E.g question", gameConfiguration);
+            var secondQuestion = new Question("E.g question2", gameConfiguration);
 
-            question.CreateNewAnswer("Answer1");
-            question.CreateNewAnswer("Answer2");
-            question.CreateNewAnswer("Answer3");
-            var correctAnswer = question.CreateNewAnswer("Answer4");
+            firsQuestion.CreateNewAnswer("Answer1");
+            firsQuestion.CreateNewAnswer("Answer2");
+            firsQuestion.CreateNewAnswer("Answer3");
+            var correctAnswerForFirstQuestion = firsQuestion.CreateNewAnswer("Answer4");
 
-            question2.CreateNewAnswer("Answer5");
-            question2.CreateNewAnswer("Answer6");
-            question2.CreateNewAnswer("Answer7");
-            question2.CreateNewAnswer("Answer8");
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => question2.SelectAnswer(correctAnswer));
+            secondQuestion.CreateNewAnswer("Answer5");
+            secondQuestion.CreateNewAnswer("Answer6");
+            secondQuestion.CreateNewAnswer("Answer7");
+            secondQuestion.CreateNewAnswer("Answer8");
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => secondQuestion.SelectAnswer(correctAnswerForFirstQuestion));
         }
 
         [TestMethod]
         public void SelectAnswer_CorrectCreatedAnswer_Should_ChangeAnswerIsSelectedValue()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            var answer = question.CreateNewAnswer("Correct answer");
-            question.CreateNewAnswer("Answer2");
-            question.CreateNewAnswer("Answer3");
-            question.CreateNewAnswer("Answer4");
-            question.SelectAnswer(answer);
-            Assert.IsTrue(answer.IsSelected);
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            var answerForFirstQuestion = firstQuestion.CreateNewAnswer("Correct answer");
+            firstQuestion.CreateNewAnswer("Answer2");
+            firstQuestion.CreateNewAnswer("Answer3");
+            firstQuestion.CreateNewAnswer("Answer4");
+            firstQuestion.SelectAnswer(answerForFirstQuestion);
+            Assert.IsTrue(answerForFirstQuestion.IsSelected);
         }
 
         [TestMethod]
         public void SelectAnswer_TwoSelectedAnswers_Should_Throw_Exception()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            var answer = question.CreateNewAnswer("Correct answer");
-            var answer2 = question.CreateNewAnswer("Answer2");
-            question.CreateNewAnswer("Answer3");
-            question.CreateNewAnswer("Answer4");
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            var answerForFirstQuestion = firstQuestion.CreateNewAnswer("Correct answer");
+            var answer2ForFirstQuestion = firstQuestion.CreateNewAnswer("Answer2");
+            firstQuestion.CreateNewAnswer("Answer3");
+            firstQuestion.CreateNewAnswer("Answer4");
 
-            question.SelectAnswer(answer);
-            Assert.ThrowsException<Exception>(() => question.SelectAnswer(answer2));
+            firstQuestion.SelectAnswer(answerForFirstQuestion);
+            Assert.ThrowsException<Exception>(() => firstQuestion.SelectAnswer(answer2ForFirstQuestion));
         }
 
         [TestMethod]
         public void ExistOneSelectedAnswer_NoExist_Should_Return_False()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            question.CreateNewAnswer("Correct answer");
-            question.CreateNewAnswer("Answer2");
-            question.CreateNewAnswer("Answer3");
-            question.CreateNewAnswer("Answer4");
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            firstQuestion.CreateNewAnswer("Correct answer");
+            firstQuestion.CreateNewAnswer("Answer2");
+            firstQuestion.CreateNewAnswer("Answer3");
+            firstQuestion.CreateNewAnswer("Answer4");
 
-            Assert.IsFalse(question.ExistOneSelectedAnswer());
+            Assert.IsFalse(firstQuestion.ExistOneSelectedAnswer());
         }
 
         [TestMethod]
         public void ExistOneSelectedAnswer_Exist_Should_Return_True()
         {
-            var question = new Question("E.g question", gameConfiguration);
-            question.CreateNewAnswer("Correct answer");
-            question.CreateNewAnswer("Answer2");
-            question.CreateNewAnswer("Answer3");
-            var answer = question.CreateNewAnswer("Answer4");
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            firstQuestion.CreateNewAnswer("Correct answer");
+            firstQuestion.CreateNewAnswer("Answer2");
+            firstQuestion.CreateNewAnswer("Answer3");
+            var answerForFirstQuestion = firstQuestion.CreateNewAnswer("Answer4");
 
-            question.SelectAnswer(answer);
+            firstQuestion.SelectAnswer(answerForFirstQuestion);
 
-            Assert.IsTrue(question.ExistOneSelectedAnswer());
+            Assert.IsTrue(firstQuestion.ExistOneSelectedAnswer());
+        }
+
+        [TestMethod]
+        public void SelectCorrectAnswer_SelectFromAnotherQuestion_Should_Trow_ArgumentOutOfRangeException()
+        {
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+            var secondQuestion = new Question("E.g question2", gameConfiguration);
+
+            firstQuestion.CreateNewAnswer("Answer1");
+            firstQuestion.CreateNewAnswer("Answer2");
+            firstQuestion.CreateNewAnswer("Answer3");
+            firstQuestion.CreateNewAnswer("Answer4");
+
+            secondQuestion.CreateNewAnswer("Answer5");
+            secondQuestion.CreateNewAnswer("Answer6");
+            secondQuestion.CreateNewAnswer("Answer7");
+            var answerFromSecondQuestion = secondQuestion.CreateNewAnswer("Answer8");
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => firstQuestion.SetCorrectAnswer(answerFromSecondQuestion));
+        }
+
+        [TestMethod]
+        public void SelectCorrectAnswer_CreateTwoCorrectAnswers_Should_Throw_ArgumentOutOfRangeException()
+        {
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+
+            firstQuestion.CreateNewAnswer("Answer1");
+            var firstCorrectAnswer = firstQuestion.CreateNewAnswer("Answer2");
+            firstQuestion.CreateNewAnswer("Answer3");
+            var secondCorrectAnswer = firstQuestion.CreateNewAnswer("Answer4");
+
+            firstQuestion.SetCorrectAnswer(firstCorrectAnswer);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => firstQuestion.SetCorrectAnswer(secondCorrectAnswer));
+        }
+
+        [TestMethod]
+        public void SelectCorrectAnswer_SetCorrectAnswerTwice_Should_Throw_Exception()
+        {
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+
+            firstQuestion.CreateNewAnswer("Answer1");
+            var firstCorrectAnswer = firstQuestion.CreateNewAnswer("Answer2");
+            firstQuestion.CreateNewAnswer("Answer3");
+            firstQuestion.CreateNewAnswer("Answer4");
+
+            firstQuestion.SetCorrectAnswer(firstCorrectAnswer);
+            Assert.ThrowsException<Exception>(() => firstQuestion.SetCorrectAnswer(firstCorrectAnswer));
+        }
+
+        [TestMethod]
+        public void SetAllAnswersDefault_ChangeSelectedToFalse_Should_Return_True()
+        {
+            var firstQuestion = new Question("E.g question", gameConfiguration);
+
+            firstQuestion.CreateNewAnswer("Answer1");
+            var firstCorrectAnswer = firstQuestion.CreateNewAnswer("Answer2");
+            firstQuestion.CreateNewAnswer("Answer3");
+            firstQuestion.CreateNewAnswer("Answer4");
+
+            firstQuestion.SelectAnswer(firstCorrectAnswer);
+            Assert.IsTrue(firstCorrectAnswer.IsSelected);
+            firstQuestion.SetAllAnswersDefault();
+            Assert.IsFalse(firstCorrectAnswer.IsSelected);
         }
     }
 }

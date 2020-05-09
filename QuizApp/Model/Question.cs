@@ -7,9 +7,20 @@ namespace QuizApp.Model
 {
     public sealed class Question
     {
+        private string title;
         private readonly GameConfiguration _gameConfiguration;
-
-        public string Title { get; set; }
+        public string Title 
+        { 
+            get => title;
+            set  
+            {
+                if (string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentNullException();
+                }
+                title = value;
+            }
+        }
 
         public List<Answer> Answers { get; private set; } = new List<Answer>();
 
@@ -19,12 +30,11 @@ namespace QuizApp.Model
             _gameConfiguration = gameConfiguration;
         }
 
-
         public Answer CreateNewAnswer(string text)
         {
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
-                throw new IncorrectInputException("Answer text cannot be null");
+                throw new ArgumentNullException();
             }
             if (Answers.Count == _gameConfiguration.numberOfAnswers)
             {
@@ -40,20 +50,20 @@ namespace QuizApp.Model
         {
             if (!Answers.Contains(answer))
             {
-                Console.WriteLine("Incorrect answer");
-                Console.ReadLine();
-                return;
+                throw new ArgumentOutOfRangeException();
             }
-            if (ExistSelectedAnswer())
+            if (Answers.Count != _gameConfiguration.numberOfAnswers)
             {
-                Console.WriteLine("You cannot select twice");
-                Console.ReadLine();
-                return;
+                throw new Exception("The number of answers is not equal to number of answers in configuration class.");
+            }
+            if (ExistOneSelectedAnswer())
+            {
+                throw new Exception("You cannot select twice");
             }
             answer.IsSelected = true;
         }
 
-        public bool ExistSelectedAnswer()
+        public bool ExistOneSelectedAnswer()
         {
             return Answers.Select(x => x).Where(x => x.IsSelected == true).Count() == 1;
         }

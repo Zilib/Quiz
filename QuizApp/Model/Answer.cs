@@ -4,7 +4,19 @@ namespace QuizApp.Model
 {
     public class Answer
     {
-        public string Text { get; private set; }
+        private string text;
+        public string Text 
+        { 
+            get => text;
+            set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentNullException();
+                }
+                text = value;
+            }
+        }
         public bool IsCorrect { get; set; }
         public bool IsSelected { get; set; } 
 

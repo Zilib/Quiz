@@ -1,12 +1,30 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuizApp.Model;
+using System;
 
 namespace QuizApp.UnitTests
 {
     [TestClass]
     public class AnswerTests
     {
+        [TestMethod]
+        public void Answer_0LengthTitle_Should_Throw_ArgumentNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => new Answer(""));
+        }
+
+        [TestMethod]
+        public void Answer_WhiteSpaceInTitle_Should_Throw_ArgumentNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => new Answer(" "));
+        }
+
+        [TestMethod]
+        public void Answer_EmptyTitle_Should_Throw_ArgumentNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => new Answer(string.Empty));
+        }
+
         [TestMethod]
         public void GetState_SelectedAndCorrect_Should_Return_Correct()
         {

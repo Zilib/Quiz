@@ -5,5 +5,5 @@
 *.exe
 *.dat
 
-/QuizTest/bin/*
-/QuizTest/obj
+/QuizApp.UnitTests/bin/*
+/QuizApp.UnitTests/obj/*

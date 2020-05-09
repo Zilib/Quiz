@@ -19,7 +19,7 @@ namespace QuizApp.Model
             {
                 return EAnswerState.Correct;
             }
-            else if (IsCorrect == false && IsSelected)
+            else if (!IsCorrect && IsSelected)
             {
                 return EAnswerState.Incorrect;
             }

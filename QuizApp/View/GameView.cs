@@ -2,6 +2,7 @@
 using QuizApp.Model;
 using System;
 using System.Collections.Generic;
+using QuizApp.Services;
 
 namespace QuizApp.Views
 {
@@ -57,9 +58,7 @@ namespace QuizApp.Views
             Console.Clear();
             foreach (var question in questions)
             {
-                Console.WriteLine();
-                Console.WriteLine(question.Title);
-                Console.WriteLine();
+                Console.WriteLine($"\n{question.Title}\n");
 
                 if (!question.ExistSelectedAnswer())
                 {
@@ -70,23 +69,22 @@ namespace QuizApp.Views
                 var answers = question.Answers;
                 foreach (var answer in answers)
                 {
-                    if (answer.GetState() == EAnswerState.Incorrect)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine(answer);
-                        Console.ResetColor();
-                    }
-                    else if (answer.GetState() == EAnswerState.Correct)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(answer);
-                        Console.ResetColor();
-                    }
-                    else
-                    {
-                        Console.WriteLine(answer);
-                    }
+                    ConsoleColor? foregroundColor = ColorForAnswer(answer.GetState());
+                    ConsoleWriter.WriteInForegroundColor(answer.Text, foregroundColor);
                 }
+            }
+        }
+
+        private ConsoleColor ColorForAnswer(EAnswerState? state)
+        {
+            switch (state)
+            {
+                case EAnswerState.Correct:
+                    return ConsoleColor.Green;
+                case EAnswerState.Incorrect:
+                    return ConsoleColor.Red;
+                default:
+                    return ConsoleColor.White;
             }
         }
 

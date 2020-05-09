@@ -9,7 +9,6 @@ namespace QuizApp.Model
     public enum EAnswerState
     {
         Correct = 1,
-        Incorrect = 2,
-        Normal = 4
+        Incorrect = 2
     }
 }

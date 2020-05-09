@@ -1,4 +1,6 @@
-﻿namespace QuizApp.Model
+﻿using System;
+
+namespace QuizApp.Model
 {
     public class Answer
     {
@@ -11,19 +13,19 @@
             Text = text;
         }
 
-        public EAnswerState GetState()
+        public EAnswerState? GetState()
         {
-            if (IsCorrect == true && IsSelected == true)
+            if (IsCorrect && IsSelected)
             {
                 return EAnswerState.Correct;
             }
-            else if (IsCorrect == false && IsSelected == true)
+            else if (IsCorrect == false && IsSelected)
             {
                 return EAnswerState.Incorrect;
             }
             else
             {
-                return EAnswerState.Normal;
+                return null;
             }
         }
 

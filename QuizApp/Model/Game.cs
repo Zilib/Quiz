@@ -28,7 +28,7 @@ namespace QuizApp.Model
                 throw new IncorrectInputException("Quiz title is not long enought.");
             }
 
-            var newQuiz = new Quiz(gameConfiguration, title);
+            var newQuiz = new Quiz(title, gameConfiguration);
             quizes.Add(newQuiz);
 
             return newQuiz;

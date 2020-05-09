@@ -60,17 +60,13 @@ namespace QuizApp.Model
             {
                 throw new Exception("You cannot select twice");
             }
+            // todo if correct answer doesn't exist do not allow to select any answer
             answer.IsSelected = true;
         }
 
         public bool ExistOneSelectedAnswer()
         {
             return Answers.Select(x => x).Where(x => x.IsSelected).Count() == 1;
-        }
-
-        public bool ExistOneCorrectAnswer()
-        {
-            return Answers.Select(x => x).Where(x => x.IsCorrect).Count() == 1;
         }
 
         public void SetCorrectAnswer(Answer correctAnswer)
@@ -89,6 +85,11 @@ namespace QuizApp.Model
         public void SetAllAnswersDefault()
         {
             Answers.Where(x => x.IsSelected).ToList().ForEach(x => x.IsSelected = false);
+        }
+
+        private bool ExistOneCorrectAnswer()
+        {
+            return Answers.Select(x => x).Where(x => x.IsCorrect).Count() == 1;
         }
     }
 }

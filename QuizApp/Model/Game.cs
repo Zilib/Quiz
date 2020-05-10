@@ -31,7 +31,7 @@ namespace QuizApp.Model
 
         public void InsertNewQuiz(Quiz quiz)
         {
-
+            quizes.Add(quiz);
         }
 
         public List<Quiz> GetQuizes(bool setAllDefault = false)

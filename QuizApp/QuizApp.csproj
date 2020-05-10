@@ -56,6 +56,8 @@
     <Compile Include="Model\EAnswerState.cs" />
     <Compile Include="QuizTestExample.cs" />
     <Compile Include="Services\ConsoleWriter.cs" />
+    <Compile Include="Services\Question\AnswerService.cs" />
+    <Compile Include="Services\Question\QuestionService.cs" />
     <Compile Include="Tests\BaseClass.cs" />
     <Compile Include="Tests\ClassConstructorTests\AnswerConstructorTests.cs" />
     <Compile Include="Tests\ClassConstructorTests\QuestionConstructorTests.cs" />

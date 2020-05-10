@@ -2,7 +2,7 @@
 using QuizApp.Model;
 using System;
 
-namespace QuizApp.UnitTests.ClassConstructorTests
+namespace QuizApp.UnitTests
 {
     [TestFixture]
     public class AnswerConstructorTests

@@ -4,7 +4,7 @@ using QuizApp.UnitTests.pre_test;
 using System;
 
 
-namespace QuizApp.UnitTests.ClassConstructorTests
+namespace QuizApp.UnitTests
 {
     [TestFixture]
     public class QuizConstructorTest : BaseClass

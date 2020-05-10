@@ -7,3 +7,6 @@
 
 /QuizApp.UnitTests/bin/*
 /QuizApp.UnitTests/obj/*
+/QuizApp.UnitTests/.vs/*
+*.cache
+*.suo

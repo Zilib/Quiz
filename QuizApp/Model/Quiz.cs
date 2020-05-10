@@ -20,7 +20,7 @@ namespace QuizApp.Model
                 {
                     throw new Exception("Title is too short");
                 }
-                title = Title;
+                title = value;
             }
         }
         public List<Question> Questions { get; private set; } = new List<Question>();

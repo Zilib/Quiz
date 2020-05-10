@@ -1,5 +1,4 @@
-﻿using QuizApp.Fascade;
-using QuizApp.Model;
+﻿using QuizApp.Model;
 using System;
 using System.Collections.Generic;
 using QuizApp.Services;
@@ -8,18 +7,18 @@ namespace QuizApp.Views
 {
     public sealed class GameView
     {
-        private readonly GameViewModel _gameFascade;
+        private readonly Game _game;
 
-        public GameView(GameViewModel gameFascade)
+        public GameView(Game game)
         {
-            _gameFascade = gameFascade;
+            _game = game;
         }
 
-        private Quiz SelectQuiz()
+        private Quiz SelectQuiz(string msg)
         {
-            List<Quiz> quizes = _gameFascade.GetQuizes(true); 
+            List<Quiz> quizes = _game.GetQuizes(true); 
 
-            Console.WriteLine("Select quiz!");
+            Console.WriteLine(msg);
             for (int i = 0; i < quizes.Count; i++)
             {
                 Console.WriteLine($"[{i + 1}]. {quizes[i].Title}");
@@ -28,7 +27,7 @@ namespace QuizApp.Views
             if (int.TryParse(Console.ReadLine(), out int input))
             {
                 var quizToReturn = quizes[input - 1];
-                return quizes[input - 1];
+                return quizToReturn;
             }
             else
             {
@@ -39,7 +38,7 @@ namespace QuizApp.Views
 
         public void PlayQuiz()
         {
-            var currentQuiz = SelectQuiz();
+            var currentQuiz = SelectQuiz("Select quiz!");
             var questions = currentQuiz.Questions;
            
             foreach (var question in questions)
@@ -51,6 +50,12 @@ namespace QuizApp.Views
 
             ShowUserAnswers(questions);
             Console.ReadLine();
+        }
+
+        public void RemoveQuiz()
+        {
+            var quizToRemove = SelectQuiz("Select quiz to remove!");
+            _game.RemoveQuiz(quizToRemove);
         }
 
         private void ShowUserAnswers(List<Question> questions)

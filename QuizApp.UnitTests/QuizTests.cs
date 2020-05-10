@@ -1,76 +1,54 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using QuizApp.Model;
+using QuizApp.UnitTests.pre_test;
 using System;
 
 namespace QuizApp.UnitTests
 {
-    [TestClass]
-    public class QuizTests
+    [TestFixture]
+    public class QuizTests : BaseClass
     {
-        private GameConfiguration gameConfiguration = new GameConfiguration(4, 4, 4, 4, "test.txt");
+        private Quiz quiz;
 
-        [TestMethod]
-        public void Quiz_0LengthTitle_Should_Throw_ArgumentNullException()
+        [SetUp]
+        public void QuizSetUp()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new Quiz("", gameConfiguration));
-        }
-
-        [TestMethod]
-        public void Quiz_WhiteSpaceInTitle_Should_Throw_ArgumentNullException()
-        {
-            Assert.ThrowsException<ArgumentNullException>(() => new Quiz(" ", gameConfiguration));
-        }
-
-        [TestMethod]
-        public void Quiz_EmptyTitle_Should_Throw_ArgumentNullException()
-        {
-            Assert.ThrowsException<ArgumentNullException>(() => new Quiz(string.Empty, gameConfiguration));
-        }
-
-        [TestMethod]
-        public void Quiz_ShortTitle_Should_Throw_Exception()
-        {
-            Assert.ThrowsException<Exception>(() => new Quiz("asa", gameConfiguration));
-        }
-
-        [TestMethod]
-        public void CreateNewQuestion_EmptyTitle_Should_Throw_ArgumentNullException()
-        {
-            var quiz = new Quiz("Correct quiz", gameConfiguration);
-            Assert.ThrowsException<ArgumentNullException>(() => quiz.CreateNewQuestion(string.Empty));
-        }
-
-        [TestMethod]
-        public void CreateNewQuestion_WhiteSpaceInTitle_Should_Throw_ArgumentNullException()
-        {
-            var quiz = new Quiz("Correct quiz", gameConfiguration);
-            Assert.ThrowsException<ArgumentNullException>(() => quiz.CreateNewQuestion(" "));
-        }
-
-        [TestMethod]
-        public void CreateNewQuestion_0LengthTitle_Should_Throw_ArgumentNullException()
-        {
-            var quiz = new Quiz("Correct quiz", gameConfiguration);
-            Assert.ThrowsException<ArgumentNullException>(() => quiz.CreateNewQuestion(""));
-        }
-
-        [TestMethod]
-        public void CreateNewQuestion_CreateTooMuchQuestions_Should_Throw_ArgumentOutOfRangeException()
-        {
-            var quiz = new Quiz("Correct quiz", gameConfiguration);
+            quiz = new Quiz("Quiz example", gameConfiguration);
             quiz.CreateNewQuestion("Correct question1");
             quiz.CreateNewQuestion("Correct question2");
             quiz.CreateNewQuestion("Correct question3");
             quiz.CreateNewQuestion("Correct question4");
+        }
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => quiz.CreateNewQuestion("Incorrect question"));
+        [Test]
+        public void CreateNewQuestion_EmptyTitle_Should_Throw_ArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => quiz.CreateNewQuestion(string.Empty));
+        }
+
+        [Test]
+        public void CreateNewQuestion_WhiteSpaceInTitle_Should_Throw_ArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => quiz.CreateNewQuestion(" "));
+        }
+
+        [Test]
+        public void CreateNewQuestion_0LengthTitle_Should_Throw_ArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => quiz.CreateNewQuestion(""));
+        }
+
+        [Test]
+        public void CreateNewQuestion_CreateTooMuchQuestions_Should_Throw_ArgumentOutOfRangeException()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => quiz.CreateNewQuestion("Incorrect question"));
             Assert.AreEqual(quiz.Questions.Count, 4);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateNewQuestion_CorrectQuestions_Should_Return_True()
         {
-            var quiz = new Quiz("Correct quiz", gameConfiguration);
+            quiz = new Quiz("Correct quiz", gameConfiguration);
             Assert.AreEqual(quiz.Questions.Count, 0);
 
             quiz.CreateNewQuestion("Correct question1");
@@ -86,12 +64,10 @@ namespace QuizApp.UnitTests
             Assert.AreEqual(quiz.Questions.Count, 4);
         }
 
-        [TestMethod]
+        [Test]
         public void SetAllDefault_ChangeAllSelectedToFalse_Should_Return_True()
         {
-            var quiz = new Quiz("Correct quiz", gameConfiguration);
-
-            var firstQuestion = quiz.CreateNewQuestion("First question");
+            var firstQuestion = quiz.Questions[0];
             firstQuestion.CreateNewAnswer("First answer").IsSelected = true;
             firstQuestion.CreateNewAnswer("Second answer");
             firstQuestion.CreateNewAnswer("Third answer");
@@ -99,7 +75,7 @@ namespace QuizApp.UnitTests
 
             Assert.IsTrue(firstQuestion.IsAnyAnswerSelected());
 
-            var secondQuestion = quiz.CreateNewQuestion("First question");
+            var secondQuestion = quiz.Questions[1];
             secondQuestion.CreateNewAnswer("First answer");
             secondQuestion.CreateNewAnswer("Second answer");
             secondQuestion.CreateNewAnswer("Third answer").IsSelected = true;

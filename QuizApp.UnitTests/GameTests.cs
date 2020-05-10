@@ -1,26 +1,31 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using QuizApp.Model;
+using QuizApp.UnitTests.pre_test;
+using NUnit.Framework;
 
 namespace QuizApp.UnitTests
 {
-    [TestClass]
-    public class GameTests
+    [TestFixture]
+    public class GameTests : BaseClass
     {
-        [TestMethod]
-        public void CreateNewQuiz_ShortTitle_Should_Throw_Exception()
-        {
-            var Game = new Game(4, 4, 4, 4, "test.txt");
+        private Game game;
 
-            Assert.ThrowsException<Exception>(() => Game.CreateNewQuiz("sh"));
+        [SetUp]
+        public void GamesSetUp()
+        {
+            game = new Game(gameConfiguration);
         }
 
-        [TestMethod]
+        [Test]
+        public void CreateNewQuiz_ShortTitle_Should_Throw_Exception()
+        {
+            Assert.Throws<Exception>(() => game.CreateNewQuiz("sh"));
+        }
+
+        [Test]
         public void GetQuizes_NoQuizExist_Should_Throw_Exception()
         {
-            var game = new Game(4, 4, 4, 4, "test.txt");
-
-            Assert.ThrowsException<Exception>(() => game.GetQuizes());
+            Assert.Throws<Exception>(() => game.GetQuizes());
         }
     }
 }

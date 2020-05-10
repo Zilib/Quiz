@@ -56,7 +56,7 @@ namespace QuizApp.Model
             {
                 throw new Exception("The number of answers is not equal to number of answers in configuration class.");
             }
-            if (ExistOneSelectedAnswer())
+            if (IsAnyAnswerSelected())
             {
                 throw new Exception("You cannot select twice");
             }
@@ -64,7 +64,7 @@ namespace QuizApp.Model
             answer.IsSelected = true;
         }
 
-        public bool ExistOneSelectedAnswer()
+        public bool IsAnyAnswerSelected()
         {
             return Answers.Select(x => x).Where(x => x.IsSelected).Count() == 1;
         }
@@ -75,7 +75,7 @@ namespace QuizApp.Model
             {
                 throw new Exception("Answer is correct already");
             }
-            if (!Answers.Contains(correctAnswer) || ExistOneCorrectAnswer())
+            if (!Answers.Contains(correctAnswer) || IsOneAnswerCorrect())
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -87,7 +87,7 @@ namespace QuizApp.Model
             Answers.Where(x => x.IsSelected).ToList().ForEach(x => x.IsSelected = false);
         }
 
-        private bool ExistOneCorrectAnswer()
+        private bool IsOneAnswerCorrect()
         {
             return Answers.Select(x => x).Where(x => x.IsCorrect).Count() == 1;
         }

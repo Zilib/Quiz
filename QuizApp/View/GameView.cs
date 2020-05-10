@@ -60,7 +60,7 @@ namespace QuizApp.Views
             {
                 Console.WriteLine($"\n{question.Title}\n");
 
-                if (!question.ExistOneSelectedAnswer())
+                if (!question.IsAnyAnswerSelected())
                 {
                     Console.WriteLine("No selected answer!");
                     Console.ReadLine();

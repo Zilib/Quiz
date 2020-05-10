@@ -23,18 +23,13 @@ namespace QuizApp.Model
 
         public Quiz CreateNewQuiz(string title)
         {
-            if (title.Length < gameConfiguration.minTitleLength)
-            {
-                throw new IncorrectInputException("Quiz title is not long enought.");
-            }
-
             var newQuiz = new Quiz(title, gameConfiguration);
             quizes.Add(newQuiz);
 
             return newQuiz;
         }
 
-        public List<Quiz> GetQuizes(bool setAllDefault)
+        public List<Quiz> GetQuizes(bool setAllDefault = false)
         {
             if (!quizes.Any())
             {

@@ -97,18 +97,18 @@ namespace QuizApp.UnitTests
             firstQuestion.CreateNewAnswer("Third answer");
             firstQuestion.CreateNewAnswer("Fourth answer");
 
-            Assert.IsTrue(firstQuestion.ExistOneSelectedAnswer());
+            Assert.IsTrue(firstQuestion.IsAnyAnswerSelected());
 
             var secondQuestion = quiz.CreateNewQuestion("First question");
             secondQuestion.CreateNewAnswer("First answer");
             secondQuestion.CreateNewAnswer("Second answer");
             secondQuestion.CreateNewAnswer("Third answer").IsSelected = true;
             secondQuestion.CreateNewAnswer("Fourth answer");
-            Assert.IsTrue(secondQuestion.ExistOneSelectedAnswer());
+            Assert.IsTrue(secondQuestion.IsAnyAnswerSelected());
 
             quiz.SetAllDefault();
-            Assert.IsFalse(firstQuestion.ExistOneSelectedAnswer());
-            Assert.IsFalse(secondQuestion.ExistOneSelectedAnswer());
+            Assert.IsFalse(firstQuestion.IsAnyAnswerSelected());
+            Assert.IsFalse(secondQuestion.IsAnyAnswerSelected());
         }
     }
 }

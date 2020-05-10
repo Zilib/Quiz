@@ -120,7 +120,7 @@ namespace QuizApp.UnitTests
             firstQuestion.CreateNewAnswer("Answer3");
             firstQuestion.CreateNewAnswer("Answer4");
 
-            Assert.IsFalse(firstQuestion.ExistOneSelectedAnswer());
+            Assert.IsFalse(firstQuestion.IsAnyAnswerSelected());
         }
 
         [TestMethod]
@@ -130,11 +130,9 @@ namespace QuizApp.UnitTests
             firstQuestion.CreateNewAnswer("Correct answer");
             firstQuestion.CreateNewAnswer("Answer2");
             firstQuestion.CreateNewAnswer("Answer3");
-            var answerForFirstQuestion = firstQuestion.CreateNewAnswer("Answer4");
+            firstQuestion.SelectAnswer(firstQuestion.CreateNewAnswer("Answer4"));
 
-            firstQuestion.SelectAnswer(answerForFirstQuestion);
-
-            Assert.IsTrue(firstQuestion.ExistOneSelectedAnswer());
+            Assert.IsTrue(firstQuestion.IsAnyAnswerSelected());
         }
 
         [TestMethod]
@@ -162,11 +160,10 @@ namespace QuizApp.UnitTests
             var firstQuestion = new Question("E.g question", gameConfiguration);
 
             firstQuestion.CreateNewAnswer("Answer1");
-            var firstCorrectAnswer = firstQuestion.CreateNewAnswer("Answer2");
+            firstQuestion.SetCorrectAnswer(firstQuestion.CreateNewAnswer("Answer2"));
             firstQuestion.CreateNewAnswer("Answer3");
             var secondCorrectAnswer = firstQuestion.CreateNewAnswer("Answer4");
 
-            firstQuestion.SetCorrectAnswer(firstCorrectAnswer);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => firstQuestion.SetCorrectAnswer(secondCorrectAnswer));
         }
 

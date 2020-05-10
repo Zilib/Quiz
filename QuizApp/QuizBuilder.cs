@@ -1,5 +1,4 @@
 ﻿using QuizApp.Model;
-using QuizApp.Fascade;
 using System;
 using QuizApp.Exceptions;
 
@@ -7,13 +6,13 @@ namespace QuizApp
 {
     public sealed class QuizBuilder
     {
-        private readonly GameViewModel _gameFascade;
+        private readonly Game _game;
         private readonly GameConfiguration _gameConfiguration;
 
-        public QuizBuilder(GameViewModel gameFascade, GameConfiguration gameConfiguration)
+        public QuizBuilder(Game game)
         {
-            _gameFascade = gameFascade;
-            _gameConfiguration = gameConfiguration;
+            _game = game;
+            _gameConfiguration = game.gameConfiguration;
         }
 
         public QuizBuilder BuildQuiz()
@@ -21,7 +20,7 @@ namespace QuizApp
             Console.Clear();
             Console.WriteLine("Input your quiz name: ");
             string quizTitle = Console.ReadLine() ?? "";
-            var newQuiz = _gameFascade.CreateNewQuiz(quizTitle);
+            var newQuiz = _game.CreateNewQuiz(quizTitle);
 
             BuildQuestions(newQuiz);
 
@@ -59,21 +58,21 @@ namespace QuizApp
 
                 try
                 {
-                    var newQuestion  = _gameFascade.CreateNewQuestion(quizToBuild, questionTitle);
+                    var newQuestion  = quizToBuild.CreateNewQuestion(questionTitle);
 
                     for (int j = 0; j < _gameConfiguration.numberOfAnswers; j++)
                     {
                         Console.Clear();
                         Console.WriteLine($"Give text of {j + 1} answer");
                         string answerText = Console.ReadLine();
-                        _gameFascade.CreateNewAnswer(newQuestion, answerText);
+                        newQuestion.CreateNewAnswer(answerText);
                     }
                     // todo move it from controller
                     SelectCorrectAnswer(newQuestion);
                 }
                 catch (Exception ex)
                 {
-                    _gameFascade.RemoveSelectedQuiz(quizToBuild);
+                    _game.RemoveQuiz(quizToBuild);
                     Console.WriteLine(ex);
                     Console.ReadLine();
                 }

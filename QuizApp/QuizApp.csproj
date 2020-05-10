@@ -51,7 +51,6 @@
     <Compile Include="Services\ConsoleWriter.cs" />
     <Compile Include="View\GameView.cs" />
     <Compile Include="Exceptions\IncorrectInputException.cs" />
-    <Compile Include="ViewModel\GameViewModel.cs" />
     <Compile Include="Model\Answer.cs" />
     <Compile Include="Model\EQuizAction.cs" />
     <Compile Include="Model\Game.cs" />

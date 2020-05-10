@@ -42,15 +42,14 @@ namespace QuizApp.Model
             return quizes;
         }
 
-        public bool RemoveQuiz(Quiz quizToRemove)
+        public void RemoveQuiz(Quiz quizToRemove)
 
         {
-            if (quizes.Contains(quizToRemove))
+            if (!quizes.Contains(quizToRemove))
             {
-                quizes.Remove(quizToRemove);
-                return true;
+                throw new ArgumentOutOfRangeException();
             }
-            return false;
+            quizes.Remove(quizToRemove);
         }
     }
 }

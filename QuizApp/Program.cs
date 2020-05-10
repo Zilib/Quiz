@@ -1,5 +1,4 @@
-﻿using QuizApp.Fascade;
-using QuizApp.Model;
+﻿using QuizApp.Model;
 using QuizApp.Views;
 using System;
 using System.Collections.Generic;
@@ -12,39 +11,25 @@ namespace QuizApp
         static void Main(string[] args)
         {
             GameConfiguration gameConfiguration = new GameConfiguration(4, 1, 4, 4, "test.txt");
-            GameViewModel game = new GameViewModel(gameConfiguration);
+            Game game = new Game(gameConfiguration);
             QuizTestExample test = new QuizTestExample(game);
             test.CreateTestQuiz();
 
-            Menu(game, gameConfiguration);
+            Menu(game);
         }
 
-        private static void Menu(GameViewModel fascade, GameConfiguration gameConfiguration)
+        private static void Menu(Game game)
         {
             while(true)
             {
                 Console.Clear();
 
-                if (fascade.Errors.Any())
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-
-                    var errors = fascade.Errors;
-                    errors.ForEach(x =>
-                    {
-                        Console.WriteLine(x);
-                    });
-                    fascade.ClearErrors();
-
-                    Console.ResetColor();
-                    Console.WriteLine();
-                }
-
                 Console.WriteLine("Hello tell me what would you like to do:");
                 Console.WriteLine("1. Give answer for existing quiz");
                 Console.WriteLine("2. Create your own quiz");
+                Console.WriteLine("3. Remove quiz");
                 Console.WriteLine("q. Exit game");
-                if (!MenuSelect(Console.ReadLine().ToLower() ?? "0", fascade, gameConfiguration))
+                if (!MenuSelect(Console.ReadLine().ToLower() ?? "0", game))
                 {
                     break;
                 }
@@ -52,11 +37,11 @@ namespace QuizApp
             }
         }
 
-        private static bool MenuSelect(string answer, GameViewModel fascade, GameConfiguration gameConfiguration)
+        private static bool MenuSelect(string answer, Game game)
         {
-            GameView view = new GameView(fascade);
+            GameView view = new GameView(game);
 
-            QuizBuilder quizBuilder = new QuizBuilder(fascade, gameConfiguration);
+            QuizBuilder quizBuilder = new QuizBuilder(game);
             switch (answer)
             {
                 case "1":
@@ -78,6 +63,16 @@ namespace QuizApp
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex);
+                    }
+                    break;
+                case "3":
+                    try
+                    {
+                        view.RemoveQuiz();
+                    }
+                    catch (ArgumentOutOfRangeException ex)
+                    {
+                        Console.WriteLine(ex.Message);
                     }
                     break;
                 case "q":

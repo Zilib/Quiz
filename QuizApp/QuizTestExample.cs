@@ -1,5 +1,4 @@
-﻿using QuizApp.Fascade;
-using QuizApp.Model;
+﻿using QuizApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,43 +10,37 @@ namespace QuizApp
 #if DEBUG
     public class QuizTestExample
     {
-        private readonly GameViewModel _gameFascade;
+        private readonly Game _game;
 
-        public QuizTestExample(GameViewModel gameFascade)
+        public QuizTestExample(Game game)
         {
-            _gameFascade = gameFascade;
+            _game = game;
         }
 
         public void CreateTestQuiz()
         {
-            var newQuiz = _gameFascade.CreateNewQuiz("Mój pierwszy testowy quiz");
+            var newQuiz = _game.CreateNewQuiz("Mój pierwszy testowy quiz");
 
-            var currentQuestion  = _gameFascade.CreateNewQuestion(newQuiz, "Jak ma na imię autor aplikacji?");
+            var firstQuestion = newQuiz.CreateNewQuestion("Jak ma na imię autor aplikacji?");
 
-            _gameFascade.CreateNewAnswer(currentQuestion, "Adam");
-            var correctAnswer = _gameFascade.CreateNewAnswer(currentQuestion, "Adrian");
-            _gameFascade.CreateNewAnswer(currentQuestion, "Jakub");
-            _gameFascade.CreateNewAnswer(currentQuestion, "Andrzej");
+            firstQuestion.CreateNewAnswer("Adam");
+            firstQuestion.SetCorrectAnswer(firstQuestion.CreateNewAnswer("Adrian"));
+            firstQuestion.CreateNewAnswer("Jakub");
+            firstQuestion.CreateNewAnswer("Andrzej");
 
-            currentQuestion.SetCorrectAnswer(correctAnswer);
+            var secondQuestion = newQuiz.CreateNewQuestion("Z jakiego miasta pochodzi autor aplikacji?");
 
-            currentQuestion = _gameFascade.CreateNewQuestion(newQuiz, "Z jakiego miasta pochodzi autor aplikacji?");
+            secondQuestion.SetCorrectAnswer(secondQuestion.CreateNewAnswer("Lublin"));
+            secondQuestion.CreateNewAnswer("Warszawa");
+            secondQuestion.CreateNewAnswer("Kraków");
+            secondQuestion.CreateNewAnswer("Łódź");
 
-            correctAnswer = _gameFascade.CreateNewAnswer(currentQuestion, "Lublin");
-            _gameFascade.CreateNewAnswer(currentQuestion, "Warszawa");
-            _gameFascade.CreateNewAnswer(currentQuestion, "Kraków");
-            _gameFascade.CreateNewAnswer(currentQuestion, "Łódź");
+            var thirdQuestion = newQuiz.CreateNewQuestion("Ile lat ma autor aplikacji?");
 
-            currentQuestion.SetCorrectAnswer(correctAnswer);
-
-            currentQuestion = _gameFascade.CreateNewQuestion(newQuiz, "Ile lat ma autor aplikacji?");
-
-            _gameFascade.CreateNewAnswer(currentQuestion, "18");
-            _gameFascade.CreateNewAnswer(currentQuestion, "19");
-            correctAnswer = _gameFascade.CreateNewAnswer(currentQuestion, "20");
-            _gameFascade.CreateNewAnswer(currentQuestion, "21");
-
-            currentQuestion.SetCorrectAnswer(correctAnswer);
+            thirdQuestion.CreateNewAnswer("18");
+            thirdQuestion.CreateNewAnswer("19");
+            thirdQuestion.SetCorrectAnswer(thirdQuestion.CreateNewAnswer("20"));
+            thirdQuestion.CreateNewAnswer("21");
         }
     }
 #endif

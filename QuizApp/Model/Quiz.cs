@@ -6,11 +6,27 @@ namespace QuizApp.Model
 {
     public class Quiz
     {
-        public string Title { get; set; }
+        private string title;
+        public string Title 
+        {
+            get => title;
+            set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentNullException();
+                }
+                if (value.Length < _gameConfiguration.minTitleLength)
+                {
+                    throw new Exception("Title is too short");
+                }
+                title = Title;
+            }
+        }
         public List<Question> Questions { get; private set; } = new List<Question>();
         private readonly GameConfiguration _gameConfiguration;
 
-        public Quiz(GameConfiguration gameConfiguration, string title)
+        public Quiz(string title, GameConfiguration gameConfiguration)
         {
             _gameConfiguration = gameConfiguration;
             Title = title;
@@ -18,13 +34,13 @@ namespace QuizApp.Model
 
         public Question CreateNewQuestion(string title)
         {
-            if (title.Length == 0 || title == null)
+            if (string.IsNullOrEmpty(title) || string.IsNullOrWhiteSpace(title))
             {
-                throw new NullReferenceException();
+                throw new ArgumentNullException();
             }
-            if (Questions != null && Questions.Count + 1 == _gameConfiguration.maxQuestions)
+            if (Questions.Count == _gameConfiguration.maxQuestions)
             {
-                throw new IncorrectInputException("You cannot create more questions!");
+                throw new ArgumentOutOfRangeException();
             }
 
             var newQuestion = new Question(title, _gameConfiguration);

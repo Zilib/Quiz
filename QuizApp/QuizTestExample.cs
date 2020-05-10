@@ -29,7 +29,7 @@ namespace QuizApp
             _gameFascade.CreateNewAnswer(currentQuestion, "Jakub");
             _gameFascade.CreateNewAnswer(currentQuestion, "Andrzej");
 
-            currentQuestion.SelectCorrectAnswer(correctAnswer);
+            currentQuestion.SetCorrectAnswer(correctAnswer);
 
             currentQuestion = _gameFascade.CreateNewQuestion(newQuiz, "Z jakiego miasta pochodzi autor aplikacji?");
 
@@ -38,7 +38,7 @@ namespace QuizApp
             _gameFascade.CreateNewAnswer(currentQuestion, "Kraków");
             _gameFascade.CreateNewAnswer(currentQuestion, "Łódź");
 
-            currentQuestion.SelectCorrectAnswer(correctAnswer);
+            currentQuestion.SetCorrectAnswer(correctAnswer);
 
             currentQuestion = _gameFascade.CreateNewQuestion(newQuiz, "Ile lat ma autor aplikacji?");
 
@@ -47,7 +47,7 @@ namespace QuizApp
             correctAnswer = _gameFascade.CreateNewAnswer(currentQuestion, "20");
             _gameFascade.CreateNewAnswer(currentQuestion, "21");
 
-            currentQuestion.SelectCorrectAnswer(correctAnswer);
+            currentQuestion.SetCorrectAnswer(correctAnswer);
         }
     }
 #endif

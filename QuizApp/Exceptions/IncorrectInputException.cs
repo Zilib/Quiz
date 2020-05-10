@@ -3,7 +3,7 @@
 
 namespace QuizApp.Exceptions
 {
-    class IncorrectInputException : Exception
+    public class IncorrectInputException : Exception
     {
         string Msg { get; }
         public IncorrectInputException(string msg)

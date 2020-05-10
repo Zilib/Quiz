@@ -22,5 +22,20 @@ namespace QuizApp.Model
             this.minTitleLength = minTitleLength;
             this.saveFileName = saveFileName;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is GameConfiguration && obj != null)
+            {
+                GameConfiguration temp;
+                temp = (GameConfiguration)obj;
+                if (temp.numberOfAnswers == numberOfAnswers && temp.minQuestions == minQuestions 
+                    && temp.maxQuestions == maxQuestions && temp.minTitleLength == minTitleLength && temp.saveFileName == saveFileName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

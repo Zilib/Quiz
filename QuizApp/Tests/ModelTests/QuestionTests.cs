@@ -45,13 +45,26 @@ namespace QuizApp.UnitTests
         }
 
         [Test]
-        public void CreatenewAnswer_TooMuchAnswers_Should_Throw_IncorrectInputException()
+        public void CreatenewAnswer_TooMuchAnswers_Should_Throw_Exception()
         {
             firstQuestion.CreateNewAnswer("Correct answer");
             firstQuestion.CreateNewAnswer("Correct answer2");
             firstQuestion.CreateNewAnswer("Correct answer3");
             firstQuestion.CreateNewAnswer("Correct answer4");
-            Assert.Throws<IncorrectInputException>(() => firstQuestion.CreateNewAnswer("Correct answer5"));
+            Assert.Throws<Exception>(() => firstQuestion.CreateNewAnswer("Correct answer5"));
+            Assert.AreEqual(firstQuestion.Answers.Count, 4);
+        }
+
+        [Test]
+        public void InsertNewAnswer_TooMuchAnswers_Should_Throw_Exception()
+        {
+            firstQuestion.CreateNewAnswer("Correct answer");
+            firstQuestion.CreateNewAnswer("Correct answer2");
+            firstQuestion.CreateNewAnswer("Correct answer3");
+            firstQuestion.CreateNewAnswer("Correct answer4");
+            var answerToInsert = new Answer("E.g answer");
+
+            Assert.Throws<Exception>(() => firstQuestion.InsertNewAnswer(answerToInsert));
         }
 
         [Test]

@@ -27,5 +27,13 @@ namespace QuizApp.UnitTests
         {
             Assert.Throws<Exception>(() => game.GetQuizes());
         }
+
+        public void GetQuizes_SetAllDefaultTrue_Should_Return_True()
+        {
+            var quiz = game.CreateNewQuiz("Correct title");
+
+            var firstQuestion = quiz.CreateNewQuestion("First question!");
+
+        }
     }
 }

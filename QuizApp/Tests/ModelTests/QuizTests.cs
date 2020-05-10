@@ -17,7 +17,6 @@ namespace QuizApp.UnitTests
             quiz.CreateNewQuestion("Correct question1");
             quiz.CreateNewQuestion("Correct question2");
             quiz.CreateNewQuestion("Correct question3");
-            quiz.CreateNewQuestion("Correct question4");
         }
 
         [Test]
@@ -39,9 +38,10 @@ namespace QuizApp.UnitTests
         }
 
         [Test]
-        public void CreateNewQuestion_CreateTooMuchQuestions_Should_Throw_ArgumentOutOfRangeException()
+        public void CreateNewQuestion_CreateTooMuchQuestions_Should_Throw_Exception()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => quiz.CreateNewQuestion("Incorrect question"));
+            quiz.CreateNewQuestion("Correct question4");
+            Assert.Throws<Exception>(() => quiz.CreateNewQuestion("Incorrect question"));
             Assert.AreEqual(quiz.Questions.Count, 4);
         }
 
@@ -62,6 +62,30 @@ namespace QuizApp.UnitTests
 
             quiz.CreateNewQuestion("Correct question4");
             Assert.AreEqual(quiz.Questions.Count, 4);
+        }
+
+        [Test]
+        public void InsertNewQuestion_CreateTooMuchQuestions_Should_Throw_Exception()
+        {
+            quiz.CreateNewQuestion("Correct question");
+            var newQuestion = new Question("Incorrect question", gameConfiguration);
+            Assert.Throws<Exception>(() => quiz.InsertNewQuestion(newQuestion));
+        }
+
+        [Test]
+        public void InsertNewQuestion_QuestionWithIncorrectCFG_Should_Throw_Exception()
+        {
+            var config = new GameConfiguration(1, 2, 3, 4, "Test.txt");
+            var newQuestion = new Question("Correct question with incorrect game config", config);
+            Assert.Throws<Exception>(() =>quiz.InsertNewQuestion(newQuestion));
+        }
+
+        [Test]
+        public void InsertNewQuestion_QuestionWithSimilarCFG_Should_Return_Question()
+        {
+            var config = new GameConfiguration(4, 4, 4, 4, "test.txt");
+            var newQuestion = new Question("Correct question with incorrect game config", config);
+            Assert.DoesNotThrow(() => quiz.InsertNewQuestion(newQuestion));
         }
 
         [Test]

@@ -32,18 +32,23 @@ namespace QuizApp.Model
 
         public Answer CreateNewAnswer(string text)
         {
-            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
-            {
-                throw new ArgumentNullException();
-            }
             if (Answers.Count == _gameConfiguration.numberOfAnswers)
             {
-                throw new IncorrectInputException("You cannot add anymore answers!");
+                throw new Exception("You cannot add anymore answers!");
             }
             Answer newAnswer = new Answer(text);
             Answers.Add(newAnswer);
 
             return newAnswer;
+        }
+
+        public void InsertNewAnswer(Answer answerToInsert)
+        {
+            if (Answers.Count == _gameConfiguration.numberOfAnswers)
+            {
+                throw new Exception("You cannot add anymore answers!");
+            }
+            Answers.Add(answerToInsert);
         }
 
         public void SelectAnswer(Answer answer)
@@ -85,6 +90,12 @@ namespace QuizApp.Model
         public void SetAllAnswersDefault()
         {
             Answers.Where(x => x.IsSelected).ToList().ForEach(x => x.IsSelected = false);
+        }
+
+        public bool IsGameConfigurationRight(GameConfiguration gameConfiguration)
+        {
+            
+            return _gameConfiguration.Equals(gameConfiguration);
         }
 
         private bool IsOneAnswerCorrect()

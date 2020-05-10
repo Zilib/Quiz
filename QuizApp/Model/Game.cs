@@ -29,6 +29,11 @@ namespace QuizApp.Model
             return newQuiz;
         }
 
+        public void InsertNewQuiz(Quiz quiz)
+        {
+
+        }
+
         public List<Quiz> GetQuizes(bool setAllDefault = false)
         {
             if (!quizes.Any())

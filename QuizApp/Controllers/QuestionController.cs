@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using QuizApp.Model;
 
-namespace QuizApp.Services.Question
+namespace QuizApp.Controllers
 {
-    public abstract class AnswerService : QuestionService
+    public abstract class QuestionController
     {
+        protected abstract GameConfiguration _gameConfiguration { get; }
+
         public abstract List<Answer> Answers { get; protected set; }
 
         public Answer CreateNewAnswer(string text)
@@ -74,6 +76,11 @@ namespace QuizApp.Services.Question
             }
             // todo if correct answer doesn't exist do not allow to select any answer
             answer.IsSelected = true;
+        }
+
+        public bool IsGameConfigurationRight(GameConfiguration gameConfiguration)
+        {
+            return _gameConfiguration.Equals(gameConfiguration);
         }
     }
 }

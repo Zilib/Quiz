@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using QuizApp.Services.Question;
+using QuizApp.Controllers;
 
 namespace QuizApp.Model
 {
-    public class Question : AnswerService
+    public class Question : QuestionController
     {
-        protected override GameConfiguration _gameConfiguration { get; }
         private string title;
+        protected override GameConfiguration _gameConfiguration { get; }
         public string Title 
         { 
             get => title;
@@ -20,9 +20,7 @@ namespace QuizApp.Model
                 title = value;
             }
         }
-
         public override List<Answer> Answers { get; protected set; } = new List<Answer>();
-
         public Question(string title, GameConfiguration gameConfiguration)
         {
             Title = title;

@@ -1,5 +1,4 @@
 ﻿using QuizApp.Exceptions;
-using QuizApp.Services.Question;
 using System;
 using System.Collections.Generic;
 
@@ -47,15 +46,23 @@ namespace QuizApp.Model
 
         public void InsertNewQuestion(Question questionToInsert)
         {
+            if (!_gameConfiguration.Equals(questionToInsert.GameConfiguration))
+            {
+                throw new Exception("Invalid question game configuration");
+            }
             if (Questions.Count == _gameConfiguration.maxQuestions)
             {
                 throw new Exception("You cannot add anymore questions!");
             }
-            if (!questionToInsert.IsGameConfigurationRight(_gameConfiguration))
-            {
-                throw new Exception("Question is using wrong game configuration!!");
-            }
             Questions.Add(questionToInsert);
+        }
+
+        public void RemoveQuestion(Question questionToRemove)
+        {
+            if (!Questions.Contains(questionToRemove))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
         }
 
         public void SetAllDefault()

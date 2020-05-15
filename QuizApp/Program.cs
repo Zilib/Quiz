@@ -28,6 +28,7 @@ namespace QuizApp
                 Console.WriteLine("1. Give answer for existing quiz");
                 Console.WriteLine("2. Create your own quiz");
                 Console.WriteLine("3. Remove quiz");
+                Console.WriteLine("4. Edit current quiz");
                 Console.WriteLine("q. Exit game");
                 if (!MenuSelect(Console.ReadLine().ToLower() ?? "0", game))
                 {
@@ -41,39 +42,21 @@ namespace QuizApp
         {
             GameView view = new GameView(game);
 
-            QuizBuilder quizBuilder = new QuizBuilder(game);
             switch (answer)
             {
                 case "1":
-                    try
-                    {
-                        Console.Clear();
-                        view.PlayQuiz();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
+                    Console.Clear();
+                    view.Play();
                     break;
                 case "2":
-                    try
-                    {
-                        quizBuilder.BuildQuiz();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
+                    QuizBuilder quizBuilder = new QuizBuilder(game);
+                    quizBuilder.BuildQuiz();
                     break;
                 case "3":
-                    try
-                    {
-                        view.RemoveQuiz();
-                    }
-                    catch (ArgumentOutOfRangeException ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
+                    view.RemoveQuiz();
+                    break;
+                case "4":
+                    view.Edit();
                     break;
                 case "q":
                     return false;

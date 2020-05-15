@@ -37,5 +37,16 @@ namespace QuizApp.Model
             }
             return false;
         }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1117156986;
+            hashCode = hashCode * -1521134295 + numberOfAnswers.GetHashCode();
+            hashCode = hashCode * -1521134295 + minQuestions.GetHashCode();
+            hashCode = hashCode * -1521134295 + maxQuestions.GetHashCode();
+            hashCode = hashCode * -1521134295 + minTitleLength.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(saveFileName);
+            return hashCode;
+        }
     }
 }

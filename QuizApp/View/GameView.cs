@@ -2,119 +2,70 @@
 using System;
 using System.Collections.Generic;
 using QuizApp.Services;
+using QuizApp.View.Services;
+using QuizApp.View;
 
 namespace QuizApp.Views
 {
     public sealed class GameView
     {
         private readonly Game _game;
-
+        private readonly QuizViewService _quizViewService;
         public GameView(Game game)
         {
             _game = game;
+            _quizViewService = new QuizViewService(game);
         }
 
-        private Quiz SelectQuiz(string msg)
+        public void Play()
         {
-            List<Quiz> quizes = _game.GetQuizes(true); 
-
-            Console.WriteLine(msg);
-            for (int i = 0; i < quizes.Count; i++)
+            Quiz currentQuiz;
+            List<Question> questions;
+            try
             {
-                Console.WriteLine($"[{i + 1}]. {quizes[i].Title}");
+                currentQuiz = _quizViewService.SelectQuiz("Select quiz!");
+                questions = currentQuiz.Questions;
             }
-            Console.WriteLine();
-            if (int.TryParse(Console.ReadLine(), out int input))
+            catch (Exception ex)
             {
-                var quizToReturn = quizes[input - 1];
-                return quizToReturn;
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+                return;
             }
-            else
-            {
-                Console.WriteLine("Incorrect number!");
-                return null;
-            }
-        }
-
-        public void PlayQuiz()
-        {
-            var currentQuiz = SelectQuiz("Select quiz!");
-            var questions = currentQuiz.Questions;
            
             foreach (var question in questions)
             {
                 Console.Clear();
                 Console.WriteLine(question.Title + "\n");
-                SelectAnswer(question);
+                _quizViewService.SelectAnswer(question);
             }
 
-            ShowUserAnswers(questions);
+            _quizViewService.ShowUserAnswers(questions);
             Console.ReadLine();
         }
 
+        public void Edit()
+        {
+            EditView editView = new EditView(_quizViewService);
+            editView.Start();
+        }
+
+        
         public void RemoveQuiz()
         {
-            var quizToRemove = SelectQuiz("Select quiz to remove!");
+            Quiz quizToRemove;
+            try
+            {
+                quizToRemove = _quizViewService.SelectQuiz("Select quiz to remove!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+                return;
+            }
             _game.RemoveQuiz(quizToRemove);
         }
 
-        private void ShowUserAnswers(List<Question> questions)
-        {
-            Console.Clear();
-            foreach (var question in questions)
-            {
-                Console.WriteLine($"\n{question.Title}\n");
-
-                if (!question.IsAnyAnswerSelected())
-                {
-                    Console.WriteLine("No selected answer!");
-                    Console.ReadLine();
-                    return;
-                }
-                var answers = question.Answers;
-                foreach (var answer in answers)
-                {
-                    ConsoleColor? foregroundColor = ColorForAnswer(answer.GetState());
-                    ConsoleWriter.WriteInForegroundColor(answer.Text, foregroundColor);
-                }
-            }
-        }
-
-        private ConsoleColor ColorForAnswer(EAnswerState? state)
-        {
-            switch (state)
-            {
-                case EAnswerState.Correct:
-                    return ConsoleColor.Green;
-                case EAnswerState.Incorrect:
-                    return ConsoleColor.Red;
-                default:
-                    return ConsoleColor.White;
-            }
-        }
-
-        private void SelectAnswer(Question question)
-        {
-            int answerIndex;
-            var answers = question.Answers;
-
-            Console.WriteLine("Select correct answer!");
-            for (int i = 0; i < answers.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}]. {answers[i]}");
-            }
-            string input = Console.ReadLine();
-
-            while (!int.TryParse(input, out answerIndex))
-            {
-                Console.WriteLine("Select correct answer!");
-                for (int i = 0; i < answers.Count; i++)
-                {
-                    Console.WriteLine($"[{i + 1}]. {answers[i]}");
-                }
-            }
-            var answerToSelect = answers[answerIndex - 1];
-            question.SelectAnswer(answerToSelect);
-        }
     }
 }
